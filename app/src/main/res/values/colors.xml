@@ -3,4 +3,66 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorblack">#000000</color>
+    <color name="colorWith">#ffffff</color>
+    <color name="color_bluelight">#B3E5FC</color>
+    <color name="color_item_lot_1">#c8daf6</color>
+    <color name="color_item_lot_2">#848efe</color>
+    <color name="color_green">#00ff11</color>
+    <color name="color_red">#ff0000</color>
+    <color name="color_app_back">#000000</color>
+
+    <!--M-->
+    <color name="bg_title_pass">#FFFFFF</color>
+    <color name="bg_app_start">#164259</color>
+    <color name="bg_app_end">#092533</color>
+    <color name="bg_page_app_start">#FFFFFF</color>
+    <color name="bg_page_app_end">#deedf5</color>
+    <color name="icon_loading">#FFFFFF</color>
+    <color name="color_loading_tang">#092533</color>
+    <color name="bg_item_type_lot_enable_false">#dadada</color>
+    <color name="color_txt_item_type_lot_enable_false">#aeacac</color>
+    <color name="color_title_menu_bottom_s">#FFFFFF</color>
+    <color name="color_title_menu_bottom_u">#707070</color>
+    <color name="color_view_listPlay_s">#00be12</color>
+    <color name="color_view_listPlay_d">#8f8f8f</color>
+    <color name="color_black">#000000</color>
+    <color name="color_data_user">#c9c9c9</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_txt_type_select">#004b91</color>
+    <color name="bg_txt_lot_tang">#164259</color>
+    <color name="color_ic_refresh">#f4230d</color>
+    <color name="color_text_back">#000000</color>
+    <color name="color_text_no">#707070</color>
+    <color name="color_txt_yod_tang">#030392</color>
+    <color name="color_txt_num_tang">#FF0000</color>
+    <color name="color_txt_poy">#282828</color>
+    <color name="color_txt_num_result">#00a303</color>
+    <color name="color_text_white">#FFFFFF</color>
+    <color name="color_bg_title_tang_lot_three">#6e6e6f</color>
+    <color name="bg_border_column_tang">#00bbbbbb</color>
+    <color name="color_txt_tang_num_lot">#0000FF</color>
+    <color name="color_tint_img_backslet">#030392</color>
+    <color name="color_menu">#303F9F</color>
+    <color name="bg_item_first">#00FFFFFF</color>
+    <color name="bg_item_one">#99ffd9d6</color>
+    <color name="bg_item_two">#99fffad3</color>
+    <color name="color_ic_close">#FF0000</color>
+    <color name="color_date_close">#0000FF</color>
+    <color name="color_time_close">#FF0000</color>
+    <color name="color_title_close_lot">#FF0000</color>
+    <color name="color_txt_header_bill">#FFFFFF</color>
+    <color name="color_border_header_bill">#aadfdfdf</color>
+    <color name="bg_body_bill_i">#ffedca</color>
+    <color name="bg_body_bill_ii">#fff7e9</color>
+    <color name="color_txt_body_bill">#000000</color>
+    <color name="color_txt_type_bill">#383838</color>
+    <color name="color_txt_body_total_bill">#000000</color>
+    <color name="color_txt_body_type_bill">#0050b1</color>
+    <color name="color_txt_bill">#000000</color>
+    <color name="color_printer_no_connect">#FF0000</color>
+    <color name="color_txt_item_device_printer">#000000</color>
+    <color name="color_status_printer">#FFFFFF</color>
+
+
 </resources>

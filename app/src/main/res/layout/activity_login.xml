@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/color_bluelight">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_page_othen"
+            android:layout_margin="@dimen/margin5"
+            android:paddingRight="@dimen/magin50"
+            android:paddingLeft="@dimen/magin50">
+            <ImageView
+                android:id="@+id/im_logo_login"
+                android:layout_width="@dimen/widthlogologin"
+                android:layout_height="@dimen/hightlogologin" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilEdUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin5"
+                android:background="@drawable/bg_ed_pass"
+                android:padding="@dimen/margin5">
+
+                <EditText
+                    android:id="@+id/edUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center|left"
+                    android:hint="ชื่อผู้ใช้"
+                    android:textColorHint="@color/color_red"
+                    android:inputType="text"
+                    android:nextFocusDown="@+id/edPassNew"
+                    android:padding="@dimen/margin5"
+                    android:singleLine="true"
+                    android:textColor="@color/colorblack"
+                    android:textSize="@dimen/text_size30" />
+
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilEdPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin5"
+                android:background="@drawable/bg_ed_pass"
+                android:padding="@dimen/margin5">
+
+                <EditText
+                    android:id="@+id/edPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00FFFFFF"
+                    android:gravity="center|left"
+                    android:hint="รหัสผ่าน"
+                    android:textColorHint="@color/color_red"
+                    android:inputType="text"
+                    android:nextFocusDown="@+id/edPassNew"
+                    android:padding="@dimen/margin5"
+                    android:singleLine="true"
+                    android:textColor="@color/colorblack"
+                    android:textSize="@dimen/text_size30" />
+            </android.support.design.widget.TextInputLayout>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/avloadLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                app:indicator="BallPulse"
+                app:indicator_color="@color/colorblack" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <include layout="@layout/layout_keyboad_login"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

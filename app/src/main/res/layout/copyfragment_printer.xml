@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_page_app">
+    <LinearLayout
+        android:id="@+id/lnContentLotPrinter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/bg_page_app_end"
+                android:padding="@dimen/pad_txt_tang">
+                <TextView
+                    android:id="@+id/tvTitleSea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:padding="@dimen/pad_txt_tang"
+                    android:text="@string/txt_title_name_printer"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/size_txt_tang" />
+                <TextView
+                    android:id="@+id/tvSeaPrinter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_icon_more_menu"
+                    android:background="@drawable/bg_btn_print"
+                    android:paddingLeft="@dimen/pad_btn_print_lot"
+                    android:paddingRight="@dimen/pad_btn_print_lot"
+                    android:layout_margin="@dimen/pad_txt_tang"
+                    android:gravity="center"
+                    android:text="@string/txt_sea_printer"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/size_txt_tang" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_h_border_app"
+                android:background="@color/bg_txt_lot_tang" />
+            <ListView
+                android:id="@+id/lvNamePrinter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:divider="#00FFFFFF"
+                android:dividerHeight="0dp" >
+            </ListView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_h_border_app"
+                android:layout_alignParentBottom="true"
+                android:background="@color/bg_txt_lot_tang" />
+        </LinearLayout>
+        <View
+            android:layout_width="@dimen/size_h_shadows_appbar"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_border_center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/bg_page_app_end"
+                android:padding="@dimen/pad_txt_tang">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|left"
+                    android:padding="@dimen/pad_txt_tang"
+                    android:text="@string/txt_title_paper_printer"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/size_txt_tang" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="center|right">
+                    <LinearLayout
+                        android:id="@+id/lnPaper2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/mar_more_menu"
+                        android:orientation="horizontal"
+                        android:gravity="center|right"
+                        android:padding="@dimen/pad_txt_tang">
+
+                        <ImageView
+                            android:id="@+id/imgPaper2"
+                            android:layout_width="@dimen/size_icon_more_menu"
+                            android:layout_height="@dimen/size_icon_more_menu"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_view_s"
+                            android:tint="@color/color_view_listPlay_s"/>
+
+                        <TextView
+                            android:id="@+id/tvPaper2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/txt_paper_2"
+                            android:padding="@dimen/pad_txt_tang"
+                            android:textColor="@color/color_view_listPlay_s"
+                            android:textSize="@dimen/size_text_menu"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lnPaper3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center|right"
+                        android:layout_marginLeft="@dimen/mar_more_menu"
+                        android:padding="@dimen/pad_txt_tang">
+
+                        <ImageView
+                            android:id="@+id/imgPaper3"
+                            android:layout_width="@dimen/size_icon_more_menu"
+                            android:layout_height="@dimen/size_icon_more_menu"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_view_d"
+                            android:tint="@color/color_view_listPlay_d"/>
+
+                        <TextView
+                            android:id="@+id/tvPaper3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/txt_paper_3"
+                            android:padding="@dimen/pad_txt_tang"
+                            android:textColor="@color/color_view_listPlay_d"
+                            android:textSize="@dimen/size_text_menu"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_h_border_app"
+                android:layout_alignParentBottom="true"
+                android:background="@color/bg_txt_lot_tang" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/bg_page_app_end"
+                android:padding="@dimen/pad_txt_tang"
+                android:layout_marginTop="@dimen/size_icon_more_menu">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:padding="@dimen/pad_txt_tang"
+                    android:text="@string/txt_name_printer_connected"
+                    android:textColor="@color/color_black"
+                    android:textSize="@dimen/size_txt_tang" />
+                <TextView
+                    android:id="@+id/tvClosePrinter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_wh_ic_refresh"
+                    android:background="@drawable/bg_btn_print"
+                    android:paddingLeft="@dimen/pad_btn_print_lot"
+                    android:paddingRight="@dimen/pad_btn_print_lot"
+                    android:layout_marginRight="@dimen/pad_txt_tang"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="@string/txt_close_printer"
+                    android:textColor="@color/color_white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/size_txt_tang" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@color/bg_page_app_start"
+                android:padding="@dimen/pad_txt_tang">
+                <TextView
+                    android:id="@+id/tvNamePrinterConnected"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_wh_ic_refresh"
+                    android:paddingLeft="@dimen/pad_btn_print_lot"
+                    android:paddingRight="@dimen/pad_btn_print_lot"
+                    android:layout_marginRight="@dimen/pad_txt_tang"
+                    android:gravity="center"
+                    android:text="@string/txt_no_connect_printer"
+                    android:textColor="@color/color_printer_no_connect"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/size_txt_tang" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_h_shadows_appbar"
+        android:background="@drawable/bg_border_top_appbar"/>
+</RelativeLayout>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lnContentItemPrinter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tvItemNamePrinter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|left"
+        android:textColor="@color/color_txt_item_device_printer"
+        android:textSize="@dimen/size_txt_tang"
+        android:paddingTop="@dimen/pad_data_num_lot"
+        android:paddingRight="@dimen/pad_l_item_tang_lot"
+        android:paddingLeft="@dimen/pad_l_item_tang_lot"
+        android:text="livezx.com" />
+    <TextView
+        android:id="@+id/tvItemIPPrinter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|left"
+        android:textColor="@color/color_txt_item_device_printer"
+        android:textSize="@dimen/size_txt_tang"
+        android:paddingBottom="@dimen/pad_data_num_lot"
+        android:paddingRight="@dimen/pad_l_item_tang_lot"
+        android:paddingLeft="@dimen/pad_l_item_tang_lot"
+        android:text="192.168.1.106"
+        android:textStyle="bold"/>
+</LinearLayout>

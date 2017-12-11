@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="บันทึกเสร็จสิ้น"
+                android:textColor="@color/colorblack"
+                android:textSize="@dimen/text_size30"
+                android:gravity="center"
+                android:background="@drawable/bg_tital_save_lot"
+                android:padding="@dimen/magin20"
+                />
+            <TextView
+                android:id="@+id/btn_close_lot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textSize="@dimen/text_size30"
+                android:textColor="@color/colorblack"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/magin20"
+                android:paddingTop="@dimen/magin10"
+                android:paddingBottom="@dimen/magin10"
+                android:paddingRight="@dimen/magin20"
+                android:paddingLeft="@dimen/magin20"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/re_savelot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWith">
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

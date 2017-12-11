@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="magin150">150dp</dimen>
+    <dimen name="size_text">30sp</dimen>
+    <dimen name="magin20">20dp</dimen>
+    <dimen name="text_size30">30sp</dimen>
+
+    <dimen name="margin1">1dp</dimen>
+    <dimen name="size_20">20sp</dimen>
+    <dimen name="margin5">5dp</dimen>
+    <dimen name="magin100">100dp</dimen>
+    <dimen name="magin60">60dp</dimen>
+    <dimen name="magin120">120dp</dimen>
+    <dimen name="magin10">10dp</dimen>
+    <dimen name="magin50">50dp</dimen>
+    <dimen name="magin80">80dp</dimen>
+    <dimen name="magin40">40dp</dimen>
+    <dimen name="magin_size50">50sp</dimen>
+    <dimen name="magin70">70dp</dimen>
+    <dimen name="magin2">2dp</dimen>
+    <dimen name="pad_btn_save">15dp</dimen>
+    <dimen name="pad_btn_save_rl">40dp</dimen>
+    <dimen name="size_text_title_page">18sp</dimen>
+    <dimen name="size_txt_save">30sp</dimen>
+    <dimen name="widthlogologin">250dp</dimen>
+    <dimen name="hightlogologin">150dp</dimen>
+
+    <!--M-->
+
+    <!--Main-->
+    <dimen name="size_txt_data_user">18sp</dimen>
+    <dimen name="mar_txt_data_user">1dp</dimen>
+    <dimen name="pad_txt_data_user">2dp</dimen>
+    <dimen name="size_radius_data_user">2dp</dimen>
+
+    <!--Login-->
+    <dimen name="size_title_login">35sp</dimen>
+    <dimen name="mar_edittext_login">5dp</dimen>
+    <dimen name="pad_edittext_login">10dp</dimen>
+    <dimen name="size_text_menu">20sp</dimen>
+    <dimen name="pad_edittext_pass">10dp</dimen>
+    <dimen name="radius_shape">5dp</dimen>
+    <dimen name="stroke_shape">2dp</dimen>
+    <dimen name="size_radius_btn">30dp</dimen>
+    <dimen name="size_text_title_snack_bar">18sp</dimen>
+
+    <!--Type Lot-->
+    <dimen name="size_h_shadows_appbar">5dp</dimen>
+    <dimen name="pad_bt_button_type_lot">15dp</dimen>
+    <dimen name="mar_item_page_type_lot">5dp</dimen>
+    <dimen name="size_text_type_lot">20sp</dimen>
+    <dimen name="size_height_button_type_lot">65dp</dimen>
+
+    <!--Menu Bottom-->
+    <dimen name="pad_tb_menu_bottom">2dp</dimen>
+    <dimen name="size_ic_menu_bottom">40dp</dimen>
+    <dimen name="pad_title_menu_bottom">2dp</dimen>
+    <dimen name="size_title_menu_bottom">16sp</dimen>
+
+    <!--3 ตัว-->
+    <dimen name="size_txt_tang">16sp</dimen>
+    <dimen name="size_txt_ed_tang">25sp</dimen>
+    <dimen name="pad_ed_tang">5dp</dimen>
+    <dimen name="size_radius_ed_tang">3dp</dimen>
+    <dimen name="pad_txt_tang">5dp</dimen>
+    <dimen name="size_title_close_tang">18sp</dimen>
+    <dimen name="size_title_sell">35sp</dimen>
+    <dimen name="size_wh_ic_refresh">60dp</dimen>
+    <dimen name="size_text_data_num_lot">20sp</dimen>
+    <dimen name="pad_data_num_lot">15dp</dimen>
+    <dimen name="size_title_print_lot">25sp</dimen>
+    <dimen name="pad_btn_print_lot">30dp</dimen>
+    <dimen name="size_wh_ic_status_printer">30dp</dimen>
+    <dimen name="size_wh_ic_status_con_printer">20dp</dimen>
+    <dimen name="size_h_border_app">0.5dp</dimen>
+    <dimen name="pad_l_item_tang_lot">20dp</dimen>
+
+    <!--แทงด่วน-->
+    <dimen name="pad_btn_copy_tang">15dp</dimen>
+    <dimen name="size_stroke_coustom_bg">1dp</dimen>
+    <dimen name="size_corners_coustom_bg">5dp</dimen>
+    <dimen name="size_margin_back_copy">0.5dp</dimen>
+    <dimen name="size_magin_lr_edittext">3dp</dimen>
+    <dimen name="size_text_back_copy">18sp</dimen>
+    <dimen name="size_h_title_back_copy">40dp</dimen>
+    <dimen name="size_text_num_type">18sp</dimen>
+    <dimen name="size_text_num_no">14sp</dimen>
+    <dimen name="size_h_w_icon_check_three">40dp</dimen>
+    <dimen name="size_pad_tang_lot_lr">2dp</dimen>
+    <dimen name="size_pad_tang_lot_tb">5dp</dimen>
+    <dimen name="size_pading_edittext_tang">10dp</dimen>
+    <dimen name="size_text_edittext_tang">22sp</dimen>
+    <dimen name="size_text_content_app">16sp</dimen>
+    <dimen name="size_radius_btn_print">5dp</dimen>
+    <dimen name="size_icon_exit_result">30dp</dimen>
+    <dimen name="mar_icon_exit_result">2dp</dimen>
+    <dimen name="size_pad_fragment_three_tb">5dp</dimen>
+
+    <!--2 ตัว-->
+    <dimen name="size_w_ic_backslet">30dp</dimen>
+    <dimen name="pad_rl_ic_backslet">2dp</dimen>
+    <dimen name="pad_data_num_item_tang_lot">10dp</dimen>
+
+    <!--พิเศษ-->
+    <!--750px-->
+    <!--990px-->
+    <dimen name="pad_txt_lot_type_spec">15dp</dimen>
+
+    <!--เพิ่มเติม-->
+    <dimen name="mar_more_menu">20dp</dimen>
+    <dimen name="pad_more_menu">20dp</dimen>
+    <dimen name="size_more_menu">240dp</dimen>
+    <dimen name="size_icon_more_menu">60dp</dimen>
+    <dimen name="pad_dialog_loading">15dp</dimen>
+    <dimen name="size_w_ic_loading_tang">35dp</dimen>
+    <dimen name="pad_ic_close">10dp</dimen>
+
+    <!--ListPlay-->
+    <dimen name="pad_content_date">2dp</dimen>
+    <dimen name="pad_item_date">12dp</dimen>
+    <dimen name="size_h_content_date">50dp</dimen>
+    <dimen name="size_w_h_ic_arrow_up_date">30dp</dimen>
+
+    <!--Bill-->
+    <dimen name="size_txt_footer_bill">16sp</dimen>
+
+    <dimen name="size_ic_printer">60dp</dimen>
+
+</resources>

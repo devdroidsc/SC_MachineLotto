@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/Liner_lot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/magin2">
+        <LinearLayout
+            android:id="@+id/Liner_Number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/text_lotnumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Text_custom"
+                android:layout_marginLeft="@dimen/magin50"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

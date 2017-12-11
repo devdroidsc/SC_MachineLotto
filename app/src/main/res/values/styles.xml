@@ -6,6 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+
+    </style>
+
+    <style name="Text_custom" >
+        <item name="android:textSize">@dimen/text_size30</item>
+        <item name="android:textColor">@color/colorblack</item>
+        <item name="android:layout_margin">@dimen/magin10</item>
     </style>
 
 </resources>
