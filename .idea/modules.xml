@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SC_MachineLotto.iml" filepath="$PROJECT_DIR$/SC_MachineLotto.iml" />
+      <module fileurl="file://E:\ProjectSc\SC_MachineLotto\SC_MachineLotto.iml" filepath="E:\ProjectSc\SC_MachineLotto\SC_MachineLotto.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\ProjectSc\SC_MachineLotto\app\app.iml" filepath="E:\ProjectSc\SC_MachineLotto\app\app.iml" />
     </modules>
   </component>
 </project>

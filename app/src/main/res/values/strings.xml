@@ -22,6 +22,7 @@
     <string name="txtlogin">เข้าสู่ระบบ</string>
     <string name="save_success">บันทึกเสร็จสิ้น</string>
     <string name="txt_print">พิมพ์</string>
+    <string name="msg_connect_internet">\nตรวจสอบการเชื่อมต่ออินเตอร์เน็ต\n</string>
 
 
     <!--M-->

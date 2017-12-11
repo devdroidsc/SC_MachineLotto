@@ -33,6 +33,11 @@ public class Utils {
     public static int KEY_TANG_SPEC_ERROR = 6;
     public static String NAME_TANG_SPEC_ERROR = "*** บันทึกข้อมูล Spec Error ***";
 
+    public static int KEY_TANG_KEYBOARD_LOGIN = 20;
+    public static String KNAME_TANG_KEYBOARD_LOGIN = "*** Keyboard Login ***";
+    public static int KEY_TANG_KEYBOARD_MAIN = 21;
+    public static String NAME_TANG_KEYBOARD_MAIN = "*** Keyboard Main ***";
+
     //Share Data
     public static String SHARE_USERNAME = "username";
     public static String SHARE_PASSWORD ="password";

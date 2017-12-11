@@ -214,7 +214,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
         bt_one = view.findViewById(R.id.bt_one);
         lnContentPrinter = view.findViewById(R.id.lnContentPrinter);
 
-        bt_twozero.setOnClickListener(this);
+        /*bt_twozero.setOnClickListener(this);
         bt_zero.setOnClickListener(this);
         bt_nine.setOnClickListener(this);
         bt_eight.setOnClickListener(this);
@@ -232,7 +232,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
         btn_print.setOnClickListener(this);
 
         btn_close_lot.setOnClickListener(this);
-        lnContentPrinter.setOnClickListener(this);
+        lnContentPrinter.setOnClickListener(this);*/
 
         gridLayoutManager = new GridLayoutManager(getActivity(),1);
         adapter = new CustomAdapterMain(list,getActivity());

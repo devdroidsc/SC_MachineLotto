@@ -1,5 +1,6 @@
 package mdev.mlaocthtione.Manager;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,6 +9,8 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
@@ -18,6 +21,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import mdev.mlaocthtione.BuildConfig;
@@ -34,6 +38,9 @@ public class AllCommand {
 	public static String moTangMax = "moTangMax";
 	public static String moTangMin = "moTangMin";
 	public static String moURL = "moURL";
+
+	public static String moSaveUser = "moSaveUser";
+	public static String moSavePass = "moSavePass";
 
 	public boolean isConnectingToInternet(Context _context) {
 		ConnectivityManager connectivity = (ConnectivityManager) _context
@@ -93,6 +100,27 @@ public class AllCommand {
 		if (shLang != null) {
 			String strShare = shLang.getString(strKey, strDe);
 			return strShare;
+		}
+		return "";
+	}
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	public String setEncodeBase64(final String input) {
+		try {
+			byte[] message = input.getBytes(StandardCharsets.UTF_8);
+			return  Base64.encodeToString(message, Base64.DEFAULT);
+		}catch (Exception e){
+			ShowLogCat("Err","setEncodeBase64 " + e.getMessage());
+		}
+		return "";
+	}
+	@TargetApi(Build.VERSION_CODES.KITKAT)
+	public String getEncodeBase64(final String encodeBase64) {
+		try {
+			byte[] decoded = Base64.decode(encodeBase64, Base64.DEFAULT);
+			return new String(decoded, StandardCharsets.UTF_8);
+		}catch (Exception e){
+			ShowLogCat("Err","getEncodeBase64 " + e.getMessage());
+
 		}
 		return "";
 	}

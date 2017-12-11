@@ -11,7 +11,15 @@
         <FrameLayout
             android:id="@+id/frameLayoutPageMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/frameLayoutKeyboad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.3">
+
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>
