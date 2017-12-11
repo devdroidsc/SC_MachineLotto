@@ -29,6 +29,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +54,7 @@ import mdev.mlaocthtione.FormatHttpPostOkHttp.FromHttpPostOkHttp;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.Model.Modeldetail;
 import mdev.mlaocthtione.Model.Modelitemlot;
+import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
 import mdev.mlaocthtione.bus.ModelBus;
@@ -73,9 +76,9 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private CustomAdapterMain adapter;
     private CustomAdapterDetail adapter_savelot;
     private LinearLayout laout_number,laout_savelot;
-    private TextView bt_zero, bt_nine, bt_eight,
-            bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one;
-    private TextView btn_edit, btn_cancel, btn_enter, btn_print,bt_twozero;
+
+    private TextView btn_enter;
+
     private EditText edit_number;
     private TextView text_tital;
     private TextView btn_close_lot;
@@ -88,7 +91,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private String uuid;
     private String StateTang;
 
-    private LinearLayout lnContentPrinter;
+
     private MediaPlayer mpEffect;
     //Thread
     private HandlerThread backgroundHandlerThread;
@@ -133,12 +136,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                /*if(charSequence.length() <= 2){
-                    Log.e("MainActivity", "Number "+charSequence.length());
-                }else if (charSequence.length() >=2){
-                    Log.e("MainActivity", "Number "+charSequence.length());
-                }*/
-
             }
 
             @Override
@@ -178,7 +175,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             }
         });
     }
-      private void itemView(View view){
+    private void itemView(View view){
         list = new ArrayList<>();
         list_lot = new ArrayList<>();
         allCommand = new AllCommand();
@@ -195,44 +192,15 @@ public class PageMain extends Fragment implements View.OnClickListener {
         re_savelot = view.findViewById(R.id.re_savelot);
 
         btn_enter = view.findViewById(R.id.btn_enter);
-        btn_edit = view.findViewById(R.id.btn_edit);
-        btn_cancel = view.findViewById(R.id.btn_cancel);
-        btn_print = view.findViewById(R.id.btn_print);
 
         text_tital = view.findViewById(R.id.text_tital);
         text_tital.setText("เลข");
-        bt_twozero = view.findViewById(R.id.bt_twozero);
-        bt_zero = view.findViewById(R.id.bt_zero);
-        bt_nine = view.findViewById(R.id.bt_nine);
-        bt_eight = view.findViewById(R.id.bt_eight);
-        bt_seven = view.findViewById(R.id.bt_seven);
-        bt_six = view.findViewById(R.id.bt_six);
-        bt_file = view.findViewById(R.id.bt_file);
-        bt_four = view.findViewById(R.id.bt_four);
-        bt_three = view.findViewById(R.id.bt_three);
-        bt_two = view.findViewById(R.id.bt_two);
-        bt_one = view.findViewById(R.id.bt_one);
-        lnContentPrinter = view.findViewById(R.id.lnContentPrinter);
 
-        /*bt_twozero.setOnClickListener(this);
-        bt_zero.setOnClickListener(this);
-        bt_nine.setOnClickListener(this);
-        bt_eight.setOnClickListener(this);
-        bt_seven.setOnClickListener(this);
-        bt_six.setOnClickListener(this);
-        bt_file.setOnClickListener(this);
-        bt_four.setOnClickListener(this);
-        bt_three.setOnClickListener(this);
-        bt_two.setOnClickListener(this);
-        bt_one.setOnClickListener(this);
-
-        btn_edit.setOnClickListener(this);
         btn_enter.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
-        btn_print.setOnClickListener(this);
+
 
         btn_close_lot.setOnClickListener(this);
-        lnContentPrinter.setOnClickListener(this);*/
+
 
         gridLayoutManager = new GridLayoutManager(getActivity(),1);
         adapter = new CustomAdapterMain(list,getActivity());
@@ -283,12 +251,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
 
-            case R.id.btn_edit:
-                int length = edit_number.getText().length();
-                if (length > 0) {
-                    edit_number.getText().delete(length - 1, length);
-                }
-                break;
             case R.id.btn_enter:
                 if (btn_enter.getText().equals("ตกลง")){
                     if (edit_number.length()>0){
@@ -300,25 +262,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 }
 
                 break;
-
-
-            case R.id.btn_cancel:
-                Log.e("MainActivity", "Clear");
-                Clear_Dataset();
-                break;
-            case R.id.btn_print:
-
-                //Log.e("MainActivity", setFomatTxtSavelot(list));
-
-                if(list.size()>0){
-                    if (list.get(list.size()-1).getNumber().length()>0&&
-                            list.get(list.size()-1).getTop().length()>0||list.get(list.size()-1).getButton().length()>0
-                            ||list.get(list.size()-1).getToad().length()>0){
-                        saveLot();
-                    }
-
-                }
-                break;
             case R.id.btn_close_lot:
 
                 laout_number.setVisibility(View.VISIBLE);
@@ -329,46 +272,53 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 }
 
                 break;
-            case R.id.bt_one:
-                setNumber("1");
-                break;
-            case R.id.bt_two:
-                setNumber("2");
-                break;
-            case R.id.bt_three:
-                setNumber("3");
-                break;
-            case R.id.bt_four:
-                setNumber("4");
-                break;
-            case R.id.bt_file:
-                setNumber("5");
-                break;
-            case R.id.bt_six:
-                setNumber("6");
-                break;
-            case R.id.bt_seven:
-                setNumber("7");
-                break;
-            case R.id.bt_eight:
-                setNumber("8");
-                break;
-            case R.id.bt_nine:
-                setNumber("9");
-                break;
-            case R.id.bt_zero:
-                setNumber("0");
-                break;
-            case R.id.bt_twozero:
-                setNumber("00");
-                break;
-            case R.id.lnContentPrinter:
-                ModelBus modelBus = new ModelBus();
-                modelBus.setPage(Utils.KEY_ADD_PAGE_PRINTER);
-                modelBus.setMsg(Utils.NAME_ADD_PAGE_PRINTER);
-                BusProvider.getInstance().post(modelBus);
-                break;
+
         }
+    }
+
+    @Subscribe
+    public void onClickMain(Onclickmain onclickmain){
+        ModelBus modelBus = new ModelBus();
+        if (!onclickmain.getTAG_KEY().equals("")){
+
+            switch (onclickmain.getTAG_KEY()){
+
+                case "edit":
+                    int length = edit_number.getText().length();
+                    if (length > 0) {
+                        edit_number.getText().delete(length - 1, length);
+                    }
+                    break;
+                case "Clear":
+                    Clear_Dataset();
+                    break;
+                case "Savelot":
+                    if(list.size()>0){
+                        if (list.get(list.size()-1).getNumber().length()>0&&
+                                list.get(list.size()-1).getTop().length()>0||list.get(list.size()-1).getButton().length()>0
+                                ||list.get(list.size()-1).getToad().length()>0){
+                            saveLot();
+                        }
+
+                    }
+                    break;
+                case "SettingPrinter":
+                    modelBus.setPage(Utils.KEY_ADD_PAGE_PRINTER);
+                    modelBus.setMsg(Utils.NAME_ADD_PAGE_PRINTER);
+                    BusProvider.getInstance().post(modelBus);
+                    break;
+                case "Tang":
+                    modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
+                    modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
+                    BusProvider.getInstance().post(modelBus);
+                    break;
+                default:
+                    setNumber(onclickmain.getTAG_KEY());
+                    break;
+            }
+        }
+
+
     }
 
     private void Clear_Editext(){
@@ -493,10 +443,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 list.set(list.size()-1,modeldetail);
                 adapter.notifyDataSetChanged();
-
-            /*if (!Check_numberToad){
-                //setDataFist();
-            }*/
 
                 Check_numberlower = false;
                 Clear_Editext();
@@ -725,28 +671,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
         return "("+save_Lot+")";
     }
 
-    /*private void setDataFist(){
-
-        Modeldetail modeldetail = new Modeldetail();
-        modeldetail.setNumber("");
-        modeldetail.setTop("");
-        modeldetail.setButton("");
-        modeldetail.setToad("");
-
-        modeldetail.setFocus_number("1");
-        modeldetail.setFocus_top("0");
-        modeldetail.setFocus_button("0");
-        modeldetail.setFocus_toad("0");
-
-        modeldetail.setNo_focus_top("0");
-        modeldetail.setNo_focus_button("0");
-        modeldetail.setNo_focus_toad("0");
-
-        list.add(modeldetail);
-        adapter.notifyDataSetChanged();
-        redetail.smoothScrollToPosition(list.size());
-
-    }*/
     @Override
     public void onDestroy() {
         super.onDestroy();

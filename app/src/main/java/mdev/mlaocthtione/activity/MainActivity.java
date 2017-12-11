@@ -123,6 +123,17 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
 
+                Fragment keyboardmain = (Keyboardmain)
+                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDMAIN);
+
+                if (!onFragmentPage().equals(keyboardmain)){
+                    getSupportFragmentManager().beginTransaction()
+                            .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
+                            .commit();
+                }
+
+
             }else if (modelBus.getPage() == Utils.KEY_ADD_PAGE_TANG_LOT_FAST){
 
                 Fragment fragmentAttach = (PageMain)
@@ -135,16 +146,20 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
 
-                Fragment fkeyboardmain = (Keyboardmain)
+                Fragment keyboardmain = (Keyboardmain)
                         getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDMAIN);
 
-                if (!onFragmentPage().equals(fkeyboardmain)){
+                if (!onFragmentPage().equals(keyboardmain)){
                     getSupportFragmentManager().beginTransaction()
-                            .attach(fkeyboardmain)
                             .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
                             .commit();
                 }
+
+
             }
+
+
         }
 
 
