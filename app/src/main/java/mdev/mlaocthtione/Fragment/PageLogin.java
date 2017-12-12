@@ -226,7 +226,7 @@ public class PageLogin extends Fragment{
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> params_login = new ArrayList<FromHttpPostOkHttp>();
                     params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
-                    return allCommand.POST_OK_HTTP_SendData("http://www.atom168.com/openbet2.php", params_login);
+                    return allCommand.POST_OK_HTTP_SendData("My_url", params_login);
                 }
 
                 @Override

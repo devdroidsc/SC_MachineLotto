@@ -529,10 +529,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
 
             if (!Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-                Log.e("MainActivity", "END lower");
                 text_tital.setText("เลข");
                 Check_number = true;
-                //setDataFist();
+                btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+                btn_enter.setText(R.string.text_enter);
             }
 
         }else if (!Check_number&&Check_numberToad){
@@ -565,9 +565,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
 
             if (!Check_numberlower&&list.get(list.size()-1).getTop().length()>0){
-                Log.e("MainActivity", "END lower");
                 text_tital.setText("เลข");
                 Check_number = true;
+                btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+                btn_enter.setText(R.string.text_enter);
                 //setDataFist();
             }
         }
