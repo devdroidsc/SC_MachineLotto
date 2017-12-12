@@ -1,10 +1,15 @@
 package mdev.mlaocthtione.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -14,26 +19,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.squareup.otto.Subscribe;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import mdev.mlaocthtione.FormatHttpPostOkHttp.BasicNameValusPostOkHttp;
 import mdev.mlaocthtione.FormatHttpPostOkHttp.FromHttpPostOkHttp;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.ModelBus.Onclicklogin;
 import mdev.mlaocthtione.R;
-import mdev.mlaocthtione.activity.MainActivity;
-import mdev.mlaocthtione.activity.login;
 import mdev.mlaocthtione.bus.BusProvider;
 import mdev.mlaocthtione.bus.ModelBus;
 import mdev.mlaocthtione.utils.Utils;
@@ -49,6 +61,7 @@ public class PageLogin extends Fragment{
     private TextInputLayout tilEdPassword,tilEdUsername;
     private ImageView im_logo_login;
     private AVLoadingIndicatorView avloadLogin,avi_loadLogo;
+    private boolean Checkimage = false;
 
     public PageLogin() {
     }
@@ -74,6 +87,7 @@ public class PageLogin extends Fragment{
         return view;
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -108,6 +122,15 @@ public class PageLogin extends Fragment{
         } else {
             allCommand.ShowAertDialog_OK(getResources().getString(R.string.msg_connect_internet),getContext());
         }*/
+
+        File myDir =new File(android.os.Environment.getExternalStorageDirectory()+ "/Android/data/"
+                + getActivity().getPackageName(),"img");
+        File imageFile = new File(myDir, "logo.png");
+
+        if(imageFile.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            im_logo_login.setImageBitmap(myBitmap);
+        }
     }
 
     @Override
@@ -139,7 +162,7 @@ public class PageLogin extends Fragment{
                     setbg_edtext();
                     break;
                 case "enter":
-                    Log.e("PageLogin", "Wllcome");
+                    //Log.e("PageLogin", "Wllcome");
                     onLogin();
                     break;
                 default:
@@ -215,7 +238,6 @@ public class PageLogin extends Fragment{
                         strURLmo = jObject.getString("url");
                         allCommand.SaveStringShare(getContext(),allCommand.moURL,strURLmo);
                         setImageLogo();
-
                         new AsyncTask<String, Void, String>() {
                             @Override
                             protected void onPreExecute() {
@@ -294,139 +316,46 @@ public class PageLogin extends Fragment{
             }.execute();
         }
     }
+    private void setImageLogo(){
+        Glide.with(this)
+                .load(strURLmo+"img/logo99.png")
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        im_logo_login.setImageBitmap(resource);
+                        saveImage(resource);
+                        Log.e("PageLogin", saveImage(resource));
 
-    /*@SuppressLint("StaticFieldLeak")
-    private void onLogin() {
-        if (edUsername.length() > 0 && edPassword.length() > 0) {
+                    }
+                });
 
+    }
+
+    private String saveImage(Bitmap image) {
+        File myDir =new File(android.os.Environment.getExternalStorageDirectory()+ "/Android/data/"
+                + getActivity().getPackageName(),"img");
+
+        String savedImagePath = null;
+        String imageFileName = "logo.png";
+
+        boolean success = true;
+        if (!myDir.exists()) {
+            success = myDir.mkdirs();
+        }
+        if (success) {
+            File imageFile = new File(myDir, imageFileName);
+            savedImagePath = imageFile.getAbsolutePath();
             try {
-                new AsyncTask<String, Void, String>() {
-                    @Override
-                    protected void onPreExecute() {
-                        avloadLogin.setVisibility(View.VISIBLE);
-                        strUsername = getUserFormat(1);
-                        strPassword = edPassword.getText().toString().trim();
-                    }
-
-                    @Override
-                    protected String doInBackground(String... strings) {
-                        String str_Url = strURLmo + "checkLogin.php";
-                        ArrayList<FromHttpPostOkHttp> params = new ArrayList<FromHttpPostOkHttp>();
-                        params.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("sUsername ", strUsername));
-                        params.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("sPassword ", strPassword));
-                        return allCommand.POST_OK_HTTP_SendData(str_Url, params);
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        allCommand.ShowLogCat("*** Login ***", s);
-                        try {
-                            JSONObject jOLogin =	new JSONObject(s);
-                            strStatus = jOLogin.getString("Status");
-                            if (strStatus.toString().equals("1")) {
-
-                                allCommand.SaveStringShare(getContext(),allCommand.moCradit,jOLogin.getString("MemberCradit"));
-                                allCommand.SaveStringShare(getContext(),allCommand.moMemberID,jOLogin.getString("MemberID"));
-                                allCommand.SaveStringShare(getContext(),allCommand.moName,jOLogin.getString("Name"));
-                                ;
-                                String max1 = jOLogin.getString("MemberMax").toString().trim();
-                                String min1 = jOLogin.getString("MemberMin").toString().trim();
-                                if (max1.toString().trim().length() <= 0){
-                                    max1 = "1";
-                                }
-                                if (min1.toString().trim().length() <= 0){
-                                    min1 = "1";
-                                }
-
-                                allCommand.SaveStringShare(getContext(),allCommand.moTangMax,max1);
-
-                                String max = jOLogin.getString("MemberMax").toString().trim();
-                                String min = jOLogin.getString("MemberMin").toString().trim();
-                                if (max.toString().trim().length() <= 0){
-                                    max = "1";
-                                }
-                                if (min.toString().trim().length() <= 0){
-                                    min = "1";
-                                }
-                                allCommand.SaveStringShare(getContext(),allCommand.moTangMax,max);
-                                allCommand.SaveStringShare(getContext(),allCommand.moTangMin,min);
-
-                                ModelBus modelBus = new ModelBus();
-                                modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
-                                modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
-                                BusProvider.getInstance().post(modelBus);
-
-                            }else {
-                                allCommand.ShowAertDialog_OK("ไม่พบชื่อผู้ใช้นี้",getContext());
-                            }
-                        }catch (Exception e){
-                            allCommand.ShowLogCat("*** Err ***", "Err SetDataLogin " + e.getMessage());
-                        }
-                        avloadLogin.setVisibility(View.INVISIBLE);
-                    }
-
-                }.execute();
-
+                OutputStream fOut = new FileOutputStream(imageFile);
+                image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                fOut.close();
             } catch (Exception e) {
-                avloadLogin.setVisibility(View.INVISIBLE);
-                allCommand.ShowLogCat("*** Err ***", "Err SetDataGetUrl " + e.getMessage());
+                e.printStackTrace();
             }
 
         }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private void getURL(){
-
-        if (allCommand.isConnectingToInternet(getContext())){
-
-            new AsyncTask<String, Void, String>() {
-
-                @Override
-                protected String doInBackground(String... strings) {
-                    ArrayList<FromHttpPostOkHttp> params_login = new ArrayList<FromHttpPostOkHttp>();
-                    params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server",
-                            getUserFormat(2)));
-                    return allCommand.POST_OK_HTTP_SendData("http://www.atom168.com/openbet2.php", params_login);
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    super.onPostExecute(s);
-                    allCommand.ShowLogCat("*** url ***", s);
-                    final JSONObject jObject;
-                    try {
-                        jObject = new JSONObject(allCommand.CoverStringFromServer_One(s));
-                        strURLmo = jObject.getString("url");
-                        allCommand.SaveStringShare(getContext(),allCommand.moURL,strURLmo);
-                        setImageLogo();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }.execute();
-        }
-    }*/
-    private void setImageLogo(){
-        avi_loadLogo.setVisibility(View.VISIBLE);
-        Glide.with(getActivity())
-                .load(strURLmo+"img/logo99.png")
-                .listener(new RequestListener<String, GlideDrawable>() {
-
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        avi_loadLogo.setVisibility(View.INVISIBLE);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        avi_loadLogo.setVisibility(View.INVISIBLE);
-                        return false;
-                    }
-                })
-                .into(im_logo_login);
-
+        return savedImagePath;
     }
     private String getUserFormat(int status){
         String userName = edUsername.getText().toString().trim();
