@@ -226,7 +226,7 @@ public class PageLogin extends Fragment{
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> params_login = new ArrayList<FromHttpPostOkHttp>();
                     params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
-                    return allCommand.POST_OK_HTTP_SendData("My_url", params_login);
+                    return allCommand.POST_OK_HTTP_SendData("My_URL.php", params_login);
                 }
 
                 @Override
@@ -267,6 +267,8 @@ public class PageLogin extends Fragment{
                                         allCommand.SaveStringShare(getContext(),allCommand.moCradit,jOLogin.getString("MemberCradit"));
                                         allCommand.SaveStringShare(getContext(),allCommand.moMemberID,jOLogin.getString("MemberID"));
                                         allCommand.SaveStringShare(getContext(),allCommand.moName,jOLogin.getString("Name"));
+                                        allCommand.SaveStringShare(getContext(),allCommand.moCloseBig,jOLogin.getString("CloseBig"));
+                                        allCommand.SaveStringShare(getContext(),allCommand.moCloseSmall,jOLogin.getString("CloseSmall"));
                                         ;
                                         String max1 = jOLogin.getString("MemberMax").toString().trim();
                                         String min1 = jOLogin.getString("MemberMin").toString().trim();

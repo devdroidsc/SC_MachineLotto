@@ -33,6 +33,22 @@
                 <include layout="@layout/layout_detail"></include>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/liner_close_tang"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_close_tang"
+                android:gravity="center"
+                android:visibility="gone">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_close_lot"
+                    android:textSize="@dimen/text_size30"
+                    android:textColor="@color/color_red"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
         <!--<LinearLayout
             android:layout_width="match_parent"

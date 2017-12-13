@@ -22,7 +22,9 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import mdev.mlaocthtione.BuildConfig;
 import mdev.mlaocthtione.FormatHttpPostOkHttp.FromHttpPostOkHttp;
@@ -41,6 +43,8 @@ public class AllCommand {
 
 	public static String moSaveUser = "moSaveUser";
 	public static String moSavePass = "moSavePass";
+	public static String moCloseBig = "moCloseBig";
+	public static String moCloseSmall = "moCloseSmall";
 
 	public boolean isConnectingToInternet(Context _context) {
 		ConnectivityManager connectivity = (ConnectivityManager) _context
@@ -208,6 +212,30 @@ public class AllCommand {
 		edShLang.remove(strKey);
 		edShLang.commit();
 	}
+
+	public String SetDatestamp(String Stamp){
+
+		long timestamp = Long.parseLong(Stamp) * 1000L;
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			Date netDate = (new Date(timestamp));
+			return sdf.format(netDate);
+		}
+		catch(Exception ex){
+			return "xx";
+		}
+	}
+	public String SetDateFoment(Date date){
+
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			return sdf.format(date);
+		}
+		catch(Exception ex){
+			return "xx";
+		}
+	}
+
 	public String DeleteFormatNumber(String strData){
 		String strDataNum = new String(strData);
 		String strNum = strDataNum.replace(",", "");
