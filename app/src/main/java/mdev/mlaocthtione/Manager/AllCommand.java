@@ -45,6 +45,12 @@ public class AllCommand {
 	public static String moSavePass = "moSavePass";
 	public static String moCloseBig = "moCloseBig";
 	public static String moCloseSmall = "moCloseSmall";
+	public static String molot_pay_big1 = "molot_pay_big1";
+	public static String molot_pay_big2 = "molot_pay_big2";
+	public static String molot_pay_big3 = "molot_pay_big3";
+	public static String molot_pay_big4 = "molot_pay_big4";
+	public static String molot_pay_big5 = "molot_pay_big5";
+
 
 	public boolean isConnectingToInternet(Context _context) {
 		ConnectivityManager connectivity = (ConnectivityManager) _context
@@ -97,16 +103,7 @@ public class AllCommand {
 		return "";
 	}
 
-	public String GetStringShare(Context _context, String strKey, String strDe) {
-		SharedPreferences shLang;
-		shLang = _context
-				.getSharedPreferences(SHARE_NAME, Context.MODE_PRIVATE);
-		if (shLang != null) {
-			String strShare = shLang.getString(strKey, strDe);
-			return strShare;
-		}
-		return "";
-	}
+
 	@TargetApi(Build.VERSION_CODES.KITKAT)
 	public String setEncodeBase64(final String input) {
 		try {
@@ -125,6 +122,15 @@ public class AllCommand {
 		}catch (Exception e){
 			ShowLogCat("Err","getEncodeBase64 " + e.getMessage());
 
+		}
+		return "";
+	}
+	public String GetStringShare(Context _context, String strKey, String strDe) {
+		SharedPreferences shLang;
+		shLang = _context.getSharedPreferences(SHARE_NAME, Context.MODE_PRIVATE);
+		if (shLang != null) {
+			String strShare = shLang.getString(strKey, strDe);
+			return strShare;
 		}
 		return "";
 	}

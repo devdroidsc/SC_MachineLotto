@@ -112,7 +112,7 @@ public class PageLogin extends Fragment{
             }catch (Exception e){
                 allCommand.ShowLogCat("Error","get Base 64 User Pass " + e.getMessage());
             }
-        }
+        }*/
 
         edUsername.setText(allCommand.GetStringShare(getContext(),allCommand.moSaveUser,""));
         edPassword.setText(allCommand.GetStringShare(getContext(),allCommand.moSavePass,""));
@@ -121,7 +121,7 @@ public class PageLogin extends Fragment{
             onLogin();
         } else {
             allCommand.ShowAertDialog_OK(getResources().getString(R.string.msg_connect_internet),getContext());
-        }*/
+        }
 
         File myDir =new File(android.os.Environment.getExternalStorageDirectory()+ "/Android/data/"
                 + getActivity().getPackageName(),"img");
@@ -226,7 +226,7 @@ public class PageLogin extends Fragment{
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> params_login = new ArrayList<FromHttpPostOkHttp>();
                     params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
-                    return allCommand.POST_OK_HTTP_SendData("My_URL.php", params_login);
+                    return allCommand.POST_OK_HTTP_SendData("http://www.atom168.com/openbet2.php", params_login);
                 }
 
                 @Override
@@ -269,7 +269,13 @@ public class PageLogin extends Fragment{
                                         allCommand.SaveStringShare(getContext(),allCommand.moName,jOLogin.getString("Name"));
                                         allCommand.SaveStringShare(getContext(),allCommand.moCloseBig,jOLogin.getString("CloseBig"));
                                         allCommand.SaveStringShare(getContext(),allCommand.moCloseSmall,jOLogin.getString("CloseSmall"));
-                                        ;
+
+                                        allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big1,jOLogin.getString("lot_pay_big1"));
+                                        allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big2,jOLogin.getString("lot_pay_big2"));
+                                        allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big3,jOLogin.getString("lot_pay_big3"));
+                                        allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big4,jOLogin.getString("lot_pay_big4"));
+                                        allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big5,jOLogin.getString("lot_pay_big5"));
+
                                         String max1 = jOLogin.getString("MemberMax").toString().trim();
                                         String min1 = jOLogin.getString("MemberMin").toString().trim();
                                         if (max1.toString().trim().length() <= 0){

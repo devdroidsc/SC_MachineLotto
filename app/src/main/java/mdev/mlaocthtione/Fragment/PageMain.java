@@ -48,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 import mdev.mlaocthtione.Adapter.CustomAdapterDetail;
@@ -106,6 +107,8 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private boolean CheckNextto_lower,CheckNextto_Toad ;
     private Date D_CloseBig,D_CloseSmall,D_Phon;
 
+    private boolean Chexk_Closesmal;
+
 
     public PageMain(){}
     public static PageMain newInstance(){
@@ -144,16 +147,33 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         Date currentTime = Calendar.getInstance().getTime();
 
-        Log.e("PageMain moCloseBig", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseBig,"")));
+        /*Log.e("PageMain moCloseBig", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseBig,"")));
         Log.e("PageMain moCloseSmall", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseSmall,"")));
-        Log.e("PageMain เครื่อง", allCommand.SetDateFoment(currentTime));
+        Log.e("PageMain เครื่อง", allCommand.SetDateFoment(currentTime));*/
 
         String strCloseBig = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseBig,""));
         String strCloseSmall = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseSmall,""));
         String strPhon = allCommand.SetDateFoment(currentTime);;
 
-
         SimpleDateFormat dates = new SimpleDateFormat("MM/dd/yyyy");
+
+        Log.e("PageMain", allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, ""));
+
+        /*try {
+
+            JSONArray files = new JSONArray("["+allCommand.GetStringShare(getActivity(),allCommand.molot_pay_big1,"")+"]");
+            String _thumbUri = files.getString(1);
+            String _graphicUri = files.getString(2);
+            String _textUri = files.getString(3);
+
+            Log.e("PageMain play_Lot_Big ", _thumbUri + " " + _graphicUri + " " + _textUri);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
+        //Log.e("PageMain", "twoInthree " + String.valueOf(twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, ""))));
+
 
         try {
             D_CloseBig = dates.parse(strCloseBig);
@@ -162,8 +182,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
             if (D_CloseBig.getTime()>D_Phon.getTime()){
                 liner_close_tang.setVisibility(View.GONE);
+                laout_number.setVisibility(View.VISIBLE);
             }else {
                 liner_close_tang.setVisibility(View.VISIBLE);
+                laout_number.setVisibility(View.GONE);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -364,15 +386,32 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private void setNumber(String number){
         edit_number.setText(edit_number.getText()+number);
     }
+    private void Clear_Dataset(){
+        if (list.size()>0){
+            list.clear();
+            adapter.notifyDataSetChanged();
+        }
+        Clear_Editext();
+        text_tital.setText("เลข");
+        Check_number = true;
+        btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+        btn_enter.setText(R.string.text_enter);
+        //setDataFist();
+    }
+
     private void setData(){
+
 
         if (Check_number){
 
-            if (D_CloseSmall.getTime()<D_Phon.getTime()){
-                CheckLower = true;
-            }else {
-                CheckLower = false;
-            }
+            Check_number = false;
+            Check_numberTop = false;
+            Check_numberlower = false;
+            Check_numberToad = false;
+            Chexk_Closesmal = false;
+            CheckNextto_lower = true;
+            CheckNextto_Toad = true;
+
             Modeldetail modeldetail = new Modeldetail();
             modeldetail.setNumber(edit_number.getText().toString());
             modeldetail.setTop("");
@@ -390,17 +429,62 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
             if (edit_number.getText().length()>2){
 
+                Check_numberTop = true;
+                Check_numberToad = true;
                 modeldetail.setNo_focus_button("1");
-                if (CheckLower){
+
+                if ((threeLower(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, ""))<=0.0||
+                        threeLower(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big2, ""))<=0.0||
+                        threeLower(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big3, ""))<=0.0||
+                        threeLower(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big4, ""))<=0.0||
+                        threeLower(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big5, ""))<=0.0)){
+                    Check_numberToad = false;
+                    modeldetail.setNo_focus_toad("1");
+                }else {
+
+                    Check_numberToad = true;
+                    modeldetail.setNo_focus_toad("0");
+                }
+
+                if (D_CloseSmall.getTime() <= D_Phon.getTime()){
+                    Check_numberlower = false;
+                    modeldetail.setNo_focus_button("1");
+                }
+                else {
+                    Check_numberlower = true;
                     modeldetail.setNo_focus_button("0");
                 }
 
             }else if (edit_number.getText().length()<=2){
-                modeldetail.setNo_focus_toad("1");
-                if (CheckLower){
-                    modeldetail.setNo_focus_button("0");
-                }else {
+
+                Check_numberTop = true;
+                Check_numberlower = true;
+                if ((twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, "")) <= 0.0 ||
+                        twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big2, "")) <= 0.0 ||
+                        twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big3, "")) <= 0.0 ||
+                        twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big4, "")) <= 0.0 ||
+                        twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big5, "")) <= 0.0 ||
+                        twoToad(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, "")) <= 0.0 ||
+                        twoToad(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big2, "")) <= 0.0 ||
+                        twoToad(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big3, "")) <= 0.0 ||
+                        twoToad(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big4, "")) <= 0.0 ||
+                        twoToad(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big5, "")) <= 0.0)){
+                    Check_numberToad = false;
+                    modeldetail.setNo_focus_toad("1");
+                }
+
+                else {
+                    Check_numberToad = true;
+                    modeldetail.setNo_focus_toad("0");
+                }
+
+                if (D_CloseSmall.getTime() <= D_Phon.getTime()){
+                    Check_numberlower = false;
                     modeldetail.setNo_focus_button("1");
+                }
+                else {
+                    Check_numberlower = true;
+                    modeldetail.setNo_focus_button("0");
                 }
             }
 
@@ -408,30 +492,8 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
 
             text_tital.setText("บน");
-            Check_number = false;
-            Check_numberTop = true;
-            Check_numberlower = true;
-            Check_numberToad = true;
-            CheckNextto_lower = true;
-            CheckNextto_Toad = true;
-
-            if (edit_number.getText().length()>2){
-                Check_numberlower = false;
-
-                if (CheckLower){
-                    Check_numberlower = true;
-                    CheckNextto_lower = true;
-                }
-            }else if (edit_number.getText().length()<=2){
-                Check_numberToad = false;
-                CheckNextto_Toad = false;
-                if (CheckLower){
-                    Check_numberlower = true;
-                }else {
-                    Check_numberlower = false;
-                }
-            }
             Clear_Editext();
+
 
         }else if (Check_numberTop){
             String number = edit_number.getText().toString();
@@ -459,7 +521,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     text_tital.setText("โต้ด");
                     modeldetail.setFocus_toad("1");
                 }else {
-
                     text_tital.setText("เลข");
                     Check_number = true;
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
@@ -471,11 +532,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 Check_numberTop = false;
                 CheckNextto_lower = false;
+
                 Clear_Editext();
 
             }
-
-
         }else if (Check_numberlower){
             String number = edit_number.getText().toString();
             if (!number.equals("0")){
@@ -509,6 +569,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 adapter.notifyDataSetChanged();
 
                 Check_numberlower = false;
+                CheckNextto_Toad = false;
                 Clear_Editext();
             }
 
@@ -543,241 +604,84 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 adapter.notifyDataSetChanged();
 
                 Check_numberToad = false;
-                CheckNextto_Toad = false;
                 Clear_Editext();
             }
         }else {
             Log.e("MainActivity", "out");
         }
     }
-    private void Clear_Dataset(){
-        if (list.size()>0){
-            list.clear();
-            adapter.notifyDataSetChanged();
-        }
-        Clear_Editext();
-        text_tital.setText("เลข");
-        Check_number = true;
-        btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-        btn_enter.setText(R.string.text_enter);
-        //setDataFist();
-    }
     private void setNexto(){
 
-        if (CheckLower){
-            if (CheckNextto_lower){
-                //Log.e("PageMain", "Welcome To Lower");
-                Clear_Editext();
-                Check_numberTop = false;
-                CheckNextto_lower = false;
-                text_tital.setText("ล่าง");
+        if (!Check_number&&Check_numberlower&&CheckNextto_lower){
+            Log.e("MainActivity  ", "Check_numberlower");
+            Clear_Editext();
+            Check_numberTop = false;
+            CheckNextto_lower = false;
+            text_tital.setText("ล่าง");
 
-                Modeldetail modeldetail = new Modeldetail();
-                modeldetail.setNumber(list.get(list.size()-1).getNumber());
-                modeldetail.setTop(list.get(list.size()-1).getTop());
-                modeldetail.setButton(list.get(list.size()-1).getButton());
-                modeldetail.setToad(list.get(list.size()-1).getToad());
+            Modeldetail modeldetail = new Modeldetail();
+            modeldetail.setNumber(list.get(list.size()-1).getNumber());
+            modeldetail.setTop(list.get(list.size()-1).getTop());
+            modeldetail.setButton(list.get(list.size()-1).getButton());
+            modeldetail.setToad(list.get(list.size()-1).getToad());
 
-                modeldetail.setFocus_number("0");
-                modeldetail.setFocus_top("0");
-                modeldetail.setFocus_button("1");
-                modeldetail.setFocus_toad("0");
+            modeldetail.setFocus_number("0");
+            modeldetail.setFocus_top("0");
+            modeldetail.setFocus_button("1");
+            modeldetail.setFocus_toad("0");
 
-                modeldetail.setNo_focus_top("1");
-                modeldetail.setNo_focus_button(list.get(list.size()-1).getNo_focus_button());
-                modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
+            modeldetail.setNo_focus_top("1");
+            modeldetail.setNo_focus_button(list.get(list.size()-1).getNo_focus_button());
+            modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
 
-                if (list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setNo_focus_top("0");
-                }
-                if (Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setFocus_button("0");
-                    modeldetail.setNo_focus_top("0");
-                    modeldetail.setNo_focus_button("1");
-                }
-
-                list.set(list.size()-1,modeldetail);
-                adapter.notifyDataSetChanged();
-
-                /*if (!Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-                    text_tital.setText("เลข");
-                    Check_number = true;
-                    btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(R.string.text_enter);
-
-                }*/
-
-            }
-            else if (!CheckNextto_lower&&!Check_numberToad){
-                //Log.e("PageMain", "Welcome To out Lot");
-                if (!Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-
-                    Clear_Editext();
-                    Check_numberTop = false;
-                    CheckNextto_lower = false;
-
-                    Modeldetail modeldetail = new Modeldetail();
-                    modeldetail.setNumber(list.get(list.size()-1).getNumber());
-                    modeldetail.setTop(list.get(list.size()-1).getTop());
-                    modeldetail.setButton(list.get(list.size()-1).getButton());
-                    modeldetail.setToad(list.get(list.size()-1).getToad());
-
-                    modeldetail.setFocus_number("0");
-                    modeldetail.setFocus_top("0");
-                    modeldetail.setFocus_button("0");
-                    modeldetail.setFocus_toad("0");
-
-                    modeldetail.setNo_focus_top(list.get(list.size()-1).getNo_focus_top());
-                    modeldetail.setNo_focus_button("1");
-                    modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
-
-
-                    list.set(list.size()-1,modeldetail);
-                    adapter.notifyDataSetChanged();
-
-                    if (!Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-                        text_tital.setText("เลข");
-                        Check_number = true;
-                        btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                        btn_enter.setText(R.string.text_enter);
-
-                    }
-                }
-
-
-            }
-            else if (!CheckNextto_lower&&CheckNextto_Toad&&Check_numberToad){
-                //Log.e("PageMain", "Welcome To Toad");
-                Clear_Editext();
-                CheckNextto_Toad = false;
-                text_tital.setText("โต้ด");
-
-                Modeldetail modeldetail = new Modeldetail();
-                modeldetail.setNumber(list.get(list.size()-1).getNumber());
-                modeldetail.setTop(list.get(list.size()-1).getTop());
-                modeldetail.setButton(list.get(list.size()-1).getButton());
-                modeldetail.setToad(list.get(list.size()-1).getToad());
-
-                modeldetail.setFocus_number("0");
-                modeldetail.setFocus_top("0");
-                modeldetail.setFocus_button("0");
-                modeldetail.setFocus_toad("1");
-
-                modeldetail.setNo_focus_top("1");
-                modeldetail.setNo_focus_button("1");
-                modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
-
-
-                if (!Check_numberlower&&list.get(list.size()-1).getButton().length()>0){
-                    modeldetail.setNo_focus_button("0");
-                    modeldetail.setFocus_toad("0");
-                    modeldetail.setNo_focus_toad("1");
-                }
-
-                if (list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setNo_focus_top("0");
-                }
-
-                list.set(list.size()-1,modeldetail);
-                adapter.notifyDataSetChanged();
-
-                if (!Check_numberlower&&list.get(list.size()-1).getTop().length()>0||
-                        list.get(list.size()-1).getButton().length()>0){
-
-                    text_tital.setText("เลข");
-                    Check_number = true;
-                    btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(R.string.text_enter);
-                }
+            if (list.get(list.size()-1).getTop().length()>0){
+                modeldetail.setNo_focus_top("0");
                 Check_numberlower = false;
-
-            }
-            else if (!Check_number&&Check_numberToad){
-                //Log.e("PageMain", "Welcome to Toad 2");
-                Clear_Editext();
-                Check_numberTop = false;
-                text_tital.setText("โต้ด");
-
-                Modeldetail modeldetail = new Modeldetail();
-                modeldetail.setNumber(list.get(list.size()-1).getNumber());
-                modeldetail.setTop(list.get(list.size()-1).getTop());
-                modeldetail.setButton(list.get(list.size()-1).getButton());
-                modeldetail.setToad(list.get(list.size()-1).getToad());
-
-                modeldetail.setFocus_number("0");
-                modeldetail.setFocus_top("0");
-                modeldetail.setFocus_button("0");
-                modeldetail.setFocus_toad("1");
-
-                modeldetail.setNo_focus_top("1");
-                modeldetail.setNo_focus_button(list.get(list.size()-1).getNo_focus_button());
-                modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
-
-                if (!Check_numberlower&&list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setFocus_toad("0");
-                    modeldetail.setNo_focus_toad("1");
-                    modeldetail.setNo_focus_top("0");
-                }
-
-                list.set(list.size()-1,modeldetail);
-                adapter.notifyDataSetChanged();
-
-                if (!Check_numberlower&&list.get(list.size()-1).getTop().length()>0){
-                    text_tital.setText("เลข");
-                    Check_number = true;
-                    btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(R.string.text_enter);
-                }
-
             }
 
+            list.set(list.size()-1,modeldetail);
+            adapter.notifyDataSetChanged();
+
+        }else if (!Check_number&&Check_numberToad&&CheckNextto_Toad){
+            Log.e("MainActivity  ", "Check_numberToad");
+            Clear_Editext();
+            Check_numberlower = false;
+            Check_numberTop = false;
+            text_tital.setText("โต้ด");
+
+            Modeldetail modeldetail = new Modeldetail();
+            modeldetail.setNumber(list.get(list.size()-1).getNumber());
+            modeldetail.setTop(list.get(list.size()-1).getTop());
+            modeldetail.setButton(list.get(list.size()-1).getButton());
+            modeldetail.setToad(list.get(list.size()-1).getToad());
+
+            modeldetail.setFocus_number("0");
+            modeldetail.setFocus_top("0");
+            modeldetail.setFocus_button("0");
+            modeldetail.setFocus_toad("1");
+
+            modeldetail.setNo_focus_top("1");
+            modeldetail.setNo_focus_button("1");
+            modeldetail.setNo_focus_toad("0");
+
+            if (list.get(list.size()-1).getTop().length()>0){
+                modeldetail.setNo_focus_top("0");
+                CheckNextto_Toad = false;
+            }
+            if (list.get(list.size()-1).getButton().length()>0){
+                modeldetail.setNo_focus_button("0");
+                CheckNextto_Toad = false;
+            }
+
+            list.set(list.size()-1,modeldetail);
+            adapter.notifyDataSetChanged();
 
         }else {
 
-            if (!Check_number&&Check_numberlower){
-                Clear_Editext();
-                Check_numberTop = false;
-                text_tital.setText("ล่าง");
-
-                Modeldetail modeldetail = new Modeldetail();
-                modeldetail.setNumber(list.get(list.size()-1).getNumber());
-                modeldetail.setTop(list.get(list.size()-1).getTop());
-                modeldetail.setButton(list.get(list.size()-1).getButton());
-                modeldetail.setToad(list.get(list.size()-1).getToad());
-
-                modeldetail.setFocus_number("0");
-                modeldetail.setFocus_top("0");
-                modeldetail.setFocus_button("1");
-                modeldetail.setFocus_toad("0");
-
-                modeldetail.setNo_focus_top("1");
-                modeldetail.setNo_focus_button(list.get(list.size()-1).getNo_focus_button());
-                modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
-
-                if (list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setNo_focus_top("0");
-                }
-                if (!Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setFocus_button("0");
-                    modeldetail.setNo_focus_top("0");
-                    modeldetail.setNo_focus_button("1");
-                }
-
-                list.set(list.size()-1,modeldetail);
-                adapter.notifyDataSetChanged();
-
-                if (!Check_numberToad&&list.get(list.size()-1).getTop().length()>0){
-                    text_tital.setText("เลข");
-                    Check_number = true;
-                    btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(R.string.text_enter);
-                }
-
-
-            }else if (!Check_number&&Check_numberToad){
-                Clear_Editext();
-                Check_numberTop = false;
-                text_tital.setText("โต้ด");
+            Log.e("MainActivity  ", "Out Nexto");
+            if (list.get(list.size()-1).getTop().length()>0||
+                    list.get(list.size()-1).getButton().length()>0||
+                    list.get(list.size()-1).getButton().length()>0){
 
                 Modeldetail modeldetail = new Modeldetail();
                 modeldetail.setNumber(list.get(list.size()-1).getNumber());
@@ -788,31 +692,39 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 modeldetail.setFocus_number("0");
                 modeldetail.setFocus_top("0");
                 modeldetail.setFocus_button("0");
-                modeldetail.setFocus_toad("1");
+                modeldetail.setFocus_toad("0");
 
-                modeldetail.setNo_focus_top("1");
+                modeldetail.setNo_focus_top(list.get(list.size()-1).getNo_focus_top());
                 modeldetail.setNo_focus_button(list.get(list.size()-1).getNo_focus_button());
                 modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
 
-                if (!Check_numberlower&&list.get(list.size()-1).getTop().length()>0){
-                    modeldetail.setFocus_toad("0");
-                    modeldetail.setNo_focus_toad("1");
+                if (list.get(list.size()-1).getTop().length()>0){
                     modeldetail.setNo_focus_top("0");
+                }else {
+                    modeldetail.setNo_focus_top("1");
+                }
+                if (list.get(list.size()-1).getButton().length()>0){
+                    modeldetail.setNo_focus_button("0");
+                }else {
+                    modeldetail.setNo_focus_button("1");
+                }
+                if (list.get(list.size()-1).getToad().length()>0){
+                    modeldetail.setNo_focus_toad("0");
+                }else {
+                    modeldetail.setNo_focus_toad("1");
                 }
 
                 list.set(list.size()-1,modeldetail);
                 adapter.notifyDataSetChanged();
 
-                if (!Check_numberlower&&list.get(list.size()-1).getTop().length()>0){
-                    text_tital.setText("เลข");
-                    Check_number = true;
-                    btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(R.string.text_enter);
-                }
+                text_tital.setText("เลข");
+                Check_number = true;
+                btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+                btn_enter.setText(R.string.text_enter);
 
             }
-
         }
+
 
     }
 
@@ -1073,6 +985,41 @@ public class PageMain extends Fragment implements View.OnClickListener {
             }
         } catch (Exception e) {
         }
+    }
+
+    //Check lot_play_big
+    private int twoInthree(String numberarray){
+        JSONArray files;
+        int numberIIinIII = 0;
+        try {
+            files = new JSONArray("["+numberarray+"]");
+            numberIIinIII = Integer.parseInt(files.getString(13));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return numberIIinIII;
+    }
+    private int twoToad(String numberarray){
+        JSONArray files;
+        int numberII= 0;
+        try {
+            files = new JSONArray("["+numberarray+"]");
+            numberII = Integer.parseInt(files.getString(24));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return numberII;
+    }
+    private int threeLower(String numberarray){
+        JSONArray files;
+        int numberIII= 0;
+        try {
+            files = new JSONArray("["+numberarray+"]");
+            numberIII = Integer.parseInt(files.getString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return numberIII;
     }
 
     public void onShowLogCat(String tag, String msg){
