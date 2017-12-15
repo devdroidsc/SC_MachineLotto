@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:gravity="center">
             <TextView
                 android:id="@+id/textnumber"
@@ -37,16 +37,22 @@
             android:layout_weight="1"
             android:gravity="center">
 
-            <HorizontalScrollView
+            <TextView
+                android:id="@+id/texttop"
+                style="@style/Text_custom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"/>
+
+            <!--<HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/texttop"
-                    style="@style/Text_custom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </HorizontalScrollView>
+
+            </HorizontalScrollView>-->
 
         </LinearLayout>
         <TextView
@@ -62,15 +68,20 @@
             android:orientation="vertical"
             android:layout_weight="1"
             android:gravity="center">
-            <HorizontalScrollView
+            <TextView
+                android:id="@+id/textbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Text_custom"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"/>
+            <!--<HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/textbutton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Text_custom"/>
-            </HorizontalScrollView>
+
+            </HorizontalScrollView>-->
 
         </LinearLayout>
         <TextView
@@ -86,15 +97,20 @@
             android:orientation="vertical"
             android:layout_weight="1"
             android:gravity="center">
-            <HorizontalScrollView
+            <TextView
+                android:id="@+id/texttoad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Text_custom"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"/>
+            <!--<HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/texttoad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Text_custom"/>
-            </HorizontalScrollView>
+
+            </HorizontalScrollView>-->
 
         </LinearLayout>
     </LinearLayout>

@@ -38,6 +38,9 @@ public class Utils {
     public static int KEY_TANG_KEYBOARD_MAIN = 21;
     public static String NAME_TANG_KEYBOARD_MAIN = "*** Keyboard Main ***";
 
+    public static int KEY_ADD_PAGE_LOGIN = 22;
+    public static String Name_ADD_PAGE_LOGIN = "*** แสดงหน้าเข้าสู่ระบบ ***";
+
     //Share Data
     public static String SHARE_USERNAME = "username";
     public static String SHARE_PASSWORD ="password";

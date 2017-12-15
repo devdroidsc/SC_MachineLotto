@@ -64,7 +64,7 @@
                 android:background="@drawable/bg_number_enter"
                 android:gravity="center"
                 android:textSize="@dimen/text_size30"
-                android:textColor="@color/colorblack"
+                android:textColor="@color/colorWith"
                 android:layout_weight="2"
                 android:layout_marginRight="@dimen/magin10"
                 android:layout_marginLeft="@dimen/magin10"
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="1"
+                android:layout_weight="1.1"
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"

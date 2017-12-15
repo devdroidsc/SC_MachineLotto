@@ -7,13 +7,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_bluelight"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/magin10"
+            android:layout_margin="@dimen/margin5"
             android:layout_weight="1"
             android:background="@drawable/bg_page_othen"
             android:padding="@dimen/margin5">

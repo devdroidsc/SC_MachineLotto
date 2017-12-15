@@ -1,8 +1,18 @@
 package mdev.mlaocthtione.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,14 +27,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -107,7 +120,11 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private boolean CheckNextto_lower,CheckNextto_Toad ;
     private Date D_CloseBig,D_CloseSmall,D_Phon;
 
-    private boolean Chexk_Closesmal;
+    private boolean Check_Tang;
+
+    private AlertDialog.Builder alertDialog;
+    private Paint p = new Paint();
+    private View view;
 
 
     public PageMain(){}
@@ -174,6 +191,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         //Log.e("PageMain", "twoInthree " + String.valueOf(twoInthree(allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, ""))));
 
+        initSwipe();
 
         try {
             D_CloseBig = dates.parse(strCloseBig);
@@ -349,9 +367,8 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     break;
                 case "Savelot":
                     if(list.size()>0){
-                        if (list.get(list.size()-1).getNumber().length()>0&&
-                                list.get(list.size()-1).getTop().length()>0||list.get(list.size()-1).getButton().length()>0
-                                ||list.get(list.size()-1).getToad().length()>0){
+
+                        if (Check_Tang ){
                             saveLot();
                         }
 
@@ -366,6 +383,9 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
                     modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
                     BusProvider.getInstance().post(modelBus);
+                    break;
+                case "Loginout":
+                    loginOut();
                     break;
                 default:
                     setNumber(onclickmain.getTAG_KEY());
@@ -401,14 +421,13 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
     private void setData(){
 
-
         if (Check_number){
 
             Check_number = false;
             Check_numberTop = false;
             Check_numberlower = false;
             Check_numberToad = false;
-            Chexk_Closesmal = false;
+            Check_Tang = false;
             CheckNextto_lower = true;
             CheckNextto_Toad = true;
 
@@ -496,6 +515,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
 
         }else if (Check_numberTop){
+
             String number = edit_number.getText().toString();
             if (!number.equals("0")){
 
@@ -521,6 +541,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     text_tital.setText("โต้ด");
                     modeldetail.setFocus_toad("1");
                 }else {
+                    Check_Tang = true;
                     text_tital.setText("เลข");
                     Check_number = true;
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
@@ -532,7 +553,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 Check_numberTop = false;
                 CheckNextto_lower = false;
-
+                Check_Tang = true;
                 Clear_Editext();
 
             }
@@ -555,12 +576,12 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
 
                 if (!Check_numberToad){
+                    Check_Tang = true;
                     text_tital.setText("เลข");
                     Check_number = true;
                     modeldetail.setFocus_number("1");
 
                 }else {
-
                     text_tital.setText("โต้ด");
                     modeldetail.setFocus_toad("1");
                 }
@@ -570,6 +591,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 Check_numberlower = false;
                 CheckNextto_Toad = false;
+                Check_Tang = true;
                 Clear_Editext();
             }
 
@@ -595,6 +617,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
 
                 if (!Check_numberlower){
+                    Check_Tang = true;
                     text_tital.setText("เลข");
                     Check_number = true;
                     modeldetail.setFocus_number("1");
@@ -604,6 +627,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 adapter.notifyDataSetChanged();
 
                 Check_numberToad = false;
+                Check_Tang = true;
                 Clear_Editext();
             }
         }else {
@@ -721,6 +745,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 Check_number = true;
                 btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
                 btn_enter.setText(R.string.text_enter);
+                Check_Tang = true;
 
             }
         }
@@ -796,7 +821,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                             isSound = true;
                         }
                         if (isSound){
-                            playSoundEffect(getActivity(),R.raw.soundtang_no);
+                            //playSoundEffect(getContext(),R.raw.soundtang_no);
                         }
 
                         Clear_Dataset();
@@ -982,6 +1007,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             if (mpEffect != null && mpEffect.isPlaying()) {
                 mpEffect.stop();
                 mpEffect.release();
+                mpEffect.reset();
             }
         } catch (Exception e) {
         }
@@ -1022,10 +1048,177 @@ public class PageMain extends Fragment implements View.OnClickListener {
         return numberIII;
     }
 
+
+    private void initSwipe(){
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+
+                if (direction == ItemTouchHelper.LEFT){
+                    adapter.removeItem(position);
+                    removeItemView();
+                    if (list.size()>0){
+                        for (int i = 0; i < list.size(); i++) {
+
+                            if (list.get(i).getTop().length()<=0&&list.get(i).getButton().length()<=0&&
+                                    list.get(i).getToad().length()<=0){
+                                adapter.removeItem(i);
+                            }
+                        }
+                    }
+                } else {
+                    adapter.removeItem(position);
+                    removeItemView();
+                    if (list.size()>0){
+                        for (int i = 0; i < list.size(); i++) {
+
+                            if (list.get(i).getTop().length()<=0&&list.get(i).getButton().length()<=0&&
+                                    list.get(i).getToad().length()<=0){
+                                adapter.removeItem(i);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                Bitmap icon;
+                if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
+
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if(dX > 0){
+                        p.setColor(Color.parseColor("#D32F2F"));
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_more_logout);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
+                        c.drawBitmap(icon,null,icon_dest,p);
+                    } else {
+                        p.setColor(Color.parseColor("#D32F2F"));
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background,p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_more_logout);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
+                        c.drawBitmap(icon,null,icon_dest,p);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(redetail);
+    }
+    private void removeView(){
+        if(view.getParent()!=null) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
+    }
+
+    private void removeItemView(){
+
+            Log.e("PageMain", "WelCome removeItemView");
+            if (list.size()>0){
+
+                Modeldetail modeldetail = new Modeldetail();
+                modeldetail.setNumber(list.get(list.size()-1).getNumber());
+                modeldetail.setTop(list.get(list.size()-1).getTop());
+                modeldetail.setButton(list.get(list.size()-1).getButton());
+                modeldetail.setToad(list.get(list.size()-1).getToad());
+
+                modeldetail.setFocus_number("0");
+                modeldetail.setFocus_top("0");
+                modeldetail.setFocus_button("0");
+                modeldetail.setFocus_toad("0");
+
+                modeldetail.setNo_focus_top(list.get(list.size()-1).getNo_focus_top());
+                modeldetail.setNo_focus_button(list.get(list.size()-1).getNo_focus_button());
+                modeldetail.setNo_focus_toad(list.get(list.size()-1).getNo_focus_toad());
+
+                if (list.get(list.size()-1).getTop().length()>0){
+                    modeldetail.setNo_focus_top("0");
+                }else {
+                    modeldetail.setNo_focus_top("1");
+                }
+                if (list.get(list.size()-1).getButton().length()>0){
+                    modeldetail.setNo_focus_button("0");
+                }else {
+                    modeldetail.setNo_focus_button("1");
+                }
+                if (list.get(list.size()-1).getToad().length()>0){
+                    modeldetail.setNo_focus_toad("0");
+                }else {
+                    modeldetail.setNo_focus_toad("1");
+                }
+
+                list.set(list.size()-1,modeldetail);
+                adapter.notifyDataSetChanged();
+
+            }
+            text_tital.setText("เลข");
+            Check_number = true;
+            btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+            btn_enter.setText(R.string.text_enter);
+
+    }
+
     public void onShowLogCat(String tag, String msg){
         if (BuildConfig.DEBUG) {
             Log.e("***PageMain ***", tag + " ==> " + msg);
         }
     }
 
+    public void loginOut(){
+        int sizeMsgDialog = Integer.parseInt(getResources().getString(R.string.size_dialog_ok));
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        TextView myMsg = new TextView(getActivity());
+        myMsg.setText("\n" + getResources().getString(R.string.title_logout) + "\n");
+        myMsg.setTextSize(sizeMsgDialog);
+        myMsg.setGravity(Gravity.CENTER);
+        myMsg.setTypeface(null, Typeface.BOLD);
+        builder.setView(myMsg);
+        builder.setCancelable(true);
+        builder.setPositiveButton(getResources().getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                allCommand.SaveStringShare(getContext(),allCommand.moSavePass,"");
+                Log.e("loginOut", "loginOut loginOut");
+
+                ModelBus modelBus = new ModelBus();
+                modelBus.setPage(Utils.KEY_ADD_PAGE_LOGIN);
+                modelBus.setMsg(Utils.Name_ADD_PAGE_LOGIN);
+                BusProvider.getInstance().post(modelBus);
+            }
+        });
+        builder.setNegativeButton(getResources().getString(R.string.title_no),null);
+        final AlertDialog alertdialog = builder.create();
+        alertdialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                int iPadBT = Integer.parseInt(getResources().getString(R.string.size_padding_tb_dialog));
+                int iSizeButton = Integer.parseInt(getResources().getString(R.string.size_dialog_button));
+                Button btnOk = alertdialog.getButton(Dialog.BUTTON_POSITIVE);
+                Button btnCancle= alertdialog.getButton(Dialog.BUTTON_NEGATIVE);
+                btnOk.setTextSize(iSizeButton);
+                btnOk.setPadding(1, iPadBT, 1, iPadBT);
+                btnOk.setTypeface(null, Typeface.BOLD);
+                btnCancle.setTextSize(iSizeButton);
+                btnCancle.setPadding(1, iPadBT, 1, iPadBT);
+                btnCancle.setTypeface(null, Typeface.BOLD);
+
+            }
+        });
+        alertdialog.show();
+    }
 }

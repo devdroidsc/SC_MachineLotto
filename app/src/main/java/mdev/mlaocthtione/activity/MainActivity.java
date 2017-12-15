@@ -16,6 +16,7 @@ import com.squareup.otto.Subscribe;
 import mdev.mlaocthtione.BuildConfig;
 import mdev.mlaocthtione.Fragment.Keyboardlogin;
 import mdev.mlaocthtione.Fragment.Keyboardmain;
+import mdev.mlaocthtione.Fragment.Keyboardprint;
 import mdev.mlaocthtione.Fragment.PageDetail;
 import mdev.mlaocthtione.Fragment.PageLogin;
 import mdev.mlaocthtione.Fragment.PageMain;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private AllCommand allCommand;
     private String TAG_PAGEMAIN = "TAGPAGEMAIN",TAG_PAGEDETAIL = "TAGPAGEDETAIL",TAG_PAGEPRINTER = "TAGPAGEPRINTER"
                     ,TAG_PAGELOGIN = "TAGPAGELOGIN";
-    private String TAG_KEYBOARDLOGIN = "TAGKEYBOARDLOGIN",TAG_KEYBOARDMAIN = "TAGKEYBOARDMAIN";
+    private String TAG_KEYBOARDLOGIN = "TAGKEYBOARDLOGIN",TAG_KEYBOARDMAIN = "TAGKEYBOARDMAIN",TAG_KEYBOARDPRINTER = "TAGKEYBOARDPRINTER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(R.id.frameLayoutKeyboad, keyboardmain,TAG_KEYBOARDMAIN)
                 .detach(keyboardmain)
+                .commit();
+
+        Keyboardprint keyboardprint = Keyboardprint.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frameLayoutKeyboad, keyboardprint,TAG_KEYBOARDPRINTER)
+                .detach(keyboardprint)
                 .commit();
 
         getSupportFragmentManager()
@@ -123,13 +131,13 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
 
-                Fragment keyboardmain = (Keyboardmain)
-                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDMAIN);
+                Fragment keyboardmain = (Keyboardprint)
+                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDPRINTER);
 
                 if (!onFragmentPage().equals(keyboardmain)){
                     getSupportFragmentManager().beginTransaction()
-                            .detach(onFragmentKeyBoad())
                             .attach(keyboardmain)
+                            .detach(onFragmentKeyBoad())
                             .commit();
                 }
 
@@ -151,8 +159,31 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!onFragmentPage().equals(keyboardmain)){
                     getSupportFragmentManager().beginTransaction()
-                            .detach(onFragmentKeyBoad())
                             .attach(keyboardmain)
+                            .detach(onFragmentKeyBoad())
+                            .commit();
+                }
+
+
+            }else if (modelBus.getPage() == Utils.KEY_ADD_PAGE_LOGIN){
+
+                Fragment fragmentAttach = (PageLogin)
+                        getSupportFragmentManager().findFragmentByTag(TAG_PAGELOGIN);
+
+                if (!onFragmentPage().equals(fragmentAttach)){
+                    getSupportFragmentManager().beginTransaction()
+                            .attach(fragmentAttach)
+                            .detach(onFragmentPage())
+                            .commit();
+                }
+
+                Fragment keyboardlogin = (Keyboardlogin)
+                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDLOGIN);
+
+                if (!onFragmentPage().equals(keyboardlogin)){
+                    getSupportFragmentManager().beginTransaction()
+                            .attach(keyboardlogin)
+                            .detach(onFragmentKeyBoad())
                             .commit();
                 }
 

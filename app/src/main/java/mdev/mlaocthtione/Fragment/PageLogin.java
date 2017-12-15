@@ -10,11 +10,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.renderscript.ScriptGroup;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -87,35 +89,14 @@ public class PageLogin extends Fragment{
         return view;
     }
 
-    @SuppressLint("StaticFieldLeak")
+    @SuppressLint({"StaticFieldLeak", "ClickableViewAccessibility"})
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /*Uri data = getActivity().getIntent().getData();
-        if (data != null) {
-            String uri = getActivity().getIntent().getDataString();
-            allCommand.ShowLogCat("uri",uri);
-            String dataUP = new String(uri);
-            String[] sUserPass = dataUP.split("/");
-            try{
-
-                String dataUserPass = allCommand.getEncodeBase64(sUserPass[sUserPass.length - 1].toString());
-                String[] arrUserPass = dataUserPass.split("##.##");
-                for (int i= 0;i<arrUserPass.length;i++){
-                    allCommand.ShowLogCat("User Pass" + i, arrUserPass[i].toString());
-                }
-                if (arrUserPass.length == 2){
-                    allCommand.SaveStringShare(getContext(),allCommand.moSaveUser,arrUserPass[0].toString());
-                    allCommand.SaveStringShare(getContext(),allCommand.moSavePass,arrUserPass[1].toString());
-                }
-            }catch (Exception e){
-                allCommand.ShowLogCat("Error","get Base 64 User Pass " + e.getMessage());
-            }
-        }*/
-
         edUsername.setText(allCommand.GetStringShare(getContext(),allCommand.moSaveUser,""));
         edPassword.setText(allCommand.GetStringShare(getContext(),allCommand.moSavePass,""));
+        edUsername.setText("aaaa01@zx");
 
         if (allCommand.isConnectingToInternet(getContext())) {
             onLogin();
@@ -131,6 +112,23 @@ public class PageLogin extends Fragment{
             Bitmap myBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
             im_logo_login.setImageBitmap(myBitmap);
         }
+
+
+        edPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tilEdPassword.setBackgroundResource(R.drawable.bg_ed_select);
+                tilEdUsername.setBackgroundResource(R.drawable.bg_ed_pass);
+            }
+        });
+        edUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tilEdUsername.setBackgroundResource(R.drawable.bg_ed_select);
+                tilEdPassword.setBackgroundResource(R.drawable.bg_ed_pass);
+            }
+        });
+
     }
 
     @Override
@@ -147,14 +145,18 @@ public class PageLogin extends Fragment{
             switch (onclicklogin.getTAG_KEY()) {
                 case "edit":
 
-                    int lengthuser = edUsername.getText().length();
-                    int lengthpass = edPassword.getText().length();
-
                     if (getActivity().getCurrentFocus().getId() == edUsername.getId()) {
-                        edUsername.getText().delete(lengthuser - 1, lengthuser);
+                        int length = edUsername.getText().length();
+                        if (length > 0) {
+                            edUsername.getText().delete(length - 1, length);
+                        }
+
 
                     } else if (getActivity().getCurrentFocus().getId() == edPassword.getId()) {
-                        edPassword.getText().delete(lengthpass - 1, lengthpass);
+                        int length = edPassword.getText().length();
+                        if (length > 0) {
+                            edPassword.getText().delete(length - 1, length);
+                        }
                     }
 
                     break;
@@ -182,9 +184,6 @@ public class PageLogin extends Fragment{
         im_logo_login = itemview.findViewById(R.id.im_logo_login);
         avloadLogin = itemview.findViewById(R.id.avloadLogin);
         avi_loadLogo = itemview.findViewById(R.id.avi_loadLogo);
-
-        edUsername.setText("aaaa01@zx");
-        edPassword.setText("1111");
 
         edUsername.setKeyListener(null);
         edPassword.setKeyListener(null);
@@ -298,6 +297,7 @@ public class PageLogin extends Fragment{
                                         allCommand.SaveStringShare(getContext(),allCommand.moTangMax,max);
                                         allCommand.SaveStringShare(getContext(),allCommand.moTangMin,min);
 
+                                        edPassword.setText("");
                                         ModelBus modelBus = new ModelBus();
                                         modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
                                         modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
@@ -328,7 +328,7 @@ public class PageLogin extends Fragment{
         Glide.with(this)
                 .load(strURLmo+"img/logo99.png")
                 .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
+                .into(new SimpleTarget<Bitmap>(250,150) {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         im_logo_login.setImageBitmap(resource);
@@ -337,7 +337,6 @@ public class PageLogin extends Fragment{
 
                     }
                 });
-
     }
 
     private String saveImage(Bitmap image) {

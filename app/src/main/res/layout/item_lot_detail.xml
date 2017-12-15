@@ -9,19 +9,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/magin2">
+        android:layout_margin="@dimen/margin1">
         <LinearLayout
             android:id="@+id/Liner_Number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/text_lotnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text_custom"
-                android:layout_marginLeft="@dimen/magin50"/>
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size30"
+                android:layout_marginLeft="@dimen/magin20"
+                android:layout_marginTop="@dimen/margin1"
+                android:layout_marginBottom="@dimen/margin1"/>
         </LinearLayout>
 
     </LinearLayout>

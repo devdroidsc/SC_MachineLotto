@@ -3,7 +3,6 @@ package mdev.mlaocthtione.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.squareup.otto.Subscribe;
-
-import mdev.mlaocthtione.ModelBus.Onclicklogin;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
@@ -22,19 +18,18 @@ import mdev.mlaocthtione.bus.BusProvider;
  * Created by Lenovo on 11-12-2017.
  */
 
-public class Keyboardmain extends Fragment implements View.OnClickListener {
+public class Keyboardprint extends Fragment implements View.OnClickListener {
     private TextView bt_zero, bt_nine, bt_eight,
             bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one;
     private TextView btn_edit, btn_cancel, btn_enter, btn_print,bt_twozero;
-    private LinearLayout lnContentPrinter,bt_logout;
-    private ImageView img_priterandtang;
+    private LinearLayout lnContentPrinter;
 
     private boolean Checkpage = true;
-    public Keyboardmain() {
+    public Keyboardprint() {
     }
 
-    public static Keyboardmain newInstance(){
-        Keyboardmain keyboardmain = new Keyboardmain();
+    public static Keyboardprint newInstance(){
+        Keyboardprint keyboardmain = new Keyboardprint();
         return keyboardmain;
     }
 
@@ -42,7 +37,7 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.layout_keyboad,container,false);
+        View view = inflater.inflate(R.layout.layout_keyboad_printer,container,false);
         itemView(view);
         return view;
     }
@@ -63,8 +58,6 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         btn_print = view.findViewById(R.id.btn_print);
         bt_twozero = view.findViewById(R.id.bt_twozero);
         lnContentPrinter = view.findViewById(R.id.lnContentPrinter);
-        img_priterandtang = view.findViewById(R.id.img_priterandtang);
-        bt_logout = view.findViewById(R.id.bt_logout);
 
 
         bt_zero.setOnClickListener(this);
@@ -82,7 +75,6 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         btn_cancel.setOnClickListener(this);
         btn_print.setOnClickListener(this);
         lnContentPrinter.setOnClickListener(this);
-        bt_logout.setOnClickListener(this);
 
     }
     @Override
@@ -90,7 +82,7 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         Onclickmain onclickmain = new Onclickmain();
         switch (view.getId()){
 
-            case R.id.btn_edit:
+            /*case R.id.btn_edit:
                 onclickmain.setTAG_KEY("edit");
                 BusProvider.getInstance().post(onclickmain);
                 break;
@@ -101,16 +93,12 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
             case R.id.btn_print:
                 onclickmain.setTAG_KEY("Savelot");
                 BusProvider.getInstance().post(onclickmain);
-                break;
+                break;*/
             case R.id.lnContentPrinter:
-                onclickmain.setTAG_KEY("SettingPrinter");
+                onclickmain.setTAG_KEY("Tang");
                 BusProvider.getInstance().post(onclickmain);
                 break;
-            case R.id.bt_logout:
-                onclickmain.setTAG_KEY("Loginout");
-                BusProvider.getInstance().post(onclickmain);
-                break;
-            case R.id.bt_one:
+            /*case R.id.bt_one:
                 onclickmain.setTAG_KEY("1");
                 BusProvider.getInstance().post(onclickmain);
                 break;
@@ -153,7 +141,7 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
             case R.id.bt_twozero:
                 onclickmain.setTAG_KEY("00");
                 BusProvider.getInstance().post(onclickmain);
-                break;
+                break;*/
 
         }
 

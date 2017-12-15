@@ -44,9 +44,13 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         ViewItemHoder viewitem = (ViewItemHoder) holder;
         viewitem.textnumber.setText(modellist.getNumber());
+        viewitem.textnumber.setSelected(true);
         viewitem.texttop.setText(modellist.getTop());
+        viewitem.texttop.setSelected(true);
         viewitem.textbutton.setText(modellist.getButton());
+        viewitem.textbutton.setSelected(true);
         viewitem.texttoad.setText(modellist.getToad());
+        viewitem.texttoad.setSelected(true);
 
 
         viewitem.Liner_Number.setBackgroundColor(Color.parseColor("#00FFFFFF"));
@@ -92,6 +96,11 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
+    public void removeItem(int position) {
+        modeldetails.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, modeldetails.size());
+    }
 
     @Override
     public int getItemCount() {

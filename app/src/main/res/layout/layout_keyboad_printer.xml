@@ -200,10 +200,10 @@
                 android:background="@drawable/bg_menu"
                 android:gravity="center">
                 <ImageView
-                    android:id="@+id/img_priterandtang"
                     android:layout_width="@dimen/size_ic_printer"
                     android:layout_height="@dimen/size_ic_printer"
-                    android:src="@drawable/ic_status_printer_nocon"/>
+                    android:src="@drawable/ic_page_tang"
+                    android:tint="@color/color_black"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout

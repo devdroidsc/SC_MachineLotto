@@ -79,12 +79,13 @@
                     android:gravity="center|left"
                     android:hint="รหัสผ่าน"
                     android:textColorHint="@color/color_red"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:nextFocusDown="@+id/edPassNew"
                     android:padding="@dimen/margin5"
                     android:singleLine="true"
                     android:textColor="@color/colorblack"
-                    android:textSize="@dimen/text_size30" />
+                    android:textSize="@dimen/text_size30"
+                    />
             </android.support.design.widget.TextInputLayout>
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/avloadLogin"
