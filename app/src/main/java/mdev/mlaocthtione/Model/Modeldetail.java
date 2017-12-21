@@ -1,14 +1,65 @@
 package mdev.mlaocthtione.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Lenovo on 16-11-2017.
  */
 
-public class Modeldetail {
+public class Modeldetail implements Parcelable{
+    public Modeldetail() {
+    }
 
     private String number,top,button,toad;
     private String focus_top,focus_button,focus_toad,focus_number;
     private String no_focus_top,no_focus_button,no_focus_toad;
+
+    protected Modeldetail(Parcel in) {
+        number = in.readString();
+        top = in.readString();
+        button = in.readString();
+        toad = in.readString();
+        focus_top = in.readString();
+        focus_button = in.readString();
+        focus_toad = in.readString();
+        focus_number = in.readString();
+        no_focus_top = in.readString();
+        no_focus_button = in.readString();
+        no_focus_toad = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(number);
+        dest.writeString(top);
+        dest.writeString(button);
+        dest.writeString(toad);
+        dest.writeString(focus_top);
+        dest.writeString(focus_button);
+        dest.writeString(focus_toad);
+        dest.writeString(focus_number);
+        dest.writeString(no_focus_top);
+        dest.writeString(no_focus_button);
+        dest.writeString(no_focus_toad);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Modeldetail> CREATOR = new Creator<Modeldetail>() {
+        @Override
+        public Modeldetail createFromParcel(Parcel in) {
+            return new Modeldetail(in);
+        }
+
+        @Override
+        public Modeldetail[] newArray(int size) {
+            return new Modeldetail[size];
+        }
+    };
 
     public String getNumber() {
         return number;

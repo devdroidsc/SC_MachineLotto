@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_close_lot"
                     android:textSize="@dimen/magin_size50"
-                    android:textColor="@color/color_red"/>
+                    android:textColor="@color/color_red"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

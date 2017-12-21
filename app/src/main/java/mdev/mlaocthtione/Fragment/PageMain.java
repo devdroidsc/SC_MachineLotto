@@ -1,11 +1,20 @@
 package mdev.mlaocthtione.Fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,11 +32,22 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcelable;
+import android.os.RemoteException;
+import android.provider.CalendarContract;
+import android.provider.ContactsContract;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -41,6 +61,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -53,16 +74,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.TimeZone;
+import java.util.UUID;
 
 import mdev.mlaocthtione.Adapter.CustomAdapterDetail;
 import mdev.mlaocthtione.Adapter.CustomAdapterMain;
@@ -79,6 +104,15 @@ import mdev.mlaocthtione.bus.ModelBus;
 import mdev.mlaocthtione.con_bt.InstanceVariable;
 import mdev.mlaocthtione.utils.Utils;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.BLUETOOTH;
+import static android.Manifest.permission.INTERNET;
+import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.REQUEST_DELETE_PACKAGES;
+import static android.Manifest.permission_group.CAMERA;
+import static android.Manifest.permission_group.PHONE;
+
 /**
  * Created by Lenovo on 06-12-2017.
  */
@@ -87,52 +121,63 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
     private ArrayList<Modeldetail> list;
     private ArrayList<Modelitemlot> list_lot;
+    private boolean Check_number = true, Check_numberTop = true,
+            Check_numberlower = true, Check_numberToad = true;
+    private boolean CheckNextto_lower, CheckNextto_Toad;
+    private Date D_CloseBig, D_CloseSmall, D_Phon;
+    private boolean Check_Tang;
+    private String strCloseBig, strCloseSmall, strPhon;
+
     private RecyclerView redetail;
     private RecyclerView re_savelot;
+
     private GridLayoutManager gridLayoutManager;
     private GridLayoutManager gridLayoutManager_savelot;
     private CustomAdapterMain adapter;
     private CustomAdapterDetail adapter_savelot;
-    private LinearLayout laout_number,laout_savelot,liner_close_tang;
-
+    private LinearLayout laout_number, laout_savelot, liner_close_tang;
     private TextView btn_enter;
-
     private EditText edit_number;
     private TextView text_tital;
     private TextView btn_close_lot;
 
-
-    private boolean Check_number = true, Check_numberTop = true,
-            Check_numberlower = true, Check_numberToad = true;
     private AllCommand allCommand;
     private TelephonyManager tManager;
     private String uuid;
-    private String StateTang;
-
-
     private MediaPlayer mpEffect;
     //Thread
     private HandlerThread backgroundHandlerThread;
     private Handler backgroundHandler;
     private Handler mainHandler;
-
-    private boolean CheckLower = true;
-    private boolean CheckNextto_lower,CheckNextto_Toad ;
-    private Date D_CloseBig,D_CloseSmall,D_Phon;
-
-    private boolean Check_Tang;
-
-    private AlertDialog.Builder alertDialog;
     private Paint p = new Paint();
-    private View view;
 
 
-    public PageMain(){}
-    public static PageMain newInstance(){
+    private static final String TAG = "Contacts";
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
+
+    public PageMain() {}
+    public static PageMain newInstance() {
         PageMain pageMain = new PageMain();
         return pageMain;
     }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("list", list);
+        outState.putParcelableArrayList("list_lot", list_lot);
+        outState.putBoolean("Check_number", Check_number);
+        outState.putBoolean("Check_numberTop", Check_numberTop);
+        outState.putBoolean("Check_numberlower", Check_numberlower);
+        outState.putBoolean("Check_numberToad", Check_numberToad);
+        outState.putBoolean("CheckNextto_lower", CheckNextto_lower);
+        outState.putBoolean("CheckNextto_Toad", CheckNextto_Toad);
+        outState.putBoolean("Check_Tang", Check_Tang);
+        outState.putString("strCloseBig", strCloseBig);
+        outState.putString("strCloseSmall", strCloseSmall);
+        outState.putString("strPhon", strPhon);
 
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,21 +186,48 @@ public class PageMain extends Fragment implements View.OnClickListener {
         list = new ArrayList<>();
         list_lot = new ArrayList<>();
         allCommand = new AllCommand();
+
+
+        if (savedInstanceState != null) {
+
+            list = savedInstanceState.getParcelableArrayList("list");
+            list_lot = savedInstanceState.getParcelableArrayList("list_lot");
+            Check_number = savedInstanceState.getBoolean("Check_number");
+            Check_numberTop = savedInstanceState.getBoolean("Check_numberTop");
+            Check_numberToad = savedInstanceState.getBoolean("Check_numberToad");
+            Check_numberlower = savedInstanceState.getBoolean("Check_numberlower");
+            CheckNextto_lower = savedInstanceState.getBoolean("CheckNextto_lower");
+            CheckNextto_Toad = savedInstanceState.getBoolean("CheckNextto_Toad");
+            Check_Tang = savedInstanceState.getBoolean("Check_Tang");
+            strCloseBig = savedInstanceState.getString("strCloseBig");
+            strCloseSmall = savedInstanceState.getString("strCloseSmall");
+            strPhon = savedInstanceState.getString("strPhon");
+
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.layout_number_main,container,false);
+        View view = inflater.inflate(R.layout.layout_number_main, container, false);
         itemView(view);
         return view;
     }
-
-    @SuppressLint("MissingPermission")
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (savedInstanceState != null) {
+
+            adapter = new CustomAdapterMain(list, getActivity());
+            redetail.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+
+            adapter_savelot = new CustomAdapterDetail(list_lot, getActivity());
+            re_savelot.setAdapter(adapter_savelot);
+            adapter_savelot.notifyDataSetChanged();
+
+        }
         tManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
         onThreadPrintBill();
         //TODO : M Error 1
@@ -168,9 +240,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
         Log.e("PageMain moCloseSmall", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseSmall,"")));
         Log.e("PageMain เครื่อง", allCommand.SetDateFoment(currentTime));*/
 
-        String strCloseBig = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseBig,""));
-        String strCloseSmall = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseSmall,""));
-        String strPhon = allCommand.SetDateFoment(currentTime);;
+        strCloseBig = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(), allCommand.moCloseBig, ""));
+        strCloseSmall = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(), allCommand.moCloseSmall, ""));
+        strPhon = allCommand.SetDateFoment(currentTime);
+        ;
 
         SimpleDateFormat dates = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -198,10 +271,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
             D_CloseSmall = dates.parse(strCloseSmall);
             D_Phon = dates.parse(strPhon);
 
-            if (D_CloseBig.getTime()>D_Phon.getTime()){
+            if (D_CloseBig.getTime() > D_Phon.getTime()) {
                 liner_close_tang.setVisibility(View.GONE);
                 laout_number.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 liner_close_tang.setVisibility(View.VISIBLE);
                 laout_number.setVisibility(View.GONE);
             }
@@ -211,7 +284,8 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         edit_number.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -223,10 +297,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 edit_number.removeTextChangedListener(this);
 
-                if (Check_number){
-                    edit_number.setFilters(new InputFilter[] {new InputFilter.LengthFilter(3)});
-                }else {
-                    edit_number.setFilters(new InputFilter[] {new InputFilter.LengthFilter(13)});
+                if (Check_number) {
+                    edit_number.setFilters(new InputFilter[]{new InputFilter.LengthFilter(3)});
+                } else {
+                    edit_number.setFilters(new InputFilter[]{new InputFilter.LengthFilter(13)});
 
                     try {
                         String originalString = s.toString();
@@ -255,7 +329,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             }
         });
     }
-    private void itemView(View view){
+    private void itemView(View view) {
 
         liner_close_tang = view.findViewById(R.id.liner_close_tang);
         laout_number = view.findViewById(R.id.laout_number);
@@ -273,11 +347,11 @@ public class PageMain extends Fragment implements View.OnClickListener {
         btn_close_lot.setOnClickListener(this);
         liner_close_tang.setOnClickListener(this);
 
-        gridLayoutManager = new GridLayoutManager(getActivity(),1);
-        adapter = new CustomAdapterMain(list,getActivity());
+        gridLayoutManager = new GridLayoutManager(getActivity(), 1);
+        adapter = new CustomAdapterMain(list, getActivity());
 
-        gridLayoutManager_savelot = new GridLayoutManager(getActivity(),1);
-        adapter_savelot = new CustomAdapterDetail(list_lot,getActivity());
+        gridLayoutManager_savelot = new GridLayoutManager(getActivity(), 1);
+        adapter_savelot = new CustomAdapterDetail(list_lot, getActivity());
 
         redetail.setAdapter(adapter);
         redetail.setLayoutManager(gridLayoutManager);
@@ -302,14 +376,14 @@ public class PageMain extends Fragment implements View.OnClickListener {
             public void afterTextChanged(Editable editable) {
 
                 int count = edit_number.length();
-                if (count<=0){
+                if (count <= 0) {
                     btn_enter.setBackgroundResource(R.drawable.bg_number_nextto);
                     btn_enter.setText(R.string.text_next);
-                }else {
+                } else {
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
                     btn_enter.setText(R.string.text_enter);
                 }
-                if (text_tital.getText().equals("เลข")){
+                if (text_tital.getText().equals("เลข")) {
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
                     btn_enter.setText(R.string.text_enter);
                 }
@@ -317,18 +391,17 @@ public class PageMain extends Fragment implements View.OnClickListener {
         });
         //setDataFist();
     }
-
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.btn_enter:
-                if (btn_enter.getText().equals("ตกลง")){
-                    if (edit_number.length()>0){
+                if (btn_enter.getText().equals("ตกลง")) {
+                    if (edit_number.length() > 0) {
                         setData();
                         redetail.smoothScrollToPosition(list.size());
                     }
-                }else if (btn_enter.getText().equals("ข้าม")){
+                } else if (btn_enter.getText().equals("ข้าม")) {
                     setNexto();
                 }
 
@@ -336,7 +409,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             case R.id.btn_close_lot:
                 laout_number.setVisibility(View.VISIBLE);
                 laout_savelot.setVisibility(View.GONE);
-                if (list_lot.size()>0){
+                if (list_lot.size() > 0) {
                     list_lot.clear();
                     adapter_savelot.notifyDataSetChanged();
                 }
@@ -348,15 +421,103 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         }
     }
+    private View view;
+
+
+    private void insertDummyContact() {
+        // Two operations are needed to insert a new contact.
+        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(2);
+
+        // First, set up a new raw contact.
+        ContentProviderOperation.Builder op =
+                ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null);
+        operations.add(op.build());
+
+        // Next, set the name for the contact.
+        op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE,
+                        ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME,
+                        "__DUMMY CONTACT from runtime permissions sample");
+        operations.add(op.build());
+
+        // Apply the operations.
+        ContentResolver resolver = getContext().getContentResolver();
+        try {
+            resolver.applyBatch(ContactsContract.AUTHORITY, operations);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Could not add a new contact: " + e.getMessage());
+        } catch (OperationApplicationException e) {
+            Log.e(TAG, "Could not add a new contact: " + e.getMessage());
+        }
+    }
+
+    private void insertDummyContactWrapper() {
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_CONTACTS);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.WRITE_CONTACTS)) {
+                showMessageOKCancel("You need to allow access to Contacts",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[] {Manifest.permission.WRITE_CONTACTS},
+                                        REQUEST_CODE_ASK_PERMISSIONS);
+                            }
+                        });
+                return;
+            }
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[] {Manifest.permission.WRITE_CONTACTS},
+                    REQUEST_CODE_ASK_PERMISSIONS);
+            return;
+        }
+        insertDummyContact();
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(getContext())
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    insertDummyContact();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(getContext(), "WRITE_CONTACTS Denied", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+    }
 
     @Subscribe
-    public void onClickMain(Onclickmain onclickmain){
+    public void onClickMain(Onclickmain onclickmain) throws URISyntaxException {
         ModelBus modelBus = new ModelBus();
-        if (!onclickmain.getTAG_KEY().equals("")){
+        if (!onclickmain.getTAG_KEY().equals("")) {
 
-            switch (onclickmain.getTAG_KEY()){
-
+            switch (onclickmain.getTAG_KEY()) {
                 case "edit":
+                    //insertDummyContactWrapper();
                     int length = edit_number.getText().length();
                     if (length > 0) {
                         edit_number.getText().delete(length - 1, length);
@@ -821,7 +982,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                             isSound = true;
                         }
                         if (isSound){
-                            //playSoundEffect(getContext(),R.raw.soundtang_no);
+                            playSoundEffect(getContext(),R.raw.soundtang_no);
                         }
 
                         Clear_Dataset();
@@ -1048,7 +1209,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
         return numberIII;
     }
 
-
     private void initSwipe(){
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -1102,14 +1262,14 @@ public class PageMain extends Fragment implements View.OnClickListener {
                         p.setColor(Color.parseColor("#D32F2F"));
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX,(float) itemView.getBottom());
                         c.drawRect(background,p);
-                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_more_logout);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_close_item);
                         RectF icon_dest = new RectF((float) itemView.getLeft() + width ,(float) itemView.getTop() + width,(float) itemView.getLeft()+ 2*width,(float)itemView.getBottom() - width);
                         c.drawBitmap(icon,null,icon_dest,p);
                     } else {
                         p.setColor(Color.parseColor("#D32F2F"));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(),(float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background,p);
-                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_more_logout);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_close_item);
                         RectF icon_dest = new RectF((float) itemView.getRight() - 2*width ,(float) itemView.getTop() + width,(float) itemView.getRight() - width,(float)itemView.getBottom() - width);
                         c.drawBitmap(icon,null,icon_dest,p);
                     }
@@ -1120,12 +1280,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(redetail);
     }
-    private void removeView(){
-        if(view.getParent()!=null) {
-            ((ViewGroup) view.getParent()).removeView(view);
-        }
-    }
-
     private void removeItemView(){
 
             Log.e("PageMain", "WelCome removeItemView");
@@ -1172,13 +1326,11 @@ public class PageMain extends Fragment implements View.OnClickListener {
             btn_enter.setText(R.string.text_enter);
 
     }
-
     public void onShowLogCat(String tag, String msg){
         if (BuildConfig.DEBUG) {
             Log.e("***PageMain ***", tag + " ==> " + msg);
         }
     }
-
     public void loginOut(){
         int sizeMsgDialog = Integer.parseInt(getResources().getString(R.string.size_dialog_ok));
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
