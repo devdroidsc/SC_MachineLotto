@@ -5,7 +5,7 @@ package mdev.mlaocthtione.ModelBus;
  */
 
 public class Onclicklogin {
-    String TAG_KEY;
+    private String TAG_KEY;
 
     public String getTAG_KEY() {
         return TAG_KEY;

@@ -156,6 +156,8 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                                 allCommand.SaveStringShare(login.this,allCommand.moTangMax,max);
                                 allCommand.SaveStringShare(login.this,allCommand.moTangMin,min);
 
+                                allCommand.SaveStringShare(login.this,allCommand.moSaveAdmin,"1234");
+
                                 Intent gomain = new Intent(login.this
                                         .getApplicationContext(),MainActivity.class);
                                 startActivity(gomain);

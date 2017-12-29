@@ -14,14 +14,52 @@
             android:id="@+id/Liner_Number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1.1"
-            android:gravity="center">
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center">
             <TextView
                 android:id="@+id/textnumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text_custom"/>
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size30"/>
+            <LinearLayout
+                android:id="@+id/return_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textSize="@dimen/size_20"
+                    android:textColor="@color/color_black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/return_number"
+                    android:textSize="@dimen/size_20"
+                    android:textColor="@color/color_black"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/number_return"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="6"
+                    android:textSize="@dimen/size_20"
+                    android:textColor="@color/color_black"/>
+                <!--<TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/size_20"
+                    android:textColor="@color/color_black"-->/>
+            </LinearLayout>
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -35,17 +73,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_gravity="center">
 
             <TextView
                 android:id="@+id/texttop"
-                style="@style/Text_custom"
+                android:textColor="@color/color_black"
+                android:textSize="@dimen/text_size30"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"/>
+                android:scrollHorizontally="true"
+                android:gravity="center"/>
 
             <!--<HorizontalScrollView
                 android:layout_width="match_parent"
@@ -64,19 +105,22 @@
         <LinearLayout
             android:id="@+id/Liner_Lower"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_gravity="center">
             <TextView
                 android:id="@+id/textbutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Text_custom"
+                android:textSize="@dimen/text_size30"
                 android:singleLine="true"
                 android:ellipsize="marquee"
+                android:textColor="@color/color_black"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"/>
+                android:scrollHorizontally="true"
+                android:gravity="center"/>
             <!--<HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -93,19 +137,22 @@
         <LinearLayout
             android:id="@+id/Liner_Toad"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_gravity="center">
             <TextView
                 android:id="@+id/texttoad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Text_custom"
+                android:textSize="@dimen/text_size30"
+                android:textColor="@color/color_black"
                 android:singleLine="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"/>
+                android:scrollHorizontally="true"
+                android:gravity="center"/>
             <!--<HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

@@ -40,6 +40,10 @@ public class Utils {
 
     public static int KEY_ADD_PAGE_LOGIN = 22;
     public static String Name_ADD_PAGE_LOGIN = "*** แสดงหน้าเข้าสู่ระบบ ***";
+    public static int KEY_ADD_PAGE_NUMBERFULL = 23;
+    public static String NAME_ADD_PAGE_NUMBERFULL = "*** แสดงหน้าเลขเต็ม ***";
+    public static int KEY_ADD_PAGE_ADMIN = 24;
+    public static String NAME_ADD_PAGE_ADMIN = "*** แสดงหน้า admin ***";
 
     //Share Data
     public static String SHARE_USERNAME = "username";

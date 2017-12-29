@@ -13,7 +13,9 @@ import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -51,6 +53,33 @@ public class AllCommand {
 	public static String molot_pay_big4 = "molot_pay_big4";
 	public static String molot_pay_big5 = "molot_pay_big5";
 
+	public static String moSaveAdmin = "moSaveAdmin";
+	public static String moStatuspage = "moStatuspage";
+
+	public static String moUUID = "moUUID";
+
+	public static String text_ok = "ตกลง";//ตกลง
+	public static String text_next = "ข้าม";//ข้าม
+	public static String text_logout = "ออกจากระบบ";//ออกจากระบบ
+	public static String text_returns = "";//กลับ
+	public static String text_inputNumber = "";//กรุณากรอก
+	public static String text_wantBuy = "";//ที่ต้องการซื้อ
+	public static String text_Top = "";//บน
+	public static String text_lower = "";//ล่าง
+	public static String text_Toad = "";//โต๊ด
+	public static String text_printer = "";//เครื่องพิมพ์
+	public static String text_nextto = "";//ข้าม
+	public static String text_edit = "";//แก้ไข
+	public static String text_cancel = "";//ยกเลิก
+	public static String text_confirm = "";//ส่ง-พิมพ์
+	public static String text_numberFull = "";//เลขเต็ม
+	public static String text_admin = "";//กรอกรหัสยืนยันตัวตน
+	public static String text_yes = "";//ใช่
+	public static String text_no = "";//ไม่ใช่
+	public static String text_user = "";//ชื่อผู้ใช้
+	public static String text_pass = "";//รหัสผ่าน
+	public static String text_login = "";//เข้าสู่ระบบ
+	public static String text_Number = "เลข";//เลข
 
 	public boolean isConnectingToInternet(Context _context) {
 		ConnectivityManager connectivity = (ConnectivityManager) _context
@@ -247,5 +276,6 @@ public class AllCommand {
 		String strNum = strDataNum.replace(",", "");
 		return strNum;
 	}
+
 
 }

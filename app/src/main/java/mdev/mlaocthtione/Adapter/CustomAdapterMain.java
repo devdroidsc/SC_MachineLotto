@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import mdev.mlaocthtione.Model.Modeldetail;
+import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 
 /**
@@ -94,6 +95,25 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
         else
             viewitem.Liner_lot.setBackgroundResource(R.drawable.bg_item_lot_l);
 
+
+        if (!modellist.isRetun_number()){
+            viewitem.return_number.setVisibility(View.GONE);
+            viewitem.number_return.setVisibility(View.GONE);
+        }else {
+            viewitem.return_number.setVisibility(View.VISIBLE);
+            viewitem.number_return.setVisibility(View.VISIBLE);
+            if (modellist.getNumber().length()<=2){
+                viewitem.number_return.setVisibility(View.INVISIBLE);
+            }
+            if (modellist.getNo_return().equals("6")){
+                viewitem.number_return.setVisibility(View.VISIBLE);
+                viewitem.number_return.setText("6");
+            }else if (modellist.getNo_return().equals("3")){
+                viewitem.number_return.setVisibility(View.VISIBLE);
+                viewitem.number_return.setText("3");
+            }
+        }
+
     }
 
     public void removeItem(int position) {
@@ -111,6 +131,9 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         private TextView textnumber,texttop,textbutton,texttoad;
         private LinearLayout Liner_Top,Liner_Toad,Liner_Lower,Liner_Number,Liner_lot;
+        private LinearLayout return_number;
+        private TextView number_return;
+
         public ViewItemHoder(View itemView) {
             super(itemView);
             textnumber = itemView.findViewById(R.id.textnumber);
@@ -123,6 +146,9 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
             Liner_Lower = itemView.findViewById(R.id.Liner_Lower);
             Liner_Number = itemView.findViewById(R.id.Liner_Number);
             Liner_lot = itemView.findViewById(R.id.Liner_lot);
+
+            return_number = itemView.findViewById(R.id.return_number);
+            number_return = itemView.findViewById(R.id.number_return);
         }
     }
 }

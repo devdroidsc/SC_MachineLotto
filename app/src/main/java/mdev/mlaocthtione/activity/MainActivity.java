@@ -3,6 +3,7 @@ package mdev.mlaocthtione.activity;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,14 @@ import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.Activ
 import com.squareup.otto.Subscribe;
 
 import mdev.mlaocthtione.BuildConfig;
+import mdev.mlaocthtione.Fragment.Dialogadmin;
 import mdev.mlaocthtione.Fragment.Keyboardlogin;
 import mdev.mlaocthtione.Fragment.Keyboardmain;
 import mdev.mlaocthtione.Fragment.Keyboardprint;
 import mdev.mlaocthtione.Fragment.PageDetail;
 import mdev.mlaocthtione.Fragment.PageLogin;
 import mdev.mlaocthtione.Fragment.PageMain;
+import mdev.mlaocthtione.Fragment.PageNumberfull;
 import mdev.mlaocthtione.Fragment.PrinterLotFragment;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.Model.ModelStatusConnectPrinter;
@@ -33,7 +36,9 @@ import mdev.mlaocthtione.utils.Utils;
 public class MainActivity extends AppCompatActivity {
     private AllCommand allCommand;
     private String TAG_PAGEMAIN = "TAGPAGEMAIN",TAG_PAGEDETAIL = "TAGPAGEDETAIL",TAG_PAGEPRINTER = "TAGPAGEPRINTER"
-                    ,TAG_PAGELOGIN = "TAGPAGELOGIN";
+                    ,TAG_PAGELOGIN = "TAGPAGELOGIN",TAG_PAGENUMBERFULL = "TAGPAGENUMBERFULL"
+            ,TAG_DIALOGADMIN="TAGDIALOGADMIN";
+
     private String TAG_KEYBOARDLOGIN = "TAGKEYBOARDLOGIN",TAG_KEYBOARDMAIN = "TAGKEYBOARDMAIN",TAG_KEYBOARDPRINTER = "TAGKEYBOARDPRINTER";
 
     @Override
@@ -47,13 +52,36 @@ public class MainActivity extends AppCompatActivity {
             addKeyboard();
         }
         AutoConnectPrinter();
+
+        /*Configuration config = getResources().getConfiguration();
+        if (config.smallestScreenWidthDp >= 600) {
+
+            setContentView(R.layout.activity_main);
+            allCommand = new AllCommand();
+            BusProvider.getInstance().register(this);
+            if (savedInstanceState == null){
+                addFragmentFirst();
+                addKeyboard();
+            }
+            AutoConnectPrinter();
+        } else {
+            setContentView(R.layout.tablets);
+        }*/
     }
     private void addFragmentFirst() {
 
         PageMain pageMain = PageMain.newInstance();
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager()
+                .beginTransaction()
                 .add(R.id.frameLayoutPageMain, pageMain,TAG_PAGEMAIN)
                 .detach(pageMain)
+                .commit();
+
+        PageNumberfull pageNumberfull = PageNumberfull.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frameLayoutPageMain, pageNumberfull,TAG_PAGENUMBERFULL)
+                .detach(pageNumberfull)
                 .commit();
 
         PrinterLotFragment printerLotFragment = PrinterLotFragment.newInstance();
@@ -63,13 +91,18 @@ public class MainActivity extends AppCompatActivity {
                 .detach(printerLotFragment)
                 .commit();
 
+        Dialogadmin dialogadmin = Dialogadmin.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frameLayoutPageMain, dialogadmin,TAG_DIALOGADMIN)
+                .detach(dialogadmin)
+                .commit();
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.frameLayoutPageMain, PageLogin.newInstance(),TAG_PAGELOGIN)
                 .commit();
     }
-
-
     private void addKeyboard(){
 
         Keyboardmain keyboardmain = Keyboardmain.newInstance();
@@ -114,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             onShowLogCat("***Err***", "OnDestroy clear BT " + e.getMessage());
         }
     }
-
     @Subscribe
     public void onStanByEventBus(ModelBus modelBus){
         if (modelBus != null){
@@ -136,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!onFragmentPage().equals(keyboardmain)){
                     getSupportFragmentManager().beginTransaction()
-                            .attach(keyboardmain)
                             .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
                             .commit();
                 }
 
@@ -159,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (!onFragmentPage().equals(keyboardmain)){
                     getSupportFragmentManager().beginTransaction()
-                            .attach(keyboardmain)
                             .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
                             .commit();
                 }
 
@@ -188,6 +220,51 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
+            }else if (modelBus.getPage() == Utils.KEY_ADD_PAGE_NUMBERFULL){
+
+                Fragment fragmentAttach = (PageNumberfull)
+                        getSupportFragmentManager().findFragmentByTag(TAG_PAGENUMBERFULL);
+
+                if (!onFragmentPage().equals(fragmentAttach)){
+                    getSupportFragmentManager().beginTransaction()
+                            .attach(fragmentAttach)
+                            .detach(onFragmentPage())
+                            .commit();
+                }
+
+                Fragment keyboardmain = (Keyboardprint)
+                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDPRINTER);
+
+                if (!onFragmentPage().equals(keyboardmain)){
+                    getSupportFragmentManager().beginTransaction()
+                            .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
+                            .commit();
+                }
+
+            }
+            else if (modelBus.getPage() == Utils.KEY_ADD_PAGE_ADMIN){
+
+                Fragment fragmentAttach = (Dialogadmin)
+                        getSupportFragmentManager().findFragmentByTag(TAG_DIALOGADMIN);
+
+                if (!onFragmentPage().equals(fragmentAttach)){
+                    getSupportFragmentManager().beginTransaction()
+                            .attach(fragmentAttach)
+                            .detach(onFragmentPage())
+                            .commit();
+                }
+
+                Fragment keyboardmain = (Keyboardprint)
+                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDPRINTER);
+
+                if (!onFragmentPage().equals(keyboardmain)){
+                    getSupportFragmentManager().beginTransaction()
+                            .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
+                            .commit();
+                }
+
             }
 
 
@@ -195,26 +272,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    /*private void onManagerFragment(String tag){
-        Fragment fragmentAttach = null;//นำเข้า
-
-        if (tag.toString().trim().equals(TAG_PAGEMAIN)){
-            fragmentAttach = (PageMain)
-                    getSupportFragmentManager().findFragmentByTag(TAG_PAGEMAIN);
-
-        }else if (tag.toString().trim().equals(TAG_PAGEDETAIL)){
-            fragmentAttach = (PageDetail) getSupportFragmentManager().findFragmentByTag(TAG_PAGEDETAIL);
-
-        }
-
-        if (!onFragmentPage().equals(fragmentAttach)){
-            getSupportFragmentManager().beginTransaction()
-                    .attach(fragmentAttach)
-                    .detach(onFragmentPage())
-                    .commit();
-        }
-
-    }*/
     private Fragment onFragmentPage() {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentById(R.id.frameLayoutPageMain);
@@ -231,8 +288,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
-
-
     private void AutoConnectPrinter(){
         InstanceVariable.mConnector = new P25Connector(new P25Connector.P25ConnectionListener() {
             @Override

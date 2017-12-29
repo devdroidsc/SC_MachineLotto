@@ -5,6 +5,15 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/Liner_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_settiing"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -13,39 +22,66 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_number"
-                android:textSize="@dimen/text_size30"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/colorblack"/>
-            <TextView
-                android:id="@+id/text_tital"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text=""
-                android:textSize="@dimen/magin_size50"
-                android:gravity="center"
-                android:textColor="@color/color_red"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ที่ต้องการซื้อ"
-                android:textSize="@dimen/text_size30"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/colorblack"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_number"
+                    android:textSize="@dimen/text_size30"
+                    android:gravity="center"
+                    android:textColor="@color/colorblack"
+                    android:layout_marginLeft="@dimen/magin65"/>
+                <TextView
+                    android:id="@+id/text_tital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="@dimen/magin_size50"
+                    android:gravity="center"
+                    android:textColor="@color/color_red"
+                    android:textStyle="bold"
+                    android:freezesText="true"
+                    android:layout_marginLeft="@dimen/magin20"
+                    android:layout_marginRight="@dimen/magin20"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ที่ต้องการซื้อ"
+                    android:textSize="@dimen/text_size30"
+                    android:gravity="center"
+                    android:textColor="@color/colorblack"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center">
 
+            <LinearLayout
+                android:id="@+id/li_return_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/magin10"
+                android:layout_weight="2.5">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/return_number"
+                    android:textSize="@dimen/size_20"
+                    android:textColor="@color/color_black"
+                    android:textStyle="bold"/>
+                <ImageView
+                    android:id="@+id/cb_return_number"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/ic_box_check"/>
+
+            </LinearLayout>
             <EditText
                 android:id="@+id/edit_number"
                 android:layout_width="match_parent"
@@ -68,8 +104,8 @@
                 android:layout_weight="2"
                 android:layout_marginRight="@dimen/magin10"
                 android:layout_marginLeft="@dimen/magin10"
-                android:textStyle="bold"/>
-
+                android:textStyle="bold"
+                android:freezesText="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -80,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="1.1"
+                android:layout_weight="1"
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"

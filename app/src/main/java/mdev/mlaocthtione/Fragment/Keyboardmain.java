@@ -28,6 +28,7 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
     private TextView btn_edit, btn_cancel, btn_enter, btn_print,bt_twozero;
     private LinearLayout lnContentPrinter,bt_logout;
     private ImageView img_priterandtang;
+    private TextView bt_number_full;
 
     private boolean Checkpage = true;
     public Keyboardmain() {
@@ -63,9 +64,9 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         btn_print = view.findViewById(R.id.btn_print);
         bt_twozero = view.findViewById(R.id.bt_twozero);
         lnContentPrinter = view.findViewById(R.id.lnContentPrinter);
-        img_priterandtang = view.findViewById(R.id.img_priterandtang);
-        bt_logout = view.findViewById(R.id.bt_logout);
-
+        //img_priterandtang = view.findViewById(R.id.img_priterandtang);
+        //bt_logout = view.findViewById(R.id.bt_logout);
+        bt_number_full = view.findViewById(R.id.bt_number_full);
 
         bt_zero.setOnClickListener(this);
         bt_nine.setOnClickListener(this);
@@ -82,7 +83,8 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         btn_cancel.setOnClickListener(this);
         btn_print.setOnClickListener(this);
         lnContentPrinter.setOnClickListener(this);
-        bt_logout.setOnClickListener(this);
+        bt_number_full.setOnClickListener(this);
+//        bt_logout.setOnClickListener(this);
 
     }
     @Override
@@ -102,14 +104,18 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
                 onclickmain.setTAG_KEY("Savelot");
                 BusProvider.getInstance().post(onclickmain);
                 break;
-            case R.id.lnContentPrinter:
+            /*case R.id.lnContentPrinter:
                 onclickmain.setTAG_KEY("SettingPrinter");
                 BusProvider.getInstance().post(onclickmain);
-                break;
-            case R.id.bt_logout:
-                onclickmain.setTAG_KEY("Loginout");
+                break;*/
+            case R.id.bt_number_full:
+                onclickmain.setTAG_KEY("NumberFull");
                 BusProvider.getInstance().post(onclickmain);
                 break;
+           /* case R.id.bt_logout:
+                onclickmain.setTAG_KEY("Loginout");
+                BusProvider.getInstance().post(onclickmain);
+                break;*/
             case R.id.bt_one:
                 onclickmain.setTAG_KEY("1");
                 BusProvider.getInstance().post(onclickmain);

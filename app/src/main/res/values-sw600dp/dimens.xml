@@ -22,8 +22,8 @@
     <dimen name="pad_btn_save_rl">40dp</dimen>
     <dimen name="size_text_title_page">18sp</dimen>
     <dimen name="size_txt_save">30sp</dimen>
-    <dimen name="widthlogologin">250dp</dimen>
-    <dimen name="hightlogologin">150dp</dimen>
+    <dimen name="widthlogologin">350dp</dimen>
+    <dimen name="hightlogologin">200dp</dimen>
 
     <!--M-->
 
@@ -125,5 +125,6 @@
     <dimen name="size_txt_footer_bill">16sp</dimen>
 
     <dimen name="size_ic_printer">60dp</dimen>
+    <dimen name="magin65">65dp</dimen>
 
 </resources>

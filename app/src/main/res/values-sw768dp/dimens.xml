@@ -125,5 +125,6 @@
     <dimen name="size_txt_footer_bill">16sp</dimen>
 
     <dimen name="size_ic_printer">60dp</dimen>
+    <dimen name="magin65">65dp</dimen>
 
 </resources>

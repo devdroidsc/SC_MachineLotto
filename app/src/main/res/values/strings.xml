@@ -124,4 +124,10 @@
     <string name="text_save_successful">บันทึกรายการสำเร็จ</string>
     <string name="txt_alert_exit_app">กดอีกครั้งเพื่อออกจากแอพ</string>
     <string name="txt_version_app">V.4</string>
+    <string name="return_number">กลับ</string>
+    <string name="number_full">เลขเต็ม</string>
+    <string name="printer_text">เครื่องพิมพ์</string>
+    <string name="want_text_message">ต้องการใช้สิทธิ์การเข้าถึง</string>
+    <string name="worktextmessage">เพื่อการทำงานที่สมบูรณ์</string>
+
 </resources>
