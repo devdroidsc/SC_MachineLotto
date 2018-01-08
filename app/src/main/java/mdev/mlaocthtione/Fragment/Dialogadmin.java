@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -46,16 +47,20 @@ public class Dialogadmin extends Fragment {
         return dialogadmin;
     }
 
-    private TextView btn_enter_admin;
+    private TextView btn_enter_admin,title_admin;
     private EditText edit_admin;
     private AllCommand allCommand;
+    private String TAG_DIALOGADMIN="TAGDIALOGADMIN";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BusProvider.getInstance().register(this);
         allCommand = new AllCommand();
+
     }
+
+
 
     @Nullable
     @Override
@@ -64,11 +69,10 @@ public class Dialogadmin extends Fragment {
         View view = inflater.inflate(R.layout.dialog_admin,container,false);
 
         btn_enter_admin = view.findViewById(R.id.btn_enter_admin);
+        title_admin = view.findViewById(R.id.title_admin);
         edit_admin = view.findViewById(R.id.edit_admin);
         edit_admin.setKeyListener(null);
         edit_admin.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-
-
 
         btn_enter_admin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +82,7 @@ public class Dialogadmin extends Fragment {
                     final ModelBus modelBus = new ModelBus();
 
                     if (allCommand.GetStringShare(getContext(),allCommand.moStatuspage,"").equals("p1")){
+
                         modelBus.setPage(Utils.KEY_ADD_PAGE_PRINTER);
                         modelBus.setMsg(Utils.NAME_ADD_PAGE_PRINTER);
                         BusProvider.getInstance().post(modelBus);
@@ -89,7 +94,7 @@ public class Dialogadmin extends Fragment {
 
                 }else {
 
-                    allCommand.ShowAertDialog_OK("รหัสไม่ถูกต้อง",getContext());
+                    allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_userincorrect,"Username or password is invalid."),getContext());
                     edit_admin.setText("");
                 }
 
@@ -97,6 +102,21 @@ public class Dialogadmin extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        btn_enter_admin.setText(allCommand.GetStringShare(getContext(),allCommand.text_ok,"Submit"));
+        title_admin.setText(allCommand.GetStringShare(getContext(),allCommand.text_admin,"Enter Security Code"));
+        Log.e("Dialogadmin", allCommand.GetStringShare(getContext(), allCommand.text_userincorrect, "asdfe"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 
     @Override
@@ -130,53 +150,53 @@ public class Dialogadmin extends Fragment {
         });
     }
 
+    private Fragment onFragmentPage() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        Fragment f = fm.findFragmentById(R.id.frameLayoutPageMain);
+        if (f != null) {
+            return f;
+        }
+        return null;
+    }
+
     @Subscribe
     public void onClickBus(OnclickPrinter onclickPrinter){
 
-        if (!onclickPrinter.getTAG_KEY().equals("")){
+            if (!onclickPrinter.getTAG_KEY().equals("")){
 
-            switch (onclickPrinter.getTAG_KEY()) {
-                case "edit":
+                switch (onclickPrinter.getTAG_KEY()) {
+                    case "edit":
+                        int length = edit_admin.getText().length();
+                        if (length > 0) {
+                            edit_admin.getText().delete(length - 1, length);
+                        }
+                        break;
+                    default:
+                        setNumber(onclickPrinter.getTAG_KEY());
+                        break;
+                }
 
-                    int length = edit_admin.getText().length();
-                    if (length > 0) {
-                        edit_admin.getText().delete(length - 1, length);
-                    }
-
-                    break;
-                case "back":
-
-                    ModelBus modelBus = new ModelBus();
-                    modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
-                    modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
-                    BusProvider.getInstance().post(modelBus);
-
-                    break;
-                default:
-                    setNumber(onclickPrinter.getTAG_KEY());
-                    break;
             }
-
-        }
-
     }
     private void setNumber(String number){
-        if (getActivity().getCurrentFocus().getId() == edit_admin.getId()) {
+        edit_admin.setText(edit_admin.getText().toString() + number);
+
+        /*if (edit_admin.getId() == getActivity().getCurrentFocus().getId()) {
             edit_admin.setText(edit_admin.getText() + number);
-        }
+        }*/
     }
 
     public void loginOut(){
         int sizeMsgDialog = Integer.parseInt(getResources().getString(R.string.size_dialog_ok));
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         TextView myMsg = new TextView(getActivity());
-        myMsg.setText("\n" + getResources().getString(R.string.title_logout) + "\n");
+        myMsg.setText("\n" + allCommand.GetStringShare(getContext(),allCommand.text_logout,"Exit the app") + "\n");
         myMsg.setTextSize(sizeMsgDialog);
         myMsg.setGravity(Gravity.CENTER);
         myMsg.setTypeface(null, Typeface.BOLD);
         builder.setView(myMsg);
         builder.setCancelable(true);
-        builder.setPositiveButton(getResources().getString(R.string.title_yes), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(allCommand.GetStringShare(getContext(),allCommand.text_yes,"Yes"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 allCommand.SaveStringShare(getContext(),allCommand.moSavePass,"");
@@ -192,7 +212,7 @@ public class Dialogadmin extends Fragment {
                 edit_admin.setText("");
             }
         });
-        builder.setNegativeButton(getResources().getString(R.string.title_no),null);
+        builder.setNegativeButton(allCommand.GetStringShare(getContext(),allCommand.text_no,"No"),null);
         final AlertDialog alertdialog = builder.create();
         alertdialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,7 @@ public class PageNumberfull extends Fragment {
     private RecyclerView re_number_full;
     private CustomAdapterNamberFull adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView tv_title_number_full;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +69,9 @@ public class PageNumberfull extends Fragment {
         return view;
     }
     private void itemView(View view){
+
+        tv_title_number_full = view.findViewById(R.id.tv_title_number_full);
+
         re_number_full = view.findViewById(R.id.re_number_full);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
@@ -101,6 +106,12 @@ public class PageNumberfull extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        tv_title_number_full.setText(allCommand.GetStringShare(getContext(),allCommand.text_numberFull,"Limit number"));
+    }
+
     @SuppressLint("StaticFieldLeak")
     private void setData(){
 
@@ -113,6 +124,7 @@ public class PageNumberfull extends Fragment {
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> param = new ArrayList<>();
                     param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("mid",moMid));
+                    param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("lang", allCommand.GetStringShare(getContext(),allCommand.Check_Languane,"")));
                     return allCommand.POST_OK_HTTP_SendData(urlServer+"getFull.php",param);
                 }
 
@@ -137,6 +149,8 @@ public class PageNumberfull extends Fragment {
 
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }else {
+            allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_no_internet,"Please connect to the internet."),getContext());
         }
     }
 }

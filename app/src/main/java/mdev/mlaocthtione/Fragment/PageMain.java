@@ -31,6 +31,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -71,6 +74,7 @@ import mdev.mlaocthtione.FormatHttpPostOkHttp.FromHttpPostOkHttp;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.Model.Modeldetail;
 import mdev.mlaocthtione.Model.Modelitemlot;
+import mdev.mlaocthtione.ModelBus.OnCloseSavelot;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.ModelBus.Onreset;
 import mdev.mlaocthtione.R;
@@ -122,6 +126,11 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private ImageView image_cb_return;
     private boolean onReset = false;
 
+    private TextView num_title,top_title,lower_title,toad_title,return_title,tv_close_bet,tv_title_savelot,text_title_buy;
+    private int Check_focus = 1;
+    private boolean onClosetng = true;
+
+
     private static final String TAG = "PageMain";
 
     private String[] listLognumber = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
@@ -151,6 +160,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
         outState.putString("strCloseBig", strCloseBig);
         outState.putString("strCloseSmall", strCloseSmall);
         outState.putString("strPhon", strPhon);
+        outState.putInt("Check_focus",Check_focus);
 
     }
 
@@ -178,7 +188,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             strCloseBig = savedInstanceState.getString("strCloseBig");
             strCloseSmall = savedInstanceState.getString("strCloseSmall");
             strPhon = savedInstanceState.getString("strPhon");
-
+            Check_focus = savedInstanceState.getInt("Check_focus");
         }
 
 
@@ -214,14 +224,14 @@ public class PageMain extends Fragment implements View.OnClickListener {
         onThreadPrintBill();
 
         uuid= tManager.getDeviceId().toString();
-        Log.e(TAG, tManager.getDeviceId().toString());
+        onShowLogCat(TAG, tManager.getDeviceId().toString());
 
 
         Date currentTime = Calendar.getInstance().getTime();
 
-        /*Log.e("PageMain moCloseBig", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseBig,"")));
-        Log.e("PageMain moCloseSmall", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseSmall,"")));
-        Log.e("PageMain เครื่อง", allCommand.SetDateFoment(currentTime));*/
+        /*onShowLogCat("PageMain moCloseBig", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseBig,"")));
+        onShowLogCat("PageMain moCloseSmall", allCommand.SetDatestamp(allCommand.GetStringShare(getContext(),allCommand.moCloseSmall,"")));
+        onShowLogCat("PageMain เครื่อง", allCommand.SetDateFoment(currentTime));*/
 
         strCloseBig = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(), allCommand.moCloseBig, ""));
         strCloseSmall = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(), allCommand.moCloseSmall, ""));
@@ -229,7 +239,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         SimpleDateFormat dates = new SimpleDateFormat("MM/dd/yyyy");
 
-        //Log.e("PageMain", allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, ""));
+        //onShowLogCat("PageMain", allCommand.GetStringShare(getActivity(), allCommand.molot_pay_big1, ""));
 
         initSwipe();
 
@@ -317,6 +327,15 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
     private void itemView(View view) {
 
+        text_title_buy = view.findViewById(R.id.text_title_buy);
+        tv_title_savelot = view.findViewById(R.id.tv_title_savelot);
+        tv_close_bet = view.findViewById(R.id.tv_close_bet);
+        num_title = view.findViewById(R.id.num_title);
+        top_title = view.findViewById(R.id.top_title);
+        lower_title = view.findViewById(R.id.lower_title);
+        toad_title = view.findViewById(R.id.toad_title);
+        return_title = view.findViewById(R.id.return_title);
+
         cb_return_number = view.findViewById(R.id.li_return_number);
         image_cb_return = view.findViewById(R.id.cb_return_number);
         Liner_setting = view.findViewById(R.id.Liner_setting);
@@ -331,7 +350,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
         re_savelot = view.findViewById(R.id.re_savelot);
         btn_enter = view.findViewById(R.id.btn_enter);
         text_tital = view.findViewById(R.id.text_tital);
-        text_tital.setText(R.string.title_num_tang);
+        text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
 
         btn_enter.setOnClickListener(this);
         btn_close_lot.setOnClickListener(this);
@@ -368,15 +387,15 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 int count = edit_number.length();
                 if (count <= 0) {
                     btn_enter.setBackgroundResource(R.drawable.bg_number_nextto);
-                    btn_enter.setText(allCommand.text_next);
+                    btn_enter.setText(allCommand.GetStringShare(getContext(),allCommand.text_Next,"Next"));
 
                 } else {
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(allCommand.text_ok);
+                    btn_enter.setText(allCommand.GetStringShare(getContext(),allCommand.text_ok,"Submit"));
                 }
-                if (text_tital.getText().equals(allCommand.text_Number)) {
+                if (text_tital.getText().equals(allCommand.GetStringShare(getContext(),allCommand.text_Number,"Number"))) {
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(allCommand.text_ok);
+                    btn_enter.setText(allCommand.GetStringShare(getContext(),allCommand.text_ok,"Submit"));
                 }
             }
         });
@@ -386,11 +405,23 @@ public class PageMain extends Fragment implements View.OnClickListener {
         //setDataFist();
     }
 
-    @Override
+    /*@Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        getActivity().getMenuInflater().inflate(R.menu.my_menu, menu);
+
+
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.my_menu, menu);
+        menu1 = menu.findItem(R.id.myitem1);
+        menu2 = menu.findItem(R.id.myitem2);
+
+        menu1.setTitle("YourTitle");
+        menu2.setTitle("YourTitle2");
+    }*/
 
     @Override
     public void onResume() {
@@ -401,25 +432,66 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 adapter.notifyDataSetChanged();
             }
             Clear_Editext();
-            text_tital.setText(R.string.title_num_tang);
+            text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
             Check_number = true;
             btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-            btn_enter.setText(allCommand.text_ok);
+            btn_enter.setText(allCommand.GetStringShare(getActivity(),allCommand.text_ok,"Submit"));
             onReset = false;
         }
-    }
 
+        if (!allCommand.GetStringShare(getContext(),allCommand.Check_Languane,"").equals("")){
+
+            num_title.setText(allCommand.GetStringShare(getContext(),allCommand.text_Number,"Number"));
+            top_title.setText(allCommand.GetStringShare(getContext(),allCommand.text_Top,"Up"));
+            lower_title.setText(allCommand.GetStringShare(getContext(),allCommand.text_lower,"Down"));
+            toad_title.setText(allCommand.GetStringShare(getContext(),allCommand.text_Toad,"Switch"));
+            return_title.setText(allCommand.GetStringShare(getContext(),allCommand.text_returns,"Back"));
+            tv_close_bet.setText(allCommand.GetStringShare(getContext(),allCommand.text_close_bet,"Bet close"));
+            tv_title_savelot.setText(allCommand.GetStringShare(getContext(),allCommand.text_save_success,"Success"));
+            text_title_buy.setText(allCommand.GetStringShare(getContext(),allCommand.text_inputNumber,"Please fill in"));
+
+            switch (Check_focus){
+                case 1:
+                    text_tital.setText(allCommand.GetStringShare(getContext(),allCommand.text_Number,"Number"));
+                    break;
+                case 2:
+                    text_tital.setText(allCommand.GetStringShare(getContext(),allCommand.text_Top,"Up"));
+                    break;
+                case 3:
+                    text_tital.setText(allCommand.GetStringShare(getContext(),allCommand.text_lower,"Down"));
+                    break;
+                case 4:
+                    text_tital.setText(allCommand.GetStringShare(getContext(),allCommand.text_Toad,"Switch"));
+                    break;
+            }
+
+            int count = edit_number.length();
+            if (count <= 0) {
+                btn_enter.setBackgroundResource(R.drawable.bg_number_nextto);
+                btn_enter.setText(allCommand.GetStringShare(getContext(),allCommand.text_Next,"Next"));
+
+            } else {
+                btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+                btn_enter.setText(allCommand.GetStringShare(getContext(),allCommand.text_ok,"Submit"));
+            }
+            if (text_tital.getText().equals(allCommand.GetStringShare(getContext(),allCommand.text_Number,"Number"))) {
+                btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
+                btn_enter.setText(allCommand.GetStringShare(getContext(),allCommand.text_ok,"Submit"));
+            }
+
+        }
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.btn_enter:
-                if (btn_enter.getText().equals(allCommand.text_ok)) {
+                if (btn_enter.getText().equals(allCommand.GetStringShare(getActivity(),allCommand.text_ok,"Submit"))) {
                     if (edit_number.length() > 0) {
                         setData();
                         redetail.smoothScrollToPosition(list.size());
                     }
-                } else if (btn_enter.getText().equals(allCommand.text_next)) {
+                } else if (btn_enter.getText().equals(allCommand.GetStringShare(getActivity(),allCommand.text_Next,"Next"))) {
                     setNexto();
                 }
 
@@ -431,7 +503,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     list_lot.clear();
                     adapter_savelot.notifyDataSetChanged();
                 }
-
                 break;
             case R.id.liner_close_tang:
 
@@ -446,16 +517,22 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     image_cb_return.setBackgroundResource(R.drawable.ic_on_check);
                 }
 
-
                 break;
             case R.id.Liner_setting:
                 final ModelBus modelBus = new ModelBus();
                 PopupMenu popup = new PopupMenu(getActivity(), Liner_setting);
                 popup.getMenuInflater().inflate(R.menu.my_menu, popup.getMenu());
 
+                MenuItem menuprinter = popup.getMenu().findItem(R.id.myitem1);
+                MenuItem menuexitapp = popup.getMenu().findItem(R.id.myitem2);
+
+                menuprinter.setTitle(allCommand.GetStringShare(getContext(),allCommand.text_printer,"Printer"));
+                menuexitapp.setTitle(allCommand.GetStringShare(getContext(),allCommand.text_logout,"Exit the app"));
+
+
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().equals("เครื่องพิมพ์")) {
+                        if (item.getTitle().equals(allCommand.GetStringShare(getContext(),allCommand.text_printer,"Printer"))) {
 
                             modelBus.setPage(Utils.KEY_ADD_PAGE_ADMIN);
                             modelBus.setMsg(Utils.NAME_ADD_PAGE_ADMIN);
@@ -480,10 +557,11 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
     private View view;
 
+
     @Subscribe
     public void onClickMain(Onclickmain onclickmain) throws URISyntaxException {
         ModelBus modelBus = new ModelBus();
-
+        OnCloseSavelot onCloseSavelot = new OnCloseSavelot();
         if (!onclickmain.getTAG_KEY().equals("")) {
 
             switch (onclickmain.getTAG_KEY()) {
@@ -503,8 +581,9 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                         if (Check_Tang) {
                             saveLot();
+                            onCloseSavelot.setTAG_KEY("1");
+                            BusProvider.getInstance().post(onCloseSavelot);
                         }
-
                     }
                     break;
                 case "SettingPrinter":
@@ -522,9 +601,27 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     modelBus.setMsg(Utils.NAME_ADD_PAGE_NUMBERFULL);
                     BusProvider.getInstance().post(modelBus);
                     break;
-                /*case "Loginout":
-                    loginOut();
-                    break;*/
+                case "Language":
+                    modelBus.setPage(Utils.KEY_ADD_PAGE_LANGUAGE);
+                    modelBus.setMsg(Utils.NAME_ADD_PAGE_LANGUAGE);
+                    BusProvider.getInstance().post(modelBus);
+                    break;
+                case "back":
+                    modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
+                    modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
+                    BusProvider.getInstance().post(modelBus);
+                    break;
+
+                case "Close":
+                    laout_number.setVisibility(View.VISIBLE);
+                    laout_savelot.setVisibility(View.GONE);
+                    if (list_lot.size() > 0) {
+                        list_lot.clear();
+                        adapter_savelot.notifyDataSetChanged();
+                    }
+                    onCloseSavelot.setTAG_KEY("2");
+                    BusProvider.getInstance().post(onCloseSavelot);
+                    break;
 
                 default:
                     setNumber(onclickmain.getTAG_KEY());
@@ -562,16 +659,19 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
         }
         Clear_Editext();
-        text_tital.setText(R.string.title_num_tang);
+        text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
         Check_number = true;
         btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-        btn_enter.setText(allCommand.text_ok);
+        btn_enter.setText(allCommand.GetStringShare(getActivity(),allCommand.text_ok,"Submit"));
         //setDataFist();
     }
 
     private void setData() {
 
         if (Check_number) {
+
+            Check_focus = 2;
+            //onShowLogCat(TAG, "Check_focus:" + Check_focus);
 
             Check_number = false;
             Check_numberTop = false;
@@ -695,7 +795,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             list.add(modeldetail);
             adapter.notifyDataSetChanged();
 
-            text_tital.setText(R.string.text_title_threeon);
+            text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Top,"Up"));
             Clear_Editext();
 
 
@@ -720,16 +820,22 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 modeldetail.setNo_focus_toad(list.get(list.size() - 1).getNo_focus_toad());
 
                 if (Check_numberlower) {
-                    text_tital.setText(R.string.text_title_threedown);
+                    text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_lower,"Down"));
                     modeldetail.setFocus_button("1");
+                    Check_focus = 3;
+                   // onShowLogCat(TAG, "Check_focus:" + Check_focus);
                 } else if (Check_numberToad) {
-                    text_tital.setText(R.string.text_title_threetod);
+                    text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Toad,"Switch"));
                     modeldetail.setFocus_toad("1");
                     CheckNextto_Toad = false;
+                    Check_focus = 4;
+                   // onShowLogCat(TAG, "Check_focus:" + Check_focus);
                 } else {
                     Check_Tang = true;
-                    text_tital.setText(R.string.title_num_tang);
+                    text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
                     Check_number = true;
+                    Check_focus = 1;
+                   // onShowLogCat(TAG, "Check_focus:" + Check_focus);
                     /*btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
                     btn_enter.setText(allCommand.text_ok);*/
                 }
@@ -746,6 +852,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
             }
         } else if (Check_numberlower) {
+
             String number = edit_number.getText().toString();
             if (!number.equals("0")) {
                 Modeldetail modeldetail = new Modeldetail();
@@ -765,15 +872,19 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 if (!Check_numberToad) {
                     Check_Tang = true;
-                    text_tital.setText(R.string.title_num_tang);
+                    text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
                     Check_number = true;
                     modeldetail.setFocus_number("1");
+                    Check_focus = 1;
+                   // onShowLogCat(TAG, "Check_focus:" + Check_focus);
                     /*btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
                     btn_enter.setText(allCommand.text_ok);*/
 
                 } else {
-                    text_tital.setText(R.string.text_title_threetod);
+                    text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Toad,"Switch"));
                     modeldetail.setFocus_toad("1");
+                    Check_focus = 4;
+                    //onShowLogCat(TAG, "Check_focus:" + Check_focus);
                 }
 
                 modeldetail.setNo_return(list.get(list.size()-1).getNo_return());
@@ -809,11 +920,14 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
                 if (!Check_numberlower) {
                     Check_Tang = true;
-                    text_tital.setText(R.string.title_num_tang);
+                    text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
                     Check_number = true;
                     modeldetail.setFocus_number("1");
                     btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                    btn_enter.setText(allCommand.text_ok);
+                    btn_enter.setText(allCommand.GetStringShare(getActivity(),allCommand.text_ok,"Submit"));
+
+                    Check_focus = 1;
+                   // onShowLogCat(TAG, "Check_focus:" + Check_focus);
                 }
 
                 modeldetail.setNo_return(list.get(list.size()-1).getNo_return());
@@ -833,11 +947,14 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private void setNexto() {
 
         if (!Check_number && Check_numberlower && CheckNextto_lower) {
-            Log.e("MainActivity  ", "Check_numberlower");
+            Check_focus = 3;
+           // onShowLogCat(TAG, "Check_focus:" + Check_focus);
+
+           // onShowLogCat("MainActivity  ", "Check_numberlower");
             Clear_Editext();
             Check_numberTop = false;
             CheckNextto_lower = false;
-            text_tital.setText(R.string.text_title_threedown);
+            text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_lower,"Down"));
 
             Modeldetail modeldetail = new Modeldetail();
             modeldetail.setNumber(list.get(list.size() - 1).getNumber());
@@ -865,11 +982,14 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
 
         } else if (!Check_number && Check_numberToad && CheckNextto_Toad) {
-            Log.e("MainActivity  ", "Check_numberToad");
+            Check_focus = 4;
+           // onShowLogCat(TAG, "Check_focus:" + Check_focus);
+
+           // onShowLogCat("MainActivity  ", "Check_numberToad");
             Clear_Editext();
             Check_numberlower = false;
             Check_numberTop = false;
-            text_tital.setText(R.string.text_title_threetod);
+            text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Toad,"Switch"));
 
             Modeldetail modeldetail = new Modeldetail();
             modeldetail.setNumber(list.get(list.size() - 1).getNumber());
@@ -901,8 +1021,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
 
         } else {
+            Check_focus = 1;
+           // onShowLogCat(TAG, "Check_focus:" + Check_focus);
 
-            Log.e("MainActivity  ", "Out Nexto");
+           // onShowLogCat("MainActivity  ", "Out Nexto");
             if (list.get(list.size() - 1).getTop().length() > 0 ||
                     list.get(list.size() - 1).getButton().length() > 0 ||
                     list.get(list.size() - 1).getButton().length() > 0) {
@@ -943,10 +1065,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 list.set(list.size() - 1, modeldetail);
                 adapter.notifyDataSetChanged();
 
-                text_tital.setText(R.string.title_num_tang);
+                text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
                 Check_number = true;
                 btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-                btn_enter.setText(allCommand.text_ok);
+                btn_enter.setText(allCommand.GetStringShare(getActivity(),allCommand.text_ok,"Submit"));
                 Check_Tang = true;
 
             }
@@ -970,7 +1092,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
             final String urlServer = allCommand.GetStringShare(getActivity(), allCommand.moURL, "");
             final String moMid = allCommand.GetStringShare(getActivity(), allCommand.moMemberID, "");
-            //Log.e("MainActivity", "URL SET " + urlServer);
+            //onShowLogCat("MainActivity", "URL SET " + urlServer);
             new AsyncTask<String, Void, String>() {
                 @Override
                 protected String doInBackground(String... strings) {
@@ -1001,6 +1123,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                             String billId = jsonTang.getString("BillID");
                             laout_number.setVisibility(View.GONE);
                             laout_savelot.setVisibility(View.VISIBLE);
+                            onClosetng = false;
                             JSONArray jArray = new JSONArray(jsonTang.getString("data"));
                             for (int i = 0; i < jArray.length(); i++) {
                                 JSONObject jObject = jArray.getJSONObject(i);
@@ -1042,6 +1165,9 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }else {
+            allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_no_internet,"Please connect to the internet."),getContext());
+
         }
     }
 
@@ -1341,7 +1467,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
     private void removeItemView() {
 
-        //Log.e("PageMain", "WelCome removeItemView");
+        //onShowLogCat("PageMain", "WelCome removeItemView");
         if (list.size() > 0) {
 
             Modeldetail modeldetail = new Modeldetail();
@@ -1381,10 +1507,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
 
         }
-        text_tital.setText(R.string.title_num_tang);
+        text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
         Check_number = true;
         btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
-        btn_enter.setText(allCommand.text_ok);
+        btn_enter.setText(allCommand.GetStringShare(getActivity(),allCommand.text_ok,"Submit"));
 
     }
 
@@ -1409,7 +1535,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         switch (chars.length){
             case 1:
-                Log.e(TAG, String.valueOf(chars[0]));
+                onShowLogCat(TAG, String.valueOf(chars[0]));
                 break;
             case 2:
 

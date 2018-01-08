@@ -20,6 +20,7 @@ import mdev.mlaocthtione.Fragment.Keyboardlogin;
 import mdev.mlaocthtione.Fragment.Keyboardmain;
 import mdev.mlaocthtione.Fragment.Keyboardprint;
 import mdev.mlaocthtione.Fragment.PageDetail;
+import mdev.mlaocthtione.Fragment.PageLanguage;
 import mdev.mlaocthtione.Fragment.PageLogin;
 import mdev.mlaocthtione.Fragment.PageMain;
 import mdev.mlaocthtione.Fragment.PageNumberfull;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private AllCommand allCommand;
     private String TAG_PAGEMAIN = "TAGPAGEMAIN",TAG_PAGEDETAIL = "TAGPAGEDETAIL",TAG_PAGEPRINTER = "TAGPAGEPRINTER"
                     ,TAG_PAGELOGIN = "TAGPAGELOGIN",TAG_PAGENUMBERFULL = "TAGPAGENUMBERFULL"
-            ,TAG_DIALOGADMIN="TAGDIALOGADMIN";
+            ,TAG_DIALOGADMIN="TAGDIALOGADMIN",TAG_PAGELANGUAGE = "TAG_PAGELANGUAGE";
 
     private String TAG_KEYBOARDLOGIN = "TAGKEYBOARDLOGIN",TAG_KEYBOARDMAIN = "TAGKEYBOARDMAIN",TAG_KEYBOARDPRINTER = "TAGKEYBOARDPRINTER";
 
@@ -96,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .add(R.id.frameLayoutPageMain, dialogadmin,TAG_DIALOGADMIN)
                 .detach(dialogadmin)
+                .commit();
+
+        PageLanguage pageLanguage = PageLanguage.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frameLayoutPageMain, pageLanguage,TAG_PAGELANGUAGE)
+                .detach(pageLanguage)
                 .commit();
 
         getSupportFragmentManager()
@@ -266,11 +274,30 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
+            else if (modelBus.getPage() == Utils.KEY_ADD_PAGE_LANGUAGE){
 
+                Fragment fragmentAttach = (PageLanguage)
+                        getSupportFragmentManager().findFragmentByTag(TAG_PAGELANGUAGE);
+
+                if (!onFragmentPage().equals(fragmentAttach)){
+                    getSupportFragmentManager().beginTransaction()
+                            .attach(fragmentAttach)
+                            .detach(onFragmentPage())
+                            .commit();
+                }
+
+                Fragment keyboardmain = (Keyboardprint)
+                        getSupportFragmentManager().findFragmentByTag(TAG_KEYBOARDPRINTER);
+
+                if (!onFragmentPage().equals(keyboardmain)){
+                    getSupportFragmentManager().beginTransaction()
+                            .detach(onFragmentKeyBoad())
+                            .attach(keyboardmain)
+                            .commit();
+                }
+            }
 
         }
-
-
     }
     private Fragment onFragmentPage() {
         FragmentManager fm = getSupportFragmentManager();
@@ -293,19 +320,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStartConnecting() {
                 allCommand.saveIntShare(MainActivity.this, Utils.SHARE_STATUS_CON_BT,0);//กำลังเชื่อมต่อ
-                onSetStatusPrinter(0,getResources().getString(R.string.txt_connecting_printer), Color.BLACK,false);
+                onSetStatusPrinter(0,allCommand.GetStringShare(MainActivity.this,allCommand.text_connecting_printer,"Connecting printer..."), Color.BLACK,false);
             }
 
             @Override
             public void onConnectionCancelled() {
                 allCommand.saveIntShare(MainActivity.this,Utils.SHARE_STATUS_CON_BT,-1);//เชื่อมต่อผิดพลาด
-                onSetStatusPrinter(-1,getResources().getString(R.string.txt_no_connect_printer) ,Color.RED,false);
+                onSetStatusPrinter(-1,allCommand.GetStringShare(MainActivity.this,allCommand.text_no_connect_printer,"Printer not connected.") ,Color.RED,false);
             }
 
             @Override
             public void onConnectionSuccess() {
                 allCommand.saveIntShare(MainActivity.this,Utils.SHARE_STATUS_CON_BT,1);//เชื่อมต่อสำเร็จ
-                onSetStatusPrinter(1,getResources().getString(R.string.txt_connected_printer),Color.BLUE,true);
+                onSetStatusPrinter(1,allCommand.GetStringShare(MainActivity.this,allCommand.text_connected_printer,"Printer connected"),Color.BLUE,true);
             }
 
             @Override
@@ -319,17 +346,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                onSetStatusPrinter(-1,getResources().getString(R.string.txt_no_connect_printer) ,Color.RED,false);
+                onSetStatusPrinter(-1,allCommand.GetStringShare(MainActivity.this,allCommand.text_no_connect_printer,"Printer not connected.") ,Color.RED,false);
             }
 
             @Override
             public void onDisconnected() {
                 allCommand.saveIntShare(MainActivity.this,Utils.SHARE_STATUS_CON_BT,-1);//เชื่อมต่อผิดพลาด
-                onSetStatusPrinter(-1,getResources().getString(R.string.txt_no_connect_printer) ,Color.RED,false);
+                onSetStatusPrinter(-1,allCommand.GetStringShare(MainActivity.this,allCommand.text_no_connect_printer,"Printer not connected.") ,Color.RED,false);
             }
         });
         allCommand.saveIntShare(MainActivity.this,Utils.SHARE_STATUS_CON_BT,-1);//เชื่อมต่อผิดพลาด
-        onSetStatusPrinter(-1,getResources().getString(R.string.txt_no_connect_printer) ,Color.RED,false);
+        onSetStatusPrinter(-1,allCommand.GetStringShare(MainActivity.this,allCommand.text_no_connect_printer,"Printer not connected.") ,Color.RED,false);
 
         String IP_PRINTER = allCommand.GetStringShare(MainActivity.this,Utils.SHARE_IP_PRINTER,"");
         if (IP_PRINTER.trim().length() > 0) {

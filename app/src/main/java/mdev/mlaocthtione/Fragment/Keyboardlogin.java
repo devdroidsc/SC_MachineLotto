@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.ModelBus.Onclicklogin;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
@@ -21,6 +22,7 @@ public class Keyboardlogin extends Fragment implements View.OnClickListener {
     private TextView bt_zero, bt_nine, bt_eight,
             bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one;
     private TextView btn_edit,bt_Left,bg_Login;
+    private AllCommand allCommand;
 
     public Keyboardlogin() {
     }
@@ -34,6 +36,7 @@ public class Keyboardlogin extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BusProvider.getInstance().register(this);
+        allCommand = new AllCommand();
     }
 
     @Nullable
@@ -59,6 +62,10 @@ public class Keyboardlogin extends Fragment implements View.OnClickListener {
         btn_edit = itemview.findViewById(R.id.btn_edit);
         bt_Left = itemview.findViewById(R.id.bt_Left);
         bg_Login = itemview.findViewById(R.id.btn_login);
+
+        btn_edit.setText(allCommand.GetStringShare(getActivity(),allCommand.text_edit,"Delete"));
+        bt_Left.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Next,"Next"));
+        bg_Login.setText(allCommand.GetStringShare(getActivity(),allCommand.text_login,"Login"));
 
         bt_zero.setOnClickListener(this);
         bt_nine.setOnClickListener(this);

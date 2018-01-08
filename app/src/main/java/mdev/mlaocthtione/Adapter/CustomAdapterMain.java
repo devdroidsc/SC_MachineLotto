@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.Model.Modeldetail;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
@@ -22,6 +23,7 @@ import mdev.mlaocthtione.R;
 public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Modeldetail> modeldetails;
     private Context context;
+    private AllCommand allCommand = new AllCommand();
 
     public CustomAdapterMain(List<Modeldetail> modeldetails, Context context) {
         this.modeldetails = modeldetails;
@@ -52,7 +54,7 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
         viewitem.textbutton.setSelected(true);
         viewitem.texttoad.setText(modellist.getToad());
         viewitem.texttoad.setSelected(true);
-
+        viewitem.tv_return_number.setText(allCommand.GetStringShare(context,allCommand.text_returns,"Back"));
 
         viewitem.Liner_Number.setBackgroundColor(Color.parseColor("#00FFFFFF"));
         viewitem.Liner_Top.setBackgroundColor(Color.parseColor("#00FFFFFF"));
@@ -132,7 +134,7 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
         private TextView textnumber,texttop,textbutton,texttoad;
         private LinearLayout Liner_Top,Liner_Toad,Liner_Lower,Liner_Number,Liner_lot;
         private LinearLayout return_number;
-        private TextView number_return;
+        private TextView number_return,tv_return_number;
 
         public ViewItemHoder(View itemView) {
             super(itemView);
@@ -149,6 +151,7 @@ public class CustomAdapterMain extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             return_number = itemView.findViewById(R.id.return_number);
             number_return = itemView.findViewById(R.id.number_return);
+            tv_return_number = itemView.findViewById(R.id.tv_return_number);
         }
     }
 }

@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="@string/printer_text"
+        android:title="menu1"
         android:id="@+id/myitem1"
         app:showAsAction="never" />
     <item
         android:id="@+id/myitem2"
-        android:title="@string/title_logout"
+        android:title="menu2"
         app:showAsAction="never" />
 </menu>

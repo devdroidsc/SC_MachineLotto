@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/liner_keyboad_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -36,20 +37,30 @@
                 android:gravity="center"
                 android:layout_marginRight="@dimen/margin1"
                 android:layout_marginLeft="@dimen/margin1"
-                android:textSize="@dimen/text_size30"
+                android:textSize="@dimen/size_txt_save"
                 android:background="@drawable/bg_menu"
                 android:layout_weight="1"
-                android:textColor="@color/color_black"
+                android:textColor="@color/color_red"
                 android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/bt_test2"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text=""
-                android:gravity="center"
-                android:textSize="@dimen/magin_size50"
-                android:background="@drawable/bg_menu"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
+                <TextView
+                    android:id="@+id/bt_language"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:gravity="center"
+                    android:textSize="@dimen/magin_size50"
+                    android:background="@drawable/bg_menu" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_language"
+                    android:tint="@color/color_txt_body_type_bill"/>
+            </RelativeLayout>
+
             <!--<LinearLayout
                 android:id="@+id/bt_logout"
                 android:layout_width="match_parent"
@@ -260,5 +271,12 @@
                 android:textStyle="bold"/>
 
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/close_tang_keyboad"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
     </LinearLayout>
 </RelativeLayout>

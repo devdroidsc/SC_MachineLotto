@@ -58,28 +58,47 @@ public class AllCommand {
 
 	public static String moUUID = "moUUID";
 
-	public static String text_ok = "ตกลง";//ตกลง
-	public static String text_next = "ข้าม";//ข้าม
-	public static String text_logout = "ออกจากระบบ";//ออกจากระบบ
-	public static String text_returns = "";//กลับ
-	public static String text_inputNumber = "";//กรุณากรอก
-	public static String text_wantBuy = "";//ที่ต้องการซื้อ
-	public static String text_Top = "";//บน
-	public static String text_lower = "";//ล่าง
-	public static String text_Toad = "";//โต๊ด
-	public static String text_printer = "";//เครื่องพิมพ์
-	public static String text_nextto = "";//ข้าม
-	public static String text_edit = "";//แก้ไข
-	public static String text_cancel = "";//ยกเลิก
-	public static String text_confirm = "";//ส่ง-พิมพ์
-	public static String text_numberFull = "";//เลขเต็ม
-	public static String text_admin = "";//กรอกรหัสยืนยันตัวตน
-	public static String text_yes = "";//ใช่
-	public static String text_no = "";//ไม่ใช่
-	public static String text_user = "";//ชื่อผู้ใช้
-	public static String text_pass = "";//รหัสผ่าน
-	public static String text_login = "";//เข้าสู่ระบบ
-	public static String text_Number = "เลข";//เลข
+	public static String text_ok = "text_ok";//ตกลง
+	public static String text_logout = "text_logout";//ออกจากระบบ
+	public static String text_returns = "text_returns";//กลับ
+	public static String text_inputNumber = "text_inputNumber";//กรุณากรอก
+	public static String text_Top = "text_Top";//บน
+	public static String text_lower = "text_lower";//ล่าง
+	public static String text_Toad = "text_Toad";//โต๊ด
+	public static String text_printer = "text_printer";//เครื่องพิมพ์
+	public static String text_edit = "text_edit";//แก้ไข
+	public static String text_cancel = "text_cancel";//ยกเลิก
+	public static String text_confirm = "text_confirm";//ส่ง-พิมพ์
+	public static String text_numberFull = "text_numberFull";//เลขเต็ม
+	public static String text_admin = "text_admin";//กรอกรหัสยืนยันตัวตน
+	public static String text_yes = "text_yes";//ใช่
+	public static String text_no = "text_no";//ไม่ใช่
+	public static String text_user = "text_user";//ชื่อผู้ใช้
+	public static String text_pass = "text_pass";//รหัสผ่าน
+	public static String text_login = "text_login";//เข้าสู่ระบบ
+	public static String text_Number = "text_Number";//เลข
+	public static String text_Next = "text_Next";//ถัดไป
+	public static String text_Languane = "text_Languane";//ภาษา
+	public static String text_close_bet = "text_close_bet";//ปิดรับแทงแล้ว
+	public static String text_save_success = "text_save_success";//บันทึกเสร็จสิ้น
+	public static String text_connecting_printer = "text_connecting_printer";//กำลังเชื่อมต่อเครื่องพิมพ์...
+	public static String text_connected_printer = "text_connected_printer";//เชื่อมต่อเครื่องพิมพ์แล้ว
+	public static String text_no_connect_printer = "text_no_connect_printer";//ไม่ได้เชื่อมต่อเครื่องพิมพ์
+	public static String text_search = "text_search";//ค้นหา
+	public static String text_paper = "text_paper";//กระดาษ :
+	public static String text_paper_3 = "text_paper_3";//3 นิ้ว
+	public static String text_paper_2 = "text_paper_2";//2 นิ้ว
+	public static String text_searching = "text_searching";//กำลังค้นหา...
+	public static String text_list_device = "text_list_device";//รายชื่ออุปกรณ์
+	public static String text_device_connected = "text_device_connected";//อุปกรณ์ที่เชื่อมต่อ
+	public static String text_close_printer = "text_close_printer";//ปิดเครื่องพิมพ์
+	public static String text_status_printing = "text_status_printing";//กำลังพิมพ์...
+	public static String text_alert_input_data = "text_alert_input_data";//กรุณากรอกข้อมูล
+	public static String text_alert_premiss_i = "text_alert_premiss_i";//ต้องใช้สิทธิ์การเข้าถึง
+	public static String text_alert_premiss_ii = "text_alert_premiss_ii";//เพื่อการทำงานที่สมบูรณ์
+	public static String text_no_internet = "text_no_internet";//กรุณาเชื่อมต่ออินเตอร์เน็ต
+	public static String text_userincorrect = "text_userincorrect";//ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+	public static String Check_Languane = "Check_Languane";
 
 	public boolean isConnectingToInternet(Context _context) {
 		ConnectivityManager connectivity = (ConnectivityManager) _context
@@ -204,7 +223,7 @@ public class AllCommand {
 		myMsg.setTypeface(null, Typeface.BOLD);
 		builder.setView(myMsg);
 		builder.setCancelable(true);
-		builder.setPositiveButton(R.string.title_ok,null);
+		builder.setPositiveButton(GetStringShare(_context,text_ok,"Ok"),null);
 		final AlertDialog alertdialog = builder.create();
 		alertdialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override

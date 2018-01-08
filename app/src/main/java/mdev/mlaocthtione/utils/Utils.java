@@ -43,7 +43,11 @@ public class Utils {
     public static int KEY_ADD_PAGE_NUMBERFULL = 23;
     public static String NAME_ADD_PAGE_NUMBERFULL = "*** แสดงหน้าเลขเต็ม ***";
     public static int KEY_ADD_PAGE_ADMIN = 24;
-    public static String NAME_ADD_PAGE_ADMIN = "*** แสดงหน้า admin ***";
+    public static String NAME_ADD_PAGE_ADMIN = "*** แสดงหน้า Admin ***";
+    public static int KEY_ADD_PAGE_LANGUAGE = 25;
+    public static String NAME_ADD_PAGE_LANGUAGE = "*** แสดงหน้า Language ***";
+    public static int KEY_ADD_PAGE_SAVELOT = 26;
+    public static String NAME_ADD_PAGE_SAVELOT = "*** แสดงหน้า SAVE_LOT ***";
 
     //Share Data
     public static String SHARE_USERNAME = "username";

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
 
+import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.ModelBus.OnCheck;
 import mdev.mlaocthtione.ModelBus.OnclickPrinter;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
@@ -31,6 +32,8 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
 
     private TextView bt_number_full;
     private boolean Checkpage = true;
+    private TextView bt_language;
+    private AllCommand allCommand;
     public Keyboardprint() {
     }
 
@@ -43,6 +46,7 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BusProvider.getInstance().register(this);
+        allCommand = new AllCommand();
     }
 
     @Nullable
@@ -52,6 +56,16 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.layout_keyboad_printer,container,false);
         itemView(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        btn_edit.setText(allCommand.GetStringShare(getContext(),allCommand.text_returns,"Back"));
+        bt_number_full.setText(allCommand.GetStringShare(getContext(),allCommand.text_numberFull,"Limit number"));
+        btn_cancel.setText(allCommand.GetStringShare(getContext(),allCommand.text_cancel,"Cancel"));
+        btn_print.setText(allCommand.GetStringShare(getContext(),allCommand.text_confirm,"Print"));
     }
 
     private void itemView(View view){
@@ -71,6 +85,7 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
         bt_twozero = view.findViewById(R.id.bt_twozero);
         lnContentPrinter = view.findViewById(R.id.lnContentPrinter);
         bt_number_full = view.findViewById(R.id.bt_number_full);
+        bt_language = view.findViewById(R.id.bt_language);
 
 
         bt_zero.setOnClickListener(this);
@@ -89,6 +104,7 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
         btn_print.setOnClickListener(this);
         lnContentPrinter.setOnClickListener(this);
         bt_number_full.setOnClickListener(this);
+        bt_language.setOnClickListener(this);
 
     }
     @Override
@@ -103,6 +119,10 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
                 break;*/
             case R.id.bt_number_full:
                 onclickmain.setTAG_KEY("NumberFull");
+                BusProvider.getInstance().post(onclickmain);
+                break;
+            case R.id.bt_language:
+                onclickmain.setTAG_KEY("Language");
                 BusProvider.getInstance().post(onclickmain);
                 break;
             case R.id.bt_one:
@@ -146,12 +166,12 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
                 BusProvider.getInstance().post(onclickPrinter);
                 break;
             case R.id.btn_edit_printer:
-                if (btn_edit.getText().equals(R.string.text_edit)){
+                if (btn_edit.getText().equals(allCommand.GetStringShare(getContext(),allCommand.text_edit,"Delete"))){
                     onclickPrinter.setTAG_KEY("edit");
                     BusProvider.getInstance().post(onclickPrinter);
                 }else {
-                    onclickPrinter.setTAG_KEY("back");
-                    BusProvider.getInstance().post(onclickPrinter);
+                    onclickmain.setTAG_KEY("back");
+                    BusProvider.getInstance().post(onclickmain);
                 }
 
                 break;
@@ -164,10 +184,10 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
        if (!state.getTAG_KEY().equals("")){
 
            if (state.getTAG_KEY().equals("1")){
-               btn_edit.setText(R.string.return_number);
+               btn_edit.setText(allCommand.GetStringShare(getContext(),allCommand.text_returns,"Back"));
                btn_edit.setBackgroundResource(R.drawable.bg_number_return);
            }else {
-               btn_edit.setText(R.string.text_edit);
+               btn_edit.setText(allCommand.GetStringShare(getContext(),allCommand.text_edit,"Delete"));
                btn_edit.setBackgroundResource(R.drawable.bg_number_edit);
            }
        }

@@ -127,7 +127,7 @@
     <string name="return_number">กลับ</string>
     <string name="number_full">เลขเต็ม</string>
     <string name="printer_text">เครื่องพิมพ์</string>
-    <string name="want_text_message">ต้องการใช้สิทธิ์การเข้าถึง</string>
-    <string name="worktextmessage">เพื่อการทำงานที่สมบูรณ์</string>
+    <string name="want_text_message">Access is required.</string>
+    <string name="worktextmessage">For complete work</string>
 
 </resources>

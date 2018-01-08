@@ -50,6 +50,7 @@ import com.bumptech.glide.request.target.Target;
 import com.squareup.otto.Subscribe;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -69,6 +70,7 @@ import mdev.mlaocthtione.FormatHttpPostOkHttp.BasicNameValusPostOkHttp;
 import mdev.mlaocthtione.FormatHttpPostOkHttp.FromHttpPostOkHttp;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.ModelBus.Onclicklogin;
+import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.activity.login;
 import mdev.mlaocthtione.bus.BusProvider;
@@ -94,6 +96,7 @@ public class PageLogin extends Fragment {
     final private int REQUEST_MUTIPLE = 124;
     private TelephonyManager tManager;
     private String uuid;
+    private int STATUS_FOCUS;
 
     public PageLogin() {
     }
@@ -110,6 +113,11 @@ public class PageLogin extends Fragment {
         BusProvider.getInstance().register(this);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -124,16 +132,18 @@ public class PageLogin extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        STATUS_FOCUS = 2;//รอบต่อไปเข้า Pass
+
         edUsername.setText(allCommand.GetStringShare(getContext(), allCommand.moSaveUser, ""));
         edPassword.setText(allCommand.GetStringShare(getContext(), allCommand.moSavePass, ""));
-        edUsername.setText("aaaa02@zx");
+        edUsername.setText("aaaa02");
 
 
 
         if (allCommand.isConnectingToInternet(getContext())) {
             onPermissionMultiple();
         } else {
-            allCommand.ShowAertDialog_OK(getResources().getString(R.string.msg_connect_internet),getContext());
+            allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_no_internet,"Please connect to the internet."),getContext());
         }
 
         File myDir =new File(android.os.Environment.getExternalStorageDirectory()+ "/Android/data/"
@@ -151,7 +161,6 @@ public class PageLogin extends Fragment {
 
             }
         });
-
     }
 
     @Override
@@ -168,7 +177,18 @@ public class PageLogin extends Fragment {
             switch (onclicklogin.getTAG_KEY()) {
                 case "edit":
 
-                    if (getActivity().getCurrentFocus().getId() == edUsername.getId()) {
+                    if (STATUS_FOCUS == 1){
+                        int length = edPassword.getText().length();
+                        if (length > 0) {
+                            edPassword.getText().delete(length - 1, length);
+                        }
+                    }else if (STATUS_FOCUS == 2){
+                        int length = edUsername.getText().length();
+                        if (length > 0) {
+                            edUsername.getText().delete(length - 1, length);
+                        }
+                    }
+                    /*if (getActivity().getCurrentFocus().getId() == edUsername.getId()) {
                         int length = edUsername.getText().length();
                         if (length > 0) {
                             edUsername.getText().delete(length - 1, length);
@@ -180,7 +200,7 @@ public class PageLogin extends Fragment {
                         if (length > 0) {
                             edPassword.getText().delete(length - 1, length);
                         }
-                    }
+                    }*/
 
                     break;
                 case "nextto":
@@ -211,33 +231,44 @@ public class PageLogin extends Fragment {
         edUsername.setKeyListener(null);
         edPassword.setKeyListener(null);
 
+        tilEdPassword.setHint(allCommand.GetStringShare(getContext(),allCommand.text_pass,"password"));
+        tilEdUsername.setHint(allCommand.GetStringShare(getContext(),allCommand.text_user,"username"));
+
 
         tilEdUsername.setBackgroundResource(R.drawable.bg_ed_select);
     }
 
     private void setbg_edtext(){
-        if (getActivity().getCurrentFocus().getId() == edUsername.getId()){
-            edPassword.requestFocus();
-            tilEdPassword.setBackgroundResource(R.drawable.bg_ed_select);
-            tilEdUsername.setBackgroundResource(R.drawable.bg_ed_pass);
-        }else if (getActivity().getCurrentFocus().getId() == edPassword.getId()){
+        if (STATUS_FOCUS == 1){
+            STATUS_FOCUS = 2;
             edUsername.requestFocus();
             tilEdUsername.setBackgroundResource(R.drawable.bg_ed_select);
             tilEdPassword.setBackgroundResource(R.drawable.bg_ed_pass);
+        }else if (STATUS_FOCUS == 2){
+            STATUS_FOCUS = 1;
+            edPassword.requestFocus();
+            tilEdPassword.setBackgroundResource(R.drawable.bg_ed_select);
+            tilEdUsername.setBackgroundResource(R.drawable.bg_ed_pass);
         }
     }
 
     private void setNumber(String number){
-        if (getActivity().getCurrentFocus().getId() == edUsername.getId()){
+        if (STATUS_FOCUS == 1){
+            edPassword.setText(edPassword.getText().toString()+number);
+        }else if (STATUS_FOCUS == 2){
+            edUsername.setText(edUsername.getText().toString()+number);
+        }
+        /*if (getActivity().getCurrentFocus().getId() == edUsername.getId()){
             edUsername.setText(edUsername.getText()+number);
         }else if (getActivity().getCurrentFocus().getId() == edPassword.getId()){
             edPassword.setText(edPassword.getText()+number);
-        }
+        }*/
     }
 
     @SuppressLint("StaticFieldLeak")
     private void onLogin() {
         if (edUsername.length() > 0 && edPassword.length() > 0) {
+
             new AsyncTask<String, Void, String>() {
                 @Override
                 protected void onPreExecute() {
@@ -248,8 +279,9 @@ public class PageLogin extends Fragment {
                 @Override
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> params_login = new ArrayList<FromHttpPostOkHttp>();
-                    params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
-                    return allCommand.POST_OK_HTTP_SendData("URL>PHP", params_login);
+                    //params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
+                    params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", "zx"));
+                    return allCommand.POST_OK_HTTP_SendData("My_URL.PHP", params_login);
                 }
 
                 @SuppressLint("MissingPermission")
@@ -308,6 +340,36 @@ public class PageLogin extends Fragment {
                                         allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big4,jOLogin.getString("lot_pay_big4"));
                                         allCommand.SaveStringShare(getContext(),allCommand.molot_pay_big5,jOLogin.getString("lot_pay_big5"));
 
+                                        if (allCommand.GetStringShare(getContext(),allCommand.Check_Languane,"").equals("")){
+
+                                            //ภาษา
+                                            allCommand.SaveStringShare(getContext(),allCommand.Check_Languane,"en");
+                                            /*allCommand.SaveStringShare(getContext(),allCommand.text_ok,"Ok");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_logout,"Exit_app");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_returns,"Back");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_inputNumber,"Fill in");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_wantBuy,"want");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_Top,"Up");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_lower,"Down");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_Toad,"Switch");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_printer,"Printer");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_nextto,"Next");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_edit,"Del");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_cancel,"Cance");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_confirm,"Print");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_numberFull,"Limit number");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_admin,"กรอกรหัสยืนยันตัวตน");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_yes,"Yes");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_no,"No");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_user,"User");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_pass,"Pass");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_login,"Login");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_Number,"Number");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_Next,"Next");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_Languane,"Languane");
+                                            allCommand.SaveStringShare(getContext(),allCommand.text_alert_input_data,"Please fill in");*/
+                                        }
+
                                         String max1 = jOLogin.getString("MemberMax").toString().trim();
                                         String min1 = jOLogin.getString("MemberMin").toString().trim();
                                         if (max1.toString().trim().length() <= 0){
@@ -339,7 +401,7 @@ public class PageLogin extends Fragment {
 
 
                                     }else {
-                                        allCommand.ShowAertDialog_OK("ไม่พบชื่อผู้ใช้นี้",getActivity());
+                                        allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_userincorrect,"Username or password is invalid."),getActivity());
                                     }
                                 }catch (Exception e){
                                     allCommand.ShowLogCat("*** Err ***", "Err SetDataLogin " + e.getMessage());
@@ -398,6 +460,7 @@ public class PageLogin extends Fragment {
         }
         return savedImagePath;
     }
+
     private String getUserFormat(int status){
         String userName = edUsername.getText().toString().trim();
         final String[] arrUserName = userName.split("\\@");
@@ -440,8 +503,8 @@ public class PageLogin extends Fragment {
                 for (int i = 0; i < permissionsNeeded.size(); i++){
                     msg += "\n" + permissionsList.get(i);
                 }
-                String alert1 = getString(R.string.want_text_message);
-                String alert2 = getString(R.string.worktextmessage);
+                String alert1 = allCommand.GetStringShare(getContext(),allCommand.text_alert_premiss_i,"Access is required.");
+                String alert2 = allCommand.GetStringShare(getContext(),allCommand.text_alert_premiss_ii,"For complete work");
                 String message = alert1 +" " + msg + " " +alert2;
                 showMessageOKCancel(message,
                         new DialogInterface.OnClickListener() {
@@ -510,8 +573,8 @@ public class PageLogin extends Fragment {
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener, DialogInterface.OnClickListener closeListener) {
-        String ok = allCommand.text_ok;
-        String exitApp = allCommand.text_logout;
+        String ok = allCommand.GetStringShare(getContext(),allCommand.text_ok,"Ok");
+        String exitApp = allCommand.GetStringShare(getContext(),allCommand.text_logout,"Exit the app");
         new AlertDialog.Builder(getContext())
                 .setMessage(message)
                 .setPositiveButton(ok, okListener)

@@ -23,9 +23,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
                 <TextView
+                    android:id="@+id/text_title_buy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_number"
+                    android:text=""
                     android:textSize="@dimen/text_size30"
                     android:gravity="center"
                     android:textColor="@color/colorblack"
@@ -40,15 +41,8 @@
                     android:textColor="@color/color_red"
                     android:textStyle="bold"
                     android:freezesText="true"
-                    android:layout_marginLeft="@dimen/magin20"
-                    android:layout_marginRight="@dimen/magin20"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ที่ต้องการซื้อ"
-                    android:textSize="@dimen/text_size30"
-                    android:gravity="center"
-                    android:textColor="@color/colorblack"/>
+                    android:layout_marginLeft="@dimen/magin10"
+                    android:layout_marginRight="@dimen/magin10"/>
         </LinearLayout>
 
         <LinearLayout
@@ -60,16 +54,16 @@
 
             <LinearLayout
                 android:id="@+id/li_return_number"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/magin10"
-                android:layout_weight="2.5">
+                android:layout_marginLeft="@dimen/magin10">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/return_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/return_number"
                     android:textSize="@dimen/size_20"
@@ -119,6 +113,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/num_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text_custom"
@@ -143,6 +138,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/top_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text_custom"
@@ -167,6 +163,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/lower_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text_custom"
@@ -191,6 +188,7 @@
                 android:layout_weight="1"
                 android:gravity="center">
                 <TextView
+                    android:id="@+id/toad_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/Text_custom"

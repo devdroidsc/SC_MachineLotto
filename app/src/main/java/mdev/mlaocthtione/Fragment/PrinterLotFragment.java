@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -36,8 +37,10 @@ import mdev.mlaocthtione.BuildConfig;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.Model.ModelDataPrinter;
 import mdev.mlaocthtione.Model.ModelStatusConnectPrinter;
+import mdev.mlaocthtione.ModelBus.OnclickPrinter;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
+import mdev.mlaocthtione.bus.ModelBus;
 import mdev.mlaocthtione.con_bt.InstanceVariable;
 import mdev.mlaocthtione.con_bt.P25ConnectionException;
 import mdev.mlaocthtione.utils.Utils;
@@ -55,6 +58,7 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
     private Set<BluetoothDevice> pairedDevices;
     private boolean isFirstLoad;
     private boolean bCheckPrinter = false,bCheckPrintTest = false;
+    private TextView txt_paper,text_diver_connect;
 
     public PrinterLotFragment() {}
 
@@ -129,7 +133,7 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
 
         int statusConBt = allCommand.getIntShare(getActivity(),Utils.SHARE_STATUS_CON_BT,0);
         if (statusConBt == 0){
-            tvNamePrinterConnected.setText(getActivity().getString(R.string.txt_connecting_printer));
+            tvNamePrinterConnected.setText(allCommand.GetStringShare(getContext(),allCommand.text_connecting_printer,"Connecting printer..."));
             tvNamePrinterConnected.setTextColor(Color.BLACK);
             tvClosePrinter.setEnabled(false);
         }else if (statusConBt == 1){
@@ -137,14 +141,14 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
             tvNamePrinterConnected.setTextColor(Color.BLUE);
             tvClosePrinter.setEnabled(true);
         }else {
-            tvNamePrinterConnected.setText(getActivity().getString(R.string.txt_no_connect_printer));
+            tvNamePrinterConnected.setText(allCommand.GetStringShare(getContext(),allCommand.text_no_connect_printer,"Printer not connected."));
             tvNamePrinterConnected.setTextColor(Color.RED);
             tvClosePrinter.setEnabled(false);
         }
 
         if (InstanceVariable.mBluetoothAdapter != null){
             if (InstanceVariable.mBluetoothAdapter.isDiscovering()){
-                tvTitleSea.setText(getActivity().getResources().getString(R.string.txt_searching_name_printer));
+                tvTitleSea.setText(allCommand.GetStringShare(getContext(),allCommand.text_searching,"Searching..."));
                 tvSeaPrinter.setEnabled(false);
             }
         }
@@ -228,7 +232,8 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
             onSettingPaper(3);
         }else if (v == tvSeaPrinter){
             if (onCheckOpenBt()){
-                tvTitleSea.setText(getActivity().getResources().getString(R.string.txt_searching_name_printer));
+               // tvTitleSea.setText(getActivity().getResources().getString(R.string.txt_searching_name_printer));
+                tvTitleSea.setText(allCommand.GetStringShare(getContext(),allCommand.text_searching,"Searching..."));
                 tvSeaPrinter.setEnabled(false);
                 if (arrDeviceName.size() > 0){
                     arrDeviceName.clear();
@@ -253,7 +258,7 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
                     onShowLogCat("***Err***", "Err Close Printer " + e.getMessage());
                 }
             }
-            tvNamePrinterConnected.setText(getActivity().getString(R.string.txt_no_connect_printer));
+            tvNamePrinterConnected.setText(allCommand.GetStringShare(getContext(),allCommand.text_no_connect_printer,"Printer not connected."));
             tvNamePrinterConnected.setTextColor(Color.RED);
             tvClosePrinter.setEnabled(false);
         }
@@ -306,6 +311,19 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
         lnPaper3.setOnClickListener(this);
         tvSeaPrinter.setOnClickListener(this);
         tvClosePrinter.setOnClickListener(this);
+
+        txt_paper = rootView.findViewById(R.id.txt_paper);
+        text_diver_connect = rootView.findViewById(R.id.text_diver_connect);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        txt_paper.setText(allCommand.GetStringShare(getContext(),allCommand.text_paper,"paper : "));
+        tvSeaPrinter.setText(allCommand.GetStringShare(getContext(),allCommand.text_search,"Search"));
+        text_diver_connect.setText(allCommand.GetStringShare(getContext(),allCommand.text_device_connected,"Connected device"));
+        tvClosePrinter.setText(allCommand.GetStringShare(getContext(),allCommand.text_close_printer,"Turn off the printer"));
+        tvTitleSea.setText(allCommand.GetStringShare(getContext(),allCommand.text_list_device,"Device list"));
     }
 
     private final BroadcastReceiver mReceiverBT = new BroadcastReceiver() {
@@ -313,7 +331,7 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
             String action = intent.getAction();
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 tvSeaPrinter.setEnabled(true);
-                tvTitleSea.setText(getActivity().getResources().getString(R.string.txt_title_name_printer));
+                tvTitleSea.setText(allCommand.GetStringShare(getContext(),allCommand.text_list_device,"Device list"));
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (!arrDeviceName.contains(device.getAddress())){
@@ -335,16 +353,20 @@ public class PrinterLotFragment extends StatedFragment implements View.OnClickLi
             imgPaper2.setImageDrawable(getResources().getDrawable(R.drawable.ic_view_s));
             imgPaper2.setColorFilter(ContextCompat.getColor(getActivity(),R.color.color_view_listPlay_s));
             tvPaper2.setTextColor(getResources().getColor(R.color.color_view_listPlay_s));
+            tvPaper2.setText(allCommand.GetStringShare(getContext(),allCommand.text_paper_2,"2 inches"));
             imgPaper3.setImageDrawable(getResources().getDrawable(R.drawable.ic_view_d));
             imgPaper3.setColorFilter(ContextCompat.getColor(getActivity(),R.color.color_view_listPlay_d));
             tvPaper3.setTextColor(getResources().getColor(R.color.color_view_listPlay_d));
+            tvPaper3.setText(allCommand.GetStringShare(getContext(),allCommand.text_paper_3,"3 inches"));
         }else if (paper == 3){
             imgPaper3.setImageDrawable(getResources().getDrawable(R.drawable.ic_view_s));
             imgPaper3.setColorFilter(ContextCompat.getColor(getActivity(),R.color.color_view_listPlay_s));
             tvPaper3.setTextColor(getResources().getColor(R.color.color_view_listPlay_s));
+            tvPaper3.setText(allCommand.GetStringShare(getContext(),allCommand.text_paper_3,"3 inches"));
             imgPaper2.setImageDrawable(getResources().getDrawable(R.drawable.ic_view_d));
             imgPaper2.setColorFilter(ContextCompat.getColor(getActivity(),R.color.color_view_listPlay_d));
             tvPaper2.setTextColor(getResources().getColor(R.color.color_view_listPlay_d));
+            tvPaper2.setText(allCommand.GetStringShare(getContext(),allCommand.text_paper_2,"2 inches"));
         }
     }
     public void onShowLogCat(String tag, String msg){

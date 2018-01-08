@@ -12,6 +12,7 @@
         android:layout_margin="@dimen/margin5"
         android:background="@drawable/bg_page_othen">
         <TextView
+            android:id="@+id/tv_title_number_full"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/number_full"

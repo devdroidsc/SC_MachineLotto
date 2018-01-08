@@ -67,4 +67,6 @@
     <color name="colorClose_Tang">#636262</color>
     <color name="color_tital_numberfull">#00698f</color>
     <color name="color_head_numberfull">#0185b5</color>
+
+    <color name="color_load_languane">#944b4848</color>
 </resources>

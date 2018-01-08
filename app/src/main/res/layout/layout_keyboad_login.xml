@@ -135,7 +135,7 @@
                 android:layout_height="match_parent"
                 android:text="ถัดไป"
                 android:gravity="center"
-                android:textSize="@dimen/text_size30"
+                android:textSize="@dimen/size_txt_save"
                 android:background="@drawable/bg_number_nextto"
                 android:layout_weight="1"
                 android:textColor="@color/colorWith"
