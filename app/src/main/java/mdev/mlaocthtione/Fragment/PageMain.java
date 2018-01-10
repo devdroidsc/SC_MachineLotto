@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -659,6 +660,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             adapter.notifyDataSetChanged();
         }
         Clear_Editext();
+        Check_focus = 1;
         text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
         Check_number = true;
         btn_enter.setBackgroundResource(R.drawable.bg_number_enter);
@@ -1107,7 +1109,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("uuid", uuid+""));
                     param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("pname", ""));
                     param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("pid", ""));
-                    param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("lang", "th"));
+                    param.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("lang", allCommand.GetStringShare(getContext(),allCommand.Check_Languane,"en")));
                     return allCommand.POST_OK_HTTP_SendData(urlServer + "save_lot.php", param);
                 }
 

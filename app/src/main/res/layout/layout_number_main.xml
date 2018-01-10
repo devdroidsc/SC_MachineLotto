@@ -12,7 +12,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin5"
+            android:layout_marginTop="@dimen/margin5"
+            android:layout_marginLeft="@dimen/margin5"
+            android:layout_marginBottom="@dimen/margin5"
             android:layout_weight="1"
             android:background="@drawable/bg_page_othen"
             android:padding="@dimen/margin5">

@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.ModelBus.Onclicklogin;
 import mdev.mlaocthtione.R;
@@ -20,8 +22,8 @@ import mdev.mlaocthtione.bus.BusProvider;
 public class Keyboardlogin extends Fragment implements View.OnClickListener {
 
     private TextView bt_zero, bt_nine, bt_eight,
-            bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one;
-    private TextView btn_edit,bt_Left,bg_Login;
+            bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one,bt_Right;
+    private TextView btn_edit,bt_Left,bg_Login,tv_no_onClick;
     private AllCommand allCommand;
 
     public Keyboardlogin() {
@@ -62,6 +64,8 @@ public class Keyboardlogin extends Fragment implements View.OnClickListener {
         btn_edit = itemview.findViewById(R.id.btn_edit);
         bt_Left = itemview.findViewById(R.id.bt_Left);
         bg_Login = itemview.findViewById(R.id.btn_login);
+        bt_Right = itemview.findViewById(R.id.bt_Right);
+        tv_no_onClick = itemview.findViewById(R.id.tv_no_onClick);
 
         btn_edit.setText(allCommand.GetStringShare(getActivity(),allCommand.text_edit,"Delete"));
         bt_Left.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Next,"Next"));
@@ -80,6 +84,8 @@ public class Keyboardlogin extends Fragment implements View.OnClickListener {
         btn_edit.setOnClickListener(this);
         bt_Left.setOnClickListener(this);
         bg_Login.setOnClickListener(this);
+        bt_Right.setOnClickListener(this);
+        tv_no_onClick.setOnClickListener(this);
     }
     @Override
     public void onDestroy() {
@@ -146,6 +152,28 @@ public class Keyboardlogin extends Fragment implements View.OnClickListener {
                 onclicklogin.setTAG_KEY("0");
                 BusProvider.getInstance().post(onclicklogin);
                 break;
+            case R.id.bt_Right:
+                onclicklogin.setTAG_KEY("@");
+                BusProvider.getInstance().post(onclicklogin);
+                break;
+            case R.id.tv_no_onClick:
+                break;
+        }
+    }
+
+    @Subscribe
+    public void OnClickLogin(Onclicklogin onclicklogin){
+
+        if (!onclicklogin.getTAG_KEY().equals("")){
+            switch (onclicklogin.getTAG_KEY()){
+
+                case "enter":
+                    tv_no_onClick.setVisibility(View.VISIBLE);
+                    break;
+                case "onClick":
+                    tv_no_onClick.setVisibility(View.GONE);
+                    break;
+            }
         }
     }
 }

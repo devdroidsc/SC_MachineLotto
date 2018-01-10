@@ -55,7 +55,7 @@ public class Dialogadmin extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BusProvider.getInstance().register(this);
+
         allCommand = new AllCommand();
 
     }
@@ -107,16 +107,16 @@ public class Dialogadmin extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        BusProvider.getInstance().register(this);
         btn_enter_admin.setText(allCommand.GetStringShare(getContext(),allCommand.text_ok,"Submit"));
         title_admin.setText(allCommand.GetStringShare(getContext(),allCommand.text_admin,"Enter Security Code"));
-        Log.e("Dialogadmin", allCommand.GetStringShare(getContext(), allCommand.text_userincorrect, "asdfe"));
+        //Log.e("Dialogadmin", allCommand.GetStringShare(getContext(), allCommand.text_userincorrect, "asdfe"));
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
@@ -235,6 +235,6 @@ public class Dialogadmin extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BusProvider.getInstance().unregister(this);
+
     }
 }

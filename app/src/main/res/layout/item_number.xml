@@ -4,24 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/Liner_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_settiing"/>
-    </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_page_main">
+
+        <LinearLayout
+            android:id="@+id/Liner_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_settiing"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <TextView
                     android:id="@+id/text_title_buy"
                     android:layout_width="wrap_content"
@@ -43,176 +48,179 @@
                     android:freezesText="true"
                     android:layout_marginLeft="@dimen/magin10"
                     android:layout_marginRight="@dimen/magin10"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center">
+            </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/li_return_number"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
+                android:orientation="horizontal"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/magin10">
+                android:gravity="center">
 
-                <TextView
-                    android:id="@+id/return_title"
+                <LinearLayout
+                    android:id="@+id/li_return_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/return_number"
-                    android:textSize="@dimen/size_20"
-                    android:textColor="@color/color_black"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/magin10">
+
+                    <TextView
+                        android:id="@+id/return_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/return_number"
+                        android:textSize="@dimen/size_20"
+                        android:textColor="@color/color_black"
+                        android:textStyle="bold"/>
+                    <ImageView
+                        android:id="@+id/cb_return_number"
+                        android:layout_width="@dimen/magin60"
+                        android:layout_height="@dimen/magin60"
+                        android:background="@drawable/ic_box_check"/>
+
+                </LinearLayout>
+                <EditText
+                    android:id="@+id/edit_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/magin70"
+                    android:background="@drawable/bg_edittext"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorWith"
+                    android:textSize="@dimen/text_size30"
+                    android:layout_marginLeft="@dimen/magin10"
                     android:textStyle="bold"/>
-                <ImageView
-                    android:id="@+id/cb_return_number"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:background="@drawable/ic_box_check"/>
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/magin70"
+                    android:id="@+id/btn_enter"
+                    android:text="@string/text_enter"
+                    android:background="@drawable/bg_number_enter"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size30"
+                    android:textColor="@color/colorWith"
+                    android:layout_weight="2"
+                    android:layout_marginRight="@dimen/magin10"
+                    android:layout_marginLeft="@dimen/magin10"
+                    android:textStyle="bold"
+                    android:freezesText="true"/>
             </LinearLayout>
-            <EditText
-                android:id="@+id/edit_number"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/magin70"
-                android:background="@drawable/bg_edittext"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/colorWith"
-                android:textSize="@dimen/text_size30"
-                android:layout_marginLeft="@dimen/magin10"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/magin70"
-                android:id="@+id/btn_enter"
-                android:text="@string/text_enter"
-                android:background="@drawable/bg_number_enter"
-                android:gravity="center"
-                android:textSize="@dimen/text_size30"
-                android:textColor="@color/colorWith"
-                android:layout_weight="2"
-                android:layout_marginRight="@dimen/magin10"
-                android:layout_marginLeft="@dimen/magin10"
-                android:textStyle="bold"
-                android:freezesText="true"/>
-        </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/num_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Text_custom"
+                        android:text="เลข"/>
+                    <!--<TextView
+                        android:id="@+id/txt_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        style="@style/Text_custom"/>-->
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="="
+                    style="@style/Text_custom"
+                    android:layout_gravity="center"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/top_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Text_custom"
+                        android:text="บน"/>
+                    <!--<TextView
+                        android:id="@+id/txt_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        style="@style/Text_custom"/>-->
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="X"
+                    style="@style/Text_custom"
+                    android:layout_gravity="center"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/lower_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Text_custom"
+                        android:text="ล่าง"/>
+                    <!--<TextView
+                        android:id="@+id/txt_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        style="@style/Text_custom"/>-->
+                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="X"
+                    style="@style/Text_custom"
+                    android:layout_gravity="center"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/toad_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Text_custom"
+                        android:text="โต้ด"/>
+                    <!--<TextView
+                        android:id="@+id/txt_toad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00"
+                        style="@style/Text_custom"/>-->
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/linearLayout">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/num_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Text_custom"
-                    android:text="เลข"/>
-                <!--<TextView
-                    android:id="@+id/txt_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00"
-                    style="@style/Text_custom"/>-->
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="="
-                style="@style/Text_custom"
-                android:layout_gravity="center"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/top_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Text_custom"
-                    android:text="บน"/>
-                <!--<TextView
-                    android:id="@+id/txt_top"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00"
-                    style="@style/Text_custom"/>-->
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X"
-                style="@style/Text_custom"
-                android:layout_gravity="center"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/lower_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Text_custom"
-                    android:text="ล่าง"/>
-                <!--<TextView
-                    android:id="@+id/txt_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00"
-                    style="@style/Text_custom"/>-->
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X"
-                style="@style/Text_custom"
-                android:layout_gravity="center"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/toad_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Text_custom"
-                    android:text="โต้ด"/>
-                <!--<TextView
-                    android:id="@+id/txt_toad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="00"
-                    style="@style/Text_custom"/>-->
-            </LinearLayout>
+                android:layout_height="match_parent" />
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/linearLayout">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recy_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
 
 </RelativeLayout>

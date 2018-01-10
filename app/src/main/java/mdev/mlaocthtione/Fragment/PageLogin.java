@@ -188,26 +188,14 @@ public class PageLogin extends Fragment {
                             edUsername.getText().delete(length - 1, length);
                         }
                     }
-                    /*if (getActivity().getCurrentFocus().getId() == edUsername.getId()) {
-                        int length = edUsername.getText().length();
-                        if (length > 0) {
-                            edUsername.getText().delete(length - 1, length);
-                        }
-
-
-                    } else if (getActivity().getCurrentFocus().getId() == edPassword.getId()) {
-                        int length = edPassword.getText().length();
-                        if (length > 0) {
-                            edPassword.getText().delete(length - 1, length);
-                        }
-                    }*/
-
                     break;
                 case "nextto":
                     setbg_edtext();
                     break;
                 case "enter":
                     onPermissionMultiple();
+                    break;
+                case "onClick":
                     break;
                 default:
                     setNumber(onclicklogin.getTAG_KEY());
@@ -268,7 +256,7 @@ public class PageLogin extends Fragment {
     @SuppressLint("StaticFieldLeak")
     private void onLogin() {
         if (edUsername.length() > 0 && edPassword.length() > 0) {
-
+            final Onclicklogin onclicklogin = new Onclicklogin();
             new AsyncTask<String, Void, String>() {
                 @Override
                 protected void onPreExecute() {
@@ -279,9 +267,12 @@ public class PageLogin extends Fragment {
                 @Override
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> params_login = new ArrayList<FromHttpPostOkHttp>();
-                    //params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
-                    params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", "zx"));
-                    return allCommand.POST_OK_HTTP_SendData("My_URL.PHP", params_login);
+                    if (!getUserFormat(2).equals("")){
+                        params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", getUserFormat(2)));
+                    }else {
+                        params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", "zx"));
+                    }
+                    return allCommand.POST_OK_HTTP_SendData("MyUrl.php", params_login);
                 }
 
                 @SuppressLint("MissingPermission")
@@ -344,30 +335,7 @@ public class PageLogin extends Fragment {
 
                                             //ภาษา
                                             allCommand.SaveStringShare(getContext(),allCommand.Check_Languane,"en");
-                                            /*allCommand.SaveStringShare(getContext(),allCommand.text_ok,"Ok");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_logout,"Exit_app");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_returns,"Back");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_inputNumber,"Fill in");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_wantBuy,"want");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_Top,"Up");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_lower,"Down");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_Toad,"Switch");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_printer,"Printer");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_nextto,"Next");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_edit,"Del");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_cancel,"Cance");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_confirm,"Print");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_numberFull,"Limit number");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_admin,"กรอกรหัสยืนยันตัวตน");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_yes,"Yes");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_no,"No");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_user,"User");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_pass,"Pass");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_login,"Login");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_Number,"Number");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_Next,"Next");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_Languane,"Languane");
-                                            allCommand.SaveStringShare(getContext(),allCommand.text_alert_input_data,"Please fill in");*/
+
                                         }
 
                                         String max1 = jOLogin.getString("MemberMax").toString().trim();
@@ -405,8 +373,11 @@ public class PageLogin extends Fragment {
                                     }
                                 }catch (Exception e){
                                     allCommand.ShowLogCat("*** Err ***", "Err SetDataLogin " + e.getMessage());
+
                                 }
                                 avloadLogin.setVisibility(View.INVISIBLE);
+                                onclicklogin.setTAG_KEY("onClick");
+                                BusProvider.getInstance().post(onclicklogin);
                             }
 
                         }.execute();
@@ -414,6 +385,9 @@ public class PageLogin extends Fragment {
                     } catch (Exception e) {
                         avloadLogin.setVisibility(View.INVISIBLE);
                         allCommand.ShowLogCat("*** Err ***", "Err SetDataGetUrl " + e.getMessage());
+                        allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_userincorrect,"Username or password is invalid."),getActivity());
+                        onclicklogin.setTAG_KEY("onClick");
+                        BusProvider.getInstance().post(onclicklogin);
                     }
                 }
 
