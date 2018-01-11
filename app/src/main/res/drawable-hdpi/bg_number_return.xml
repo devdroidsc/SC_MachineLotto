@@ -6,9 +6,9 @@
                 android:startColor="#131f65"
 
                 android:endColor="#131f65"></gradient>
-            <stroke android:width="2dp"
+            <stroke android:width="@dimen/magin2"
                 android:color="#000000"></stroke>
-            <corners android:radius="10dp"/>
+            <corners android:radius="@dimen/magin10"/>
         </shape>
     </item>
     <item>
@@ -17,9 +17,9 @@
                 android:startColor="#172782"
 
                 android:endColor="#172782"></gradient>
-            <stroke android:width="2dp"
+            <stroke android:width="@dimen/magin2"
                 android:color="#000000"></stroke>
-            <corners android:radius="10dp"/>
+            <corners android:radius="@dimen/magin10"/>
         </shape>
     </item>
 </selector>

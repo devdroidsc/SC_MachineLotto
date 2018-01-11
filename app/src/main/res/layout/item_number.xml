@@ -14,9 +14,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_settiing"/>
+                android:layout_width="@dimen/magin40"
+                android:layout_height="@dimen/magin40"
+                android:src="@drawable/ic_settiing"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

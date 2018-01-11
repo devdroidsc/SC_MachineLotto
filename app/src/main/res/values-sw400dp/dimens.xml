@@ -2,26 +2,26 @@
 <resources>
     <dimen name="magin150">150dp</dimen>
     <dimen name="size_text">30sp</dimen>
-    <dimen name="magin20">20dp</dimen>
-    <dimen name="text_size30">25sp</dimen>
+    <dimen name="magin20">10dp</dimen>
+    <dimen name="text_size30">15sp</dimen>
 
     <dimen name="margin1">1dp</dimen>
-    <dimen name="size_20">20sp</dimen>
+    <dimen name="size_20">15sp</dimen>
     <dimen name="margin5">5dp</dimen>
     <dimen name="magin100">100dp</dimen>
-    <dimen name="magin60">60dp</dimen>
+    <dimen name="magin60">45dp</dimen>
     <dimen name="magin120">120dp</dimen>
-    <dimen name="magin10">10dp</dimen>
-    <dimen name="magin50">50dp</dimen>
+    <dimen name="magin10">5dp</dimen>
+    <dimen name="magin50">40dp</dimen>
     <dimen name="magin80">80dp</dimen>
-    <dimen name="magin40">40dp</dimen>
-    <dimen name="magin_size50">40sp</dimen>
-    <dimen name="magin70">70dp</dimen>
+    <dimen name="magin40">30dp</dimen>
+    <dimen name="magin_size50">30sp</dimen>
+    <dimen name="magin70">45dp</dimen>
     <dimen name="magin2">2dp</dimen>
     <dimen name="pad_btn_save">15dp</dimen>
     <dimen name="pad_btn_save_rl">40dp</dimen>
     <dimen name="size_text_title_page">18sp</dimen>
-    <dimen name="size_txt_save">30sp</dimen>
+    <dimen name="size_txt_save">18sp</dimen>
     <dimen name="widthlogologin">250dp</dimen>
     <dimen name="hightlogologin">150dp</dimen>
 
@@ -37,7 +37,7 @@
     <dimen name="size_title_login">35sp</dimen>
     <dimen name="mar_edittext_login">5dp</dimen>
     <dimen name="pad_edittext_login">10dp</dimen>
-    <dimen name="size_text_menu">20sp</dimen>
+    <dimen name="size_text_menu">12sp</dimen>
     <dimen name="pad_edittext_pass">10dp</dimen>
     <dimen name="radius_shape">5dp</dimen>
     <dimen name="stroke_shape">2dp</dimen>
@@ -58,14 +58,14 @@
     <dimen name="size_title_menu_bottom">16sp</dimen>
 
     <!--3 ตัว-->
-    <dimen name="size_txt_tang">16sp</dimen>
+    <dimen name="size_txt_tang">12sp</dimen>
     <dimen name="size_txt_ed_tang">25sp</dimen>
     <dimen name="pad_ed_tang">5dp</dimen>
     <dimen name="size_radius_ed_tang">3dp</dimen>
     <dimen name="pad_txt_tang">5dp</dimen>
     <dimen name="size_title_close_tang">18sp</dimen>
     <dimen name="size_title_sell">35sp</dimen>
-    <dimen name="size_wh_ic_refresh">60dp</dimen>
+    <dimen name="size_wh_ic_refresh">45dp</dimen>
     <dimen name="size_text_data_num_lot">20sp</dimen>
     <dimen name="pad_data_num_lot">15dp</dimen>
     <dimen name="size_title_print_lot">25sp</dimen>
@@ -110,7 +110,7 @@
     <dimen name="mar_more_menu">20dp</dimen>
     <dimen name="pad_more_menu">20dp</dimen>
     <dimen name="size_more_menu">240dp</dimen>
-    <dimen name="size_icon_more_menu">60dp</dimen>
+    <dimen name="size_icon_more_menu">35dp</dimen>
     <dimen name="pad_dialog_loading">15dp</dimen>
     <dimen name="size_w_ic_loading_tang">35dp</dimen>
     <dimen name="pad_ic_close">10dp</dimen>

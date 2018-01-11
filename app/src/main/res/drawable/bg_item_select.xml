@@ -8,6 +8,6 @@
     </gradient>
     <!--<stroke android:width="2dp"
         android:color="#ff0000"></stroke>-->
-    <corners android:radius="10dp"/>
+    <corners android:radius="@dimen/magin10"/>
 
 </shape>
