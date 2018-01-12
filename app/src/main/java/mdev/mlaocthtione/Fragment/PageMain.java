@@ -344,7 +344,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
         liner_close_tang = view.findViewById(R.id.liner_close_tang);
         laout_number = view.findViewById(R.id.laout_number);
         laout_savelot = view.findViewById(R.id.laout_savelot);
-        btn_close_lot = view.findViewById(R.id.btn_close_lot);
         edit_number = view.findViewById(R.id.edit_number);
         edit_number.setKeyListener(null);
         redetail = view.findViewById(R.id.recy_detail);
@@ -354,7 +353,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
         text_tital.setText(allCommand.GetStringShare(getActivity(),allCommand.text_Number,"Number"));
 
         btn_enter.setOnClickListener(this);
-        btn_close_lot.setOnClickListener(this);
         liner_close_tang.setOnClickListener(this);
 
         gridLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -496,14 +494,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
                     setNexto();
                 }
 
-                break;
-            case R.id.btn_close_lot:
-                laout_number.setVisibility(View.VISIBLE);
-                laout_savelot.setVisibility(View.GONE);
-                if (list_lot.size() > 0) {
-                    list_lot.clear();
-                    adapter_savelot.notifyDataSetChanged();
-                }
                 break;
             case R.id.liner_close_tang:
 

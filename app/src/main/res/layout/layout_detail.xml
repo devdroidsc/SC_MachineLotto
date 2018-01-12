@@ -18,13 +18,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="บันทึกเสร็จสิ้น"
-                android:textColor="@color/colorblack"
+                android:textColor="@color/color_white"
                 android:textSize="@dimen/text_size30"
                 android:gravity="center"
-                android:background="@drawable/bg_tital_save_lot"
-                android:padding="@dimen/magin20"
+                android:background="@drawable/bg_tital_numberfull"
+                android:padding="@dimen/magin10"
                 />
-            <TextView
+            <!--<TextView
                 android:id="@+id/btn_close_lot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:layout_marginRight="@dimen/magin20"
                 android:paddingTop="@dimen/magin10"
                 android:paddingBottom="@dimen/magin10"
-                android:paddingRight="@dimen/magin20"
+                android:paddingRight="@dimen/magin20"-->
                 android:paddingLeft="@dimen/magin20"/>
 
         </RelativeLayout>
