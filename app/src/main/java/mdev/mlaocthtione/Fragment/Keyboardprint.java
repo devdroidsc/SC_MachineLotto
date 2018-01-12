@@ -12,13 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.otto.Subscribe;
+import com.wang.avi.AVLoadingIndicatorView;
 
+import mdev.mlaocthtione.BuildConfig;
 import mdev.mlaocthtione.Manager.AllCommand;
+import mdev.mlaocthtione.Model.ModelStatusConnectPrinter;
 import mdev.mlaocthtione.ModelBus.OnCheck;
 import mdev.mlaocthtione.ModelBus.OnclickPrinter;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
+import mdev.mlaocthtione.utils.Utils;
 
 /**
  * Created by Lenovo on 11-12-2017.
@@ -28,8 +32,10 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
     private TextView bt_zero, bt_nine, bt_eight,
             bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one;
     private TextView btn_edit, btn_cancel, btn_enter, btn_print,bt_twozero;
-    private LinearLayout lnContentPrinter;
-
+    private LinearLayout lnContentPrinter,lnPrinterLot;
+    private ImageView imgStatusPrinterLot;
+    private AVLoadingIndicatorView avloadingPrinterLot;
+    private boolean isCheckPrinter = false;
     private TextView bt_number_full;
     private boolean Checkpage = true;
     private TextView bt_language;
@@ -59,13 +65,35 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        int statusConBt = allCommand.getIntShare(getActivity(), Utils.SHARE_STATUS_CON_BT,0);
+        if (statusConBt == 1){
+            avloadingPrinterLot.setVisibility(View.INVISIBLE);
+            imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conted);
+        }else if (statusConBt == 0){
+            avloadingPrinterLot.setVisibility(View.VISIBLE);
+            imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conting);
+        }else {
+            avloadingPrinterLot.setVisibility(View.INVISIBLE);
+            imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_nocon);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-
+        isCheckPrinter = true;
         btn_edit.setText(allCommand.GetStringShare(getContext(),allCommand.text_returns,"Back"));
         bt_number_full.setText(allCommand.GetStringShare(getContext(),allCommand.text_numberFull,"Limit number"));
         btn_cancel.setText(allCommand.GetStringShare(getContext(),allCommand.text_cancel,"Cancel"));
         btn_print.setText(allCommand.GetStringShare(getContext(),allCommand.text_confirm,"Print"));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isCheckPrinter = false;
     }
 
     private void itemView(View view){
@@ -84,6 +112,9 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
         btn_print = view.findViewById(R.id.btn_print);
         bt_twozero = view.findViewById(R.id.bt_twozero);
         lnContentPrinter = view.findViewById(R.id.lnContentPrinter);
+        avloadingPrinterLot = view.findViewById(R.id.avloadingPrinterLot);
+        lnPrinterLot = view.findViewById(R.id.lnPrinterLot);
+        imgStatusPrinterLot = view.findViewById(R.id.imgStatusPrinterLot);
         bt_number_full = view.findViewById(R.id.bt_number_full);
         bt_language = view.findViewById(R.id.bt_language);
 
@@ -101,7 +132,7 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
         bt_twozero.setOnClickListener(this);
         btn_edit.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        btn_print.setOnClickListener(this);
+        lnPrinterLot.setOnClickListener(this);
         lnContentPrinter.setOnClickListener(this);
         bt_number_full.setOnClickListener(this);
         bt_language.setOnClickListener(this);
@@ -194,10 +225,31 @@ public class Keyboardprint extends Fragment implements View.OnClickListener {
 
 
     }
+    @Subscribe
+    public void onBusStatusPrinter(ModelStatusConnectPrinter conPrinter){
+        onShowLogCat("Event Bus","Connect Printer " + conPrinter.getTextStatus());
+        if (isCheckPrinter && conPrinter != null){
+            if (conPrinter.getStatus() == 1){
+                avloadingPrinterLot.setVisibility(View.INVISIBLE);
+                imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conted);
+            }else if (conPrinter.getStatus() == 0){
+                avloadingPrinterLot.setVisibility(View.VISIBLE);
+                imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conting);
+            }else {
+                avloadingPrinterLot.setVisibility(View.INVISIBLE);
+                imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_nocon);
+            }
+        }
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         BusProvider.getInstance().unregister(this);
+    }
+    public void onShowLogCat(String tag, String msg){
+        if (BuildConfig.DEBUG) {
+            Log.e("***KeyboardPrint***",tag +" ==> "+ msg);
+        }
     }
 }

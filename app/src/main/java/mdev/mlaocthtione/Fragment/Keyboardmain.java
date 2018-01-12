@@ -13,18 +13,22 @@ import android.widget.TextView;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import mdev.mlaocthtione.BuildConfig;
 import mdev.mlaocthtione.Manager.AllCommand;
+import mdev.mlaocthtione.Model.ModelStatusConnectPrinter;
 import mdev.mlaocthtione.ModelBus.OnCloseSavelot;
 import mdev.mlaocthtione.ModelBus.Onclicklogin;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
+import mdev.mlaocthtione.utils.Utils;
 
 /**
  * Created by Lenovo on 11-12-2017.
@@ -34,8 +38,13 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
     private TextView bt_zero, bt_nine, bt_eight,
             bt_seven, bt_six, bt_file, bt_four, bt_three, bt_two, bt_one;
     private TextView btn_edit, btn_cancel, btn_enter, btn_print,bt_twozero;
-    private LinearLayout lnContentPrinter,bt_logout;
+    private LinearLayout bt_logout;
     private ImageView img_priterandtang;
+    private LinearLayout lnContentPrinter,lnPrinterLot;
+    private ImageView imgStatusPrinterLot;
+    private AVLoadingIndicatorView avloadingPrinterLot;
+    private boolean isCheckPrinter = false;
+
     private TextView bt_number_full;
     private String strCloseBig, strCloseSmall, strPhon;
     private AllCommand allCommand;
@@ -63,6 +72,18 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        int statusConBt = allCommand.getIntShare(getActivity(), Utils.SHARE_STATUS_CON_BT,0);
+        if (statusConBt == 1){
+            avloadingPrinterLot.setVisibility(View.INVISIBLE);
+            imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conted);
+        }else if (statusConBt == 0){
+            avloadingPrinterLot.setVisibility(View.VISIBLE);
+            imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conting);
+        }else {
+            avloadingPrinterLot.setVisibility(View.INVISIBLE);
+            imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_nocon);
+        }
 
         Date currentTime = Calendar.getInstance().getTime();
         strCloseBig = allCommand.SetDatestamp(allCommand.GetStringShare(getContext(), allCommand.moCloseBig, ""));
@@ -96,13 +117,19 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-
+        isCheckPrinter = true;
         btn_edit.setText(allCommand.GetStringShare(getContext(),allCommand.text_edit,"Delete"));
         bt_number_full.setText(allCommand.GetStringShare(getContext(),allCommand.text_numberFull,"Limit number"));
         btn_cancel.setText(allCommand.GetStringShare(getContext(),allCommand.text_cancel,"Cancel"));
         btn_print.setText(allCommand.GetStringShare(getContext(),allCommand.text_confirm,"Print"));
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isCheckPrinter = false;
     }
 
     private void itemView(View view){
@@ -127,6 +154,9 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         liner_keyboad_main = view.findViewById(R.id.liner_keyboad_main);
         close_tang_keyboad = view.findViewById(R.id.close_tang_keyboad);
         bt_language = view.findViewById(R.id.bt_language);
+        avloadingPrinterLot = view.findViewById(R.id.avloadingPrinterLot);
+        lnPrinterLot = view.findViewById(R.id.lnPrinterLotMain);
+        imgStatusPrinterLot = view.findViewById(R.id.imgStatusPrinterLot);
 
         bt_zero.setOnClickListener(this);
         bt_nine.setOnClickListener(this);
@@ -141,7 +171,7 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
         bt_twozero.setOnClickListener(this);
         btn_edit.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        btn_print.setOnClickListener(this);
+        lnPrinterLot.setOnClickListener(this);
         lnContentPrinter.setOnClickListener(this);
         bt_number_full.setOnClickListener(this);
         close_tang_keyboad.setOnClickListener(this);
@@ -170,7 +200,7 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
                 onclickmain.setTAG_KEY("Clear");
                 BusProvider.getInstance().post(onclickmain);
                 break;
-            case R.id.btn_print:
+            case R.id.lnPrinterLotMain:
                 onclickmain.setTAG_KEY("Savelot");
                 BusProvider.getInstance().post(onclickmain);
 
@@ -259,5 +289,26 @@ public class Keyboardmain extends Fragment implements View.OnClickListener {
             }
         }
 
+    }
+    @Subscribe
+    public void onBusStatusPrinter(ModelStatusConnectPrinter conPrinter){
+        onShowLogCat("Event Bus","Connect Printer " + conPrinter.getTextStatus());
+        if (isCheckPrinter && conPrinter != null){
+            if (conPrinter.getStatus() == 1){
+                avloadingPrinterLot.setVisibility(View.INVISIBLE);
+                imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conted);
+            }else if (conPrinter.getStatus() == 0){
+                avloadingPrinterLot.setVisibility(View.VISIBLE);
+                imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_conting);
+            }else {
+                avloadingPrinterLot.setVisibility(View.INVISIBLE);
+                imgStatusPrinterLot.setImageResource(R.drawable.ic_status_printer_nocon);
+            }
+        }
+    }
+    public void onShowLogCat(String tag, String msg){
+        if (BuildConfig.DEBUG) {
+            Log.e("***KeyboardPrintMain***",tag +" ==> "+ msg);
+        }
     }
 }

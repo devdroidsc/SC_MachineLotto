@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -278,18 +278,48 @@
                     android:textSize="@dimen/size_txt_save"
                     android:layout_weight="2"
                     android:layout_marginRight="@dimen/margin1"/>
-                <TextView
-                    android:id="@+id/btn_print"
+                <LinearLayout
+                    android:id="@+id/lnPrinterLot"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/txt_save"
-                    android:layout_marginLeft="@dimen/margin1"
-                    android:gravity="center"
-                    android:textSize="@dimen/size_txt_save"
-                    android:textColor="@color/colorWith"
-                    android:background="@drawable/bg_number_enter"
                     android:layout_weight="1"
-                    android:textStyle="bold"/>
+                    android:gravity="center"
+                    android:background="@drawable/bg_number_enter"
+                    android:layout_marginLeft="@dimen/margin1">
+                    <RelativeLayout
+                        android:layout_width="@dimen/size_ic_printer"
+                        android:layout_height="@dimen/size_ic_printer"
+                        android:layout_marginRight="@dimen/pad_txt_tang">
+                        <ImageView
+                            android:id="@+id/imgStatusPrinterLot"
+                            android:layout_width="@dimen/size_ic_printer"
+                            android:layout_height="@dimen/size_ic_printer"
+                            android:src="@drawable/ic_status_printer_nocon"
+                            android:scaleType="centerCrop"
+                            android:adjustViewBounds="true"/>
+                        <com.wang.avi.AVLoadingIndicatorView
+                            android:id="@+id/avloadingPrinterLot"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="invisible"
+                            android:layout_margin="@dimen/pad_txt_tang"
+                            android:padding="@dimen/pad_txt_tang"
+                            android:layout_gravity="center"
+                            app:indicator="BallSpinFadeLoader"
+                            app:indicator_color="@color/colorWith" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/btn_print"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/txt_save"
+                        android:gravity="center"
+                        android:textSize="@dimen/size_txt_save"
+                        android:textColor="@color/colorWith"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

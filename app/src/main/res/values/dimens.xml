@@ -3,7 +3,7 @@
     <dimen name="magin150">150dp</dimen>
     <dimen name="size_text">30sp</dimen>
     <dimen name="magin20">20dp</dimen>
-    <dimen name="text_size30">25sp</dimen>
+    <dimen name="text_size30">15sp</dimen>
 
     <dimen name="margin1">1dp</dimen>
     <dimen name="size_20">20sp</dimen>
@@ -124,7 +124,7 @@
     <!--Bill-->
     <dimen name="size_txt_footer_bill">16sp</dimen>
 
-    <dimen name="size_ic_printer">60dp</dimen>
-    <dimen name="magin65">65dp</dimen>
+    <dimen name="size_ic_printer">30dp</dimen>
+    <dimen name="magin65">35dp</dimen>
 
 </resources>
