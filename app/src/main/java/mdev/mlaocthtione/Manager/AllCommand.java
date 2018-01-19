@@ -98,7 +98,10 @@ public class AllCommand {
 	public static String text_alert_premiss_ii = "text_alert_premiss_ii";//เพื่อการทำงานที่สมบูรณ์
 	public static String text_no_internet = "text_no_internet";//กรุณาเชื่อมต่ออินเตอร์เน็ต
 	public static String text_userincorrect = "text_userincorrect";//ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+	public static String text_loading = "text_loading";//กำลังโหลด...
+	public static String text_fail = "text_fail";//ไม่สำเร็จ
 	public static String Check_Languane = "Check_Languane";
+
 
 	public boolean isConnectingToInternet(Context _context) {
 		ConnectivityManager connectivity = (ConnectivityManager) _context

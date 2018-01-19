@@ -38,13 +38,13 @@ public class CustomAdapterDetail extends RecyclerView.Adapter<RecyclerView.ViewH
 
         Modelitemlot modelitemlot = list.get(position);
         ItemView itemView = (ItemView) holder;
-        itemView.text_lotnumber.setTextColor(Color.BLACK);
+        itemView.text_lotnumber.setTextColor(Color.parseColor("#000000"));
         if (modelitemlot.getStatuslot().equals("1")) {
             itemView.text_lotnumber.setText(modelitemlot.getNumberlot());
-            itemView.text_lotnumber.setTextColor(Color.GREEN);
+            itemView.text_lotnumber.setTextColor(Color.parseColor("#026f02"));
         }else {
             itemView.text_lotnumber.setText(modelitemlot.getNumberlot());
-            itemView.text_lotnumber.setTextColor(Color.RED);
+            itemView.text_lotnumber.setTextColor(Color.parseColor("#FF0000"));
         }
 
     }

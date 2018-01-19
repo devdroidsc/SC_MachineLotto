@@ -272,7 +272,7 @@ public class PageLogin extends Fragment {
                     }else {
                         params_login.add(new BasicNameValusPostOkHttp().BasicNameValusPostOkHttp("server", "zx"));
                     }
-                    return allCommand.POST_OK_HTTP_SendData("My_url.php", params_login);
+                    return allCommand.POST_OK_HTTP_SendData("MY_URL", params_login);
                 }
 
                 @SuppressLint("MissingPermission")

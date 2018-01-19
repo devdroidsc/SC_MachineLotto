@@ -88,6 +88,7 @@ public class PageNumberfull extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         if (listnumber.size()<=0){
             setData();
         }
@@ -131,22 +132,25 @@ public class PageNumberfull extends Fragment {
                 @Override
                 protected void onPostExecute(String s) {
                     allCommand.ShowLogCat("Number_Full ",s);
-                    swipeRefreshLayout.setRefreshing(false);
                     try {
                         JSONArray jsonArray = new JSONArray(s);
                         JSONObject jsonObject;
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject = jsonArray.getJSONObject(i);
-                            ModelitemNumberFull modelitem = new ModelitemNumberFull();
-                            modelitem.setHeader(jsonObject.getString("lot_type"));
-                            modelitem.setDetail(jsonObject.getString("lot_txt"));
-                            listnumber.add(modelitem);
-                            adapter.notifyDataSetChanged();
+                            String lotTxt = jsonObject.getString("lot_txt");
+                            if (lotTxt.length() > 0) {
+                                ModelitemNumberFull modelitem = new ModelitemNumberFull();
+                                modelitem.setHeader(jsonObject.getString("lot_type"));
+                                modelitem.setDetail(lotTxt);
+                                listnumber.add(modelitem);
+                                adapter.notifyDataSetChanged();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else {

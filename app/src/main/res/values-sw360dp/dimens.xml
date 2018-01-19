@@ -10,13 +10,15 @@
 	<dimen name="margin5">3dp</dimen>
 	<dimen name="magin100">100dp</dimen>
 	<dimen name="magin60">35dp</dimen>
+	<dimen name="size_h_ic_language">25dp</dimen>
+	<dimen name="size_w_ic_language">40dp</dimen>
 	<dimen name="magin120">120dp</dimen>
 	<dimen name="magin10">5dp</dimen>
 	<dimen name="magin50">40dp</dimen>
 	<dimen name="magin80">80dp</dimen>
 	<dimen name="magin40">30dp</dimen>
 	<dimen name="magin_size50">25sp</dimen>
-	<dimen name="magin70">35dp</dimen>
+	<dimen name="magin70">40dp</dimen>
 	<dimen name="magin2">1dp</dimen>
 	<dimen name="pad_btn_save">15dp</dimen>
 	<dimen name="pad_btn_save_rl">40dp</dimen>

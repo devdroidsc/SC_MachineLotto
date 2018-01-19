@@ -19,7 +19,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,19 +29,17 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -127,9 +124,12 @@ public class PageMain extends Fragment implements View.OnClickListener {
     private ImageView image_cb_return;
     private boolean onReset = false;
 
-    private TextView num_title,top_title,lower_title,toad_title,return_title,tv_close_bet,tv_title_savelot,text_title_buy;
+    private TextView num_title,top_title,lower_title,toad_title,return_title,tv_close_bet,
+            tv_title_savelot,text_title_buy,tvStatusPrinting;
     private int Check_focus = 1;
     private boolean onClosetng = true;
+    private Animation animShow, animHide;
+    private boolean isPrinting = false;
 
 
     private static final String TAG = "PageMain";
@@ -138,8 +138,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
             "11", "22", "33", "44", "55", "66", "77", "88", "99", "00",
             "111", "222", "333", "444", "555", "666", "777", "888", "999", "000"};
 
-    public PageMain() {
-    }
+    public PageMain() {}
 
     public static PageMain newInstance() {
         PageMain pageMain = new PageMain();
@@ -162,7 +161,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
         outState.putString("strCloseSmall", strCloseSmall);
         outState.putString("strPhon", strPhon);
         outState.putInt("Check_focus",Check_focus);
-
+        outState.putBoolean("isPrinting",isPrinting);
     }
 
     @Override
@@ -173,10 +172,10 @@ public class PageMain extends Fragment implements View.OnClickListener {
         list = new ArrayList<>();
         list_lot = new ArrayList<>();
         allCommand = new AllCommand();
-
+        animShow = new AnimationUtils().loadAnimation(getActivity(),R.anim.show_status_print);
+        animHide = new AnimationUtils().loadAnimation(getActivity(),R.anim.hide_status_print);
 
         if (savedInstanceState != null) {
-
             list = savedInstanceState.getParcelableArrayList("list");
             list_lot = savedInstanceState.getParcelableArrayList("list_lot");
             Check_number = savedInstanceState.getBoolean("Check_number");
@@ -190,9 +189,21 @@ public class PageMain extends Fragment implements View.OnClickListener {
             strCloseSmall = savedInstanceState.getString("strCloseSmall");
             strPhon = savedInstanceState.getString("strPhon");
             Check_focus = savedInstanceState.getInt("Check_focus");
+            isPrinting = savedInstanceState.getBoolean("isPrinting");
         }
+        animHide.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
 
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isPrinting = false;
+                tvStatusPrinting.setVisibility(View.INVISIBLE);
+            }
 
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
     }
 
     @Nullable
@@ -208,9 +219,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         if (savedInstanceState != null) {
-
             adapter = new CustomAdapterMain(list, getActivity());
             redetail.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -226,7 +235,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         uuid= tManager.getDeviceId().toString();
         onShowLogCat(TAG, tManager.getDeviceId().toString());
-
 
         Date currentTime = Calendar.getInstance().getTime();
 
@@ -330,6 +338,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
         text_title_buy = view.findViewById(R.id.text_title_buy);
         tv_title_savelot = view.findViewById(R.id.tv_title_savelot);
+        tvStatusPrinting = view.findViewById(R.id.tvStatusPrinting);
         tv_close_bet = view.findViewById(R.id.tv_close_bet);
         num_title = view.findViewById(R.id.num_title);
         top_title = view.findViewById(R.id.top_title);
@@ -448,7 +457,6 @@ public class PageMain extends Fragment implements View.OnClickListener {
             tv_close_bet.setText(allCommand.GetStringShare(getContext(),allCommand.text_close_bet,"Bet close"));
             tv_title_savelot.setText(allCommand.GetStringShare(getContext(),allCommand.text_save_success,"Success"));
             text_title_buy.setText(allCommand.GetStringShare(getContext(),allCommand.text_inputNumber,"Please fill in"));
-
             switch (Check_focus){
                 case 1:
                     text_tital.setText(allCommand.GetStringShare(getContext(),allCommand.text_Number,"Number"));
@@ -554,70 +562,68 @@ public class PageMain extends Fragment implements View.OnClickListener {
         ModelBus modelBus = new ModelBus();
         OnCloseSavelot onCloseSavelot = new OnCloseSavelot();
         if (!onclickmain.getTAG_KEY().equals("")) {
-
-            switch (onclickmain.getTAG_KEY()) {
-                case "edit":
-
-                    int length = edit_number.getText().length();
-                    if (length > 0) {
-                        edit_number.getText().delete(length - 1, length);
-                    }
-
-                    break;
-                case "Clear":
-                    Clear_Dataset();
-                    break;
-                case "Savelot":
-                    if (list.size() > 0) {
-
-                        if (Check_Tang) {
-                            saveLot();
-                            onCloseSavelot.setTAG_KEY("1");
-                            BusProvider.getInstance().post(onCloseSavelot);
+            if (!isPrinting) {
+                switch (onclickmain.getTAG_KEY()) {
+                    case "edit":
+                        int length = edit_number.getText().length();
+                        if (length > 0) {
+                            edit_number.getText().delete(length - 1, length);
                         }
-                    }
-                    break;
-                case "SettingPrinter":
-                    modelBus.setPage(Utils.KEY_ADD_PAGE_PRINTER);
-                    modelBus.setMsg(Utils.NAME_ADD_PAGE_PRINTER);
-                    BusProvider.getInstance().post(modelBus);
-                    break;
-                case "Tang":
-                    modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
-                    modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
-                    BusProvider.getInstance().post(modelBus);
-                    break;
-                case "NumberFull":
-                    modelBus.setPage(Utils.KEY_ADD_PAGE_NUMBERFULL);
-                    modelBus.setMsg(Utils.NAME_ADD_PAGE_NUMBERFULL);
-                    BusProvider.getInstance().post(modelBus);
-                    break;
-                case "Language":
-                    modelBus.setPage(Utils.KEY_ADD_PAGE_LANGUAGE);
-                    modelBus.setMsg(Utils.NAME_ADD_PAGE_LANGUAGE);
-                    BusProvider.getInstance().post(modelBus);
-                    break;
-                case "back":
-                    modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
-                    modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
-                    BusProvider.getInstance().post(modelBus);
-                    break;
+                        break;
+                    case "Clear":
+                        Clear_Dataset();
+                        break;
+                    case "Savelot":
+                        if (list.size() > 0) {
+                            if (Check_Tang) {
+                                saveLot();
+                                onCloseSavelot.setTAG_KEY("1");
+                                BusProvider.getInstance().post(onCloseSavelot);
+                            }
+                        }
+                        break;
+                    case "SettingPrinter":
+                        modelBus.setPage(Utils.KEY_ADD_PAGE_PRINTER);
+                        modelBus.setMsg(Utils.NAME_ADD_PAGE_PRINTER);
+                        BusProvider.getInstance().post(modelBus);
+                        break;
+                    case "Tang":
+                        modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
+                        modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
+                        BusProvider.getInstance().post(modelBus);
+                        break;
+                    case "NumberFull":
+                        modelBus.setPage(Utils.KEY_ADD_PAGE_NUMBERFULL);
+                        modelBus.setMsg(Utils.NAME_ADD_PAGE_NUMBERFULL);
+                        BusProvider.getInstance().post(modelBus);
+                        break;
+                    case "Language":
+                        modelBus.setPage(Utils.KEY_ADD_PAGE_LANGUAGE);
+                        modelBus.setMsg(Utils.NAME_ADD_PAGE_LANGUAGE);
+                        BusProvider.getInstance().post(modelBus);
+                        break;
+                    case "back":
+                        modelBus.setPage(Utils.KEY_ADD_PAGE_TANG_LOT_FAST);
+                        modelBus.setMsg(Utils.NAME_ADD_PAGE_TANG_LOT_FAST);
+                        BusProvider.getInstance().post(modelBus);
+                        break;
 
-                case "Close":
-                    laout_number.setVisibility(View.VISIBLE);
-                    laout_savelot.setVisibility(View.GONE);
-                    if (list_lot.size() > 0) {
-                        list_lot.clear();
-                        adapter_savelot.notifyDataSetChanged();
-                    }
-                    onCloseSavelot.setTAG_KEY("2");
-                    BusProvider.getInstance().post(onCloseSavelot);
-                    break;
+                    case "Close":
+                        laout_number.setVisibility(View.VISIBLE);
+                        laout_savelot.setVisibility(View.GONE);
+                        if (list_lot.size() > 0) {
+                            list_lot.clear();
+                            adapter_savelot.notifyDataSetChanged();
+                        }
+                        onCloseSavelot.setTAG_KEY("2");
+                        BusProvider.getInstance().post(onCloseSavelot);
+                        break;
 
-                default:
-                    setNumber(onclickmain.getTAG_KEY());
-                    break;
+                    default:
+                        setNumber(onclickmain.getTAG_KEY());
+                        break;
 
+                }
             }
         }
 
@@ -1071,9 +1077,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
 
     @SuppressLint("StaticFieldLeak")
     private void saveLot() {
-
         for (int i = 0; i < list.size(); i++) {
-
             if (list.get(i).isRetun_number()) {
                 connVateNumber(list.get(i).getNumber().toString(), i);
             }
@@ -1081,11 +1085,19 @@ public class PageMain extends Fragment implements View.OnClickListener {
         Collections.sort(list, Modeldetail.StuRollno);
 
         if (allCommand.isConnectingToInternet(getActivity())) {
-
             final String urlServer = allCommand.GetStringShare(getActivity(), allCommand.moURL, "");
             final String moMid = allCommand.GetStringShare(getActivity(), allCommand.moMemberID, "");
             //onShowLogCat("MainActivity", "URL SET " + urlServer);
             new AsyncTask<String, Void, String>() {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    isPrinting = true;
+                    tvStatusPrinting.setText(allCommand.GetStringShare(getActivity(),allCommand.text_loading,"Loading..."));
+                    tvStatusPrinting.setVisibility(View.VISIBLE);
+                    tvStatusPrinting.startAnimation(animShow);
+                }
+
                 @Override
                 protected String doInBackground(String... strings) {
                     ArrayList<FromHttpPostOkHttp> param = new ArrayList<>();
@@ -1136,6 +1148,7 @@ public class PageMain extends Fragment implements View.OnClickListener {
                                 backgroundHandler.sendMessageDelayed(msgBack, 1000);
                             }
                         } else {
+                            tvStatusPrinting.startAnimation(animHide);
                             laout_number.setVisibility(View.GONE);
                             laout_savelot.setVisibility(View.VISIBLE);
                             Modelitemlot modelitemlot = new Modelitemlot();
@@ -1153,6 +1166,9 @@ public class PageMain extends Fragment implements View.OnClickListener {
                         Clear_Editext();
 
                     } catch (JSONException e) {
+                        playSoundEffect(getContext(), R.raw.soundtang_no);
+                        tvStatusPrinting.startAnimation(animHide);
+                        allCommand.ShowAertDialog_OK(allCommand.GetStringShare(getContext(),allCommand.text_fail,"fail."),getContext());
                         e.printStackTrace();
                     }
                 }
@@ -1241,15 +1257,15 @@ public class PageMain extends Fragment implements View.OnClickListener {
                 if (msg.arg1 == 1) {
                     onShowLogCat("Status Print", "Successful");
                     deleteFilePrint((String) msg.obj);
-                    //lnStatusPrinting.startAnimation(animHide);
+                    tvStatusPrinting.startAnimation(animHide);
                 }
                 if (msg.arg1 == 2) {
                     onShowLogCat("Status Print", "Show Printing...");
-                    /*lnStatusPrinting.setVisibility(View.VISIBLE);
-                    lnStatusPrinting.startAnimation(animShow);*/
+                    tvStatusPrinting.setText(allCommand.GetStringShare(getActivity(),allCommand.text_status_printing,"Printing..."));
                 } else {
                     onShowLogCat("Status Print", "No Print");
                     addFileBill((String) msg.obj);
+                    tvStatusPrinting.startAnimation(animHide);
                 }
             }
         };

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,14 +24,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import mdev.mlaocthtione.Adapter.CustomAdapterLangguane;
-import mdev.mlaocthtione.Adapter.CustomAdapterNamberFull;
-import mdev.mlaocthtione.FormatHttpPostOkHttp.BasicNameValusPostOkHttp;
-import mdev.mlaocthtione.FormatHttpPostOkHttp.FromHttpPostOkHttp;
 import mdev.mlaocthtione.Manager.AllCommand;
 import mdev.mlaocthtione.Model.ModelitemLanguane;
-import mdev.mlaocthtione.Model.ModelitemNumberFull;
-import mdev.mlaocthtione.ModelBus.OnclickPrinter;
-import mdev.mlaocthtione.ModelBus.Onclicklogin;
 import mdev.mlaocthtione.ModelBus.Onclickmain;
 import mdev.mlaocthtione.R;
 import mdev.mlaocthtione.bus.BusProvider;
@@ -55,6 +50,7 @@ public class PageLanguage extends Fragment{
     private RecyclerView re_language;
     private CustomAdapterLangguane adapter;
     private TextView titel_language;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private AVLoadingIndicatorView avloadLanguane;
     private RelativeLayout avi_loadlanguane;
 
@@ -85,7 +81,7 @@ public class PageLanguage extends Fragment{
 
         avloadLanguane = view.findViewById(R.id.avloadLanguane);
         avi_loadlanguane = view.findViewById(R.id.avi_loadlanguane);
-
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         re_language = view.findViewById(R.id.re_language);
         gridLayoutManager = new GridLayoutManager(getActivity(), 1);
         adapter = new CustomAdapterLangguane(listLanguane,getActivity());
@@ -113,10 +109,21 @@ public class PageLanguage extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         if (listLanguane.size()<=0){
             setData();
         }
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (listLanguane.size()>0){
+                    listLanguane.clear();
+                    adapter.notifyDataSetChanged();
+                }
+                setData();
+            }
+        });
+
+
 
         adapter.setOnItemClickNo(new CustomAdapterLangguane.onItemClickNo() {
             @SuppressLint("StaticFieldLeak")
@@ -190,6 +197,8 @@ public class PageLanguage extends Fragment{
                                 allCommand.SaveStringShare(getContext(),allCommand.text_alert_input_data,jsonObject.getString("alert_input_data"));
                                 allCommand.SaveStringShare(getContext(),allCommand.text_no_internet,jsonObject.getString("no_internet"));
                                 allCommand.SaveStringShare(getContext(),allCommand.text_userincorrect,jsonObject.getString("user_incorrect"));
+                                allCommand.SaveStringShare(getContext(),allCommand.text_loading,jsonObject.getString("loading"));
+                                allCommand.SaveStringShare(getContext(),allCommand.text_fail,jsonObject.getString("fail"));
 
                                 Onclickmain onclickmain = new Onclickmain();
                                 onclickmain.setTAG_KEY("back");
@@ -238,6 +247,7 @@ public class PageLanguage extends Fragment{
     private void setData(){
 
         if (allCommand.isConnectingToInternet(getContext())){
+            swipeRefreshLayout.setRefreshing(true);
             final String urlServer = allCommand.GetStringShare(getActivity(),allCommand.moURL,"");
             new AsyncTask<String, Void, String>() {
                 @Override
@@ -269,7 +279,7 @@ public class PageLanguage extends Fragment{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }

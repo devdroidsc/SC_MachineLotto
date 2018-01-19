@@ -10,6 +10,8 @@
     <dimen name="margin5">5dp</dimen>
     <dimen name="magin100">100dp</dimen>
     <dimen name="magin60">60dp</dimen>
+    <dimen name="size_h_ic_language">23dp</dimen>
+    <dimen name="size_w_ic_language">33dp</dimen>
     <dimen name="magin120">120dp</dimen>
     <dimen name="magin10">10dp</dimen>
     <dimen name="magin50">50dp</dimen>

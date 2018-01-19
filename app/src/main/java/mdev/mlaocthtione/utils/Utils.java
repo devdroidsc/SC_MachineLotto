@@ -129,5 +129,5 @@ public class Utils {
     public static String SHARE_YOD_MIN = "yod_min";
     public static String SHARE_YOD_MAX = "yod_max";
     public static String SHARE_STATUS_CLICK_MENU = "status_click_menu";
-    public static String PATH_BILL = "DCIM/OHO99/BI";
+    public static String PATH_BILL = "DCIM/OHO55/BI";
 }
